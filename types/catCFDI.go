@@ -1,0 +1,45 @@
+package types
+
+type CClaveProdServ string
+
+// May be one of AGU, BCN, BCS, CAM, CHP, CHH, COA, COL, DIF, CMX, DUR, GUA, GRO, HID, JAL, MEX, MIC, MOR, NAY, NLE, OAX, PUE, QUE, ROO, SLP, SIN, SON, TAB, TAM, TLA, VER, YUC, ZAC, AL, AK, AZ, AR, CA, NC, SC, CO, CT, ND, SD, DE, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NJ, NY, NH, NM, OH, OK, OR, PA, RI, TN, TX, UT, VT, VA, WV, WA, WI, WY, ON, QC, NS, NB, MB, BC, PE, SK, AB, NL, NT, YT, UN
+type CEstado string
+
+// May be one of 01, 02, 03
+type CExportacion string
+
+// May be one of 01, 02, 03, 04, 05, 06, 08, 12, 13, 14, 15, 17, 23, 24, 25, 26, 27, 28, 29, 30, 31, 99
+type CFormaPago string
+
+// May be one of 001, 002, 003
+type CImpuesto string
+
+// May be one of 01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 66, 67, 68, 69
+type CLocalidad string
+
+// May be one of PUE, PPD
+type CMetodoPago string
+
+// May be one of AED, AFN, ALL, AMD, ANG, AOA, ARS, AUD, AWG, AZN, BAM, BBD, BDT, BGN, BHD, BIF, BMD, BND, BOB, BOV, BRL, BSD, BTN, BWP, BYR, BZD, CAD, CDF, CHE, CHF, CHW, CLF, CLP, CNY, COP, COU, CRC, CUC, CUP, CVE, CZK, DJF, DKK, DOP, DZD, EGP, ERN, ETB, EUR, FJD, FKP, GBP, GEL, GHS, GIP, GMD, GNF, GTQ, GYD, HKD, HNL, HRK, HTG, HUF, IDR, ILS, INR, IQD, IRR, ISK, JMD, JOD, JPY, KES, KGS, KHR, KMF, KPW, KRW, KWD, KYD, KZT, LAK, LBP, LKR, LRD, LSL, LYD, MAD, MDL, MGA, MKD, MMK, MNT, MOP, MRO, MUR, MVR, MWK, MXN, MXV, MYR, MZN, NAD, NGN, NIO, NOK, NPR, NZD, OMR, PAB, PEN, PGK, PHP, PKR, PLN, PYG, QAR, RON, RSD, RUB, RWF, SAR, SBD, SCR, SDG, SEK, SGD, SHP, SLL, SOS, SRD, SSP, STD, SVC, SYP, SZL, THB, TJS, TMT, TND, TOP, TRY, TTD, TWD, TZS, UAH, UGX, USD, USN, UYI, UYU, UZS, VEF, VND, VUV, WST, XAF, XAG, XAU, XBA, XBB, XBC, XBD, XCD, XDR, XOF, XPD, XPF, XPT, XSU, XTS, XUA, XXX, YER, ZAR, ZMW, ZWL
+type CMoneda string
+
+// May be one of 01, 02, 03
+type CObjetoImp string
+
+// May be one of AFG, ALA, ALB, DEU, AND, AGO, AIA, ATA, ATG, SAU, DZA, ARG, ARM, ABW, AUS, AUT, AZE, BHS, BGD, BRB, BHR, BEL, BLZ, BEN, BMU, BLR, MMR, BOL, BIH, BWA, BRA, BRN, BGR, BFA, BDI, BTN, CPV, KHM, CMR, CAN, QAT, BES, TCD, CHL, CHN, CYP, COL, COM, PRK, KOR, CIV, CRI, HRV, CUB, CUW, DNK, DMA, ECU, EGY, SLV, ARE, ERI, SVK, SVN, ESP, USA, EST, ETH, PHL, FIN, FJI, FRA, GAB, GMB, GEO, GHA, GIB, GRD, GRC, GRL, GLP, GUM, GTM, GUF, GGY, GIN, GNB, GNQ, GUY, HTI, HND, HKG, HUN, IND, IDN, IRQ, IRN, IRL, BVT, IMN, CXR, NFK, ISL, CYM, CCK, COK, FRO, SGS, HMD, FLK, MNP, MHL, PCN, SLB, TCA, UMI, VGB, VIR, ISR, ITA, JAM, JPN, JEY, JOR, KAZ, KEN, KGZ, KIR, KWT, LAO, LSO, LVA, LBN, LBR, LBY, LIE, LTU, LUX, MAC, MDG, MYS, MWI, MDV, MLI, MLT, MAR, MTQ, MUS, MRT, MYT, MEX, FSM, MDA, MCO, MNG, MNE, MSR, MOZ, NAM, NRU, NPL, NIC, NER, NGA, NIU, NOR, NCL, NZL, OMN, NLD, PAK, PLW, PSE, PAN, PNG, PRY, PER, PYF, POL, PRT, PRI, GBR, CAF, CZE, MKD, COG, COD, DOM, REU, RWA, ROU, RUS, ESH, WSM, ASM, BLM, KNA, SMR, MAF, SPM, VCT, SHN, LCA, STP, SEN, SRB, SYC, SLE, SGP, SXM, SYR, SOM, LKA, SWZ, ZAF, SDN, SSD, SWE, CHE, SUR, SJM, THA, TWN, TZA, TJK, IOT, ATF, TLS, TGO, TKL, TON, TTO, TUN, TKM, TUR, TUV, UKR, UGA, URY, UZB, VUT, VAT, VEN, VNM, WLF, YEM, DJI, ZMB, ZWE, ZZZ
+type CPais string
+
+// May be one of 601, 603, 605, 606, 607, 608, 609, 610, 611, 612, 614, 615, 616, 620, 621, 622, 623, 624, 625, 626, 628, 629, 630
+type CRegimenFiscal string
+
+// May be one of I, E, T, N, P
+type CTipoDeComprobante string
+
+// May be one of Tasa, Cuota, Exento
+type CTipoFactor string
+
+// May be one of 01, 02, 03, 04, 05, 06, 07, 08, 09
+type CTipoRelacion string
+
+// May be one of G01, G02, G03, I01, I02, I03, I04, I05, I06, I07, I08, D01, D02, D03, D04, D05, D06, D07, D08, D09, D10, P01, S01, CP01, CN01
+type CUsoCFDI string
