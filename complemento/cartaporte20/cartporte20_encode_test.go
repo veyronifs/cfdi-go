@@ -2,7 +2,6 @@ package cartaporte20
 
 import (
 	"encoding/xml"
-	"fmt"
 	"testing"
 
 	"github.com/shopspring/decimal"
@@ -45,9 +44,9 @@ func TestUnmarshal(t *testing.T) {
 		t.Errorf("Error Unmarshal(xmlOriginal): %s", err)
 	}
 
-	xmlMarshaled, err := Encode(&cartaPorteUnmarshaled, "MXN")
+	xmlMarshaled, err := Marshal(&cartaPorteUnmarshaled, "MXN")
 	if err != nil {
-		t.Errorf("Error Encode(cartaPorteUnmarshal): %s", err)
+		t.Errorf("Error Marshal(cartaPorteUnmarshal): %s", err)
 	}
 
 	var cartaPorteUnmarshaled2 CartaPorte20
@@ -56,10 +55,6 @@ func TestUnmarshal(t *testing.T) {
 		t.Errorf("Error Unmarshal(xmlMarshaled): %s", err)
 	}
 	AssertEqual(t, &cartaPorteUnmarshaled, &cartaPorteUnmarshaled2)
-	fmt.Printf("%#v", cartaPorteUnmarshaled.Mercancias.Autotransporte.IdentificacionVehicular)
-	fmt.Printf("%#v", cartaPorteUnmarshaled.Mercancias.Autotransporte.Seguros)
-	fmt.Printf("%#v", cartaPorteUnmarshaled.Mercancias.Autotransporte.Remolques[0])
-	//fmt.Println(cartaPorteUnmarshaled.Ubicaciones[0])
 }
 
 func TestMarshal(t *testing.T) {
@@ -205,9 +200,9 @@ func TestMarshal(t *testing.T) {
 			},
 		}
 	}
-	xmlMarshaled, err := Encode(cartaPorte, "MXN")
+	xmlMarshaled, err := Marshal(cartaPorte, "MXN")
 	if err != nil {
-		t.Errorf("Error Encode(cartaPorte): %s", err)
+		t.Errorf("Error Marshal(cartaPorte): %s", err)
 	}
 	var cartaPorteUnmarshaled CartaPorte20
 	err = xml.Unmarshal(xmlMarshaled, &cartaPorteUnmarshaled)

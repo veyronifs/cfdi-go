@@ -1,12 +1,12 @@
 package cfdi40_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/shopspring/decimal"
-	"github.com/veyronifs/cfdi-go/cartaporte20"
 	"github.com/veyronifs/cfdi-go/cfdi40"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -298,7 +298,17 @@ func TestCartaPorte(t *testing.T) {
 		},
 
 		Complemento: &cfdi40.Complemento{
-			&cartaporte20.CartaPorte20{
+			TFD11: &tfd11.TimbreFiscalDigital{
+				Version:          "1.1",
+				UUID:             "ED1752FE-E865-4FF2-BFE1-0F552E770DC9",
+				FechaTimbrado:    cFecha,
+				SelloCFD:         "ABC",
+				NoCertificadoSAT: "30001000000300023708",
+				SelloSAT:         "XYZ",
+				RfcProvCertif:    "AAA010101AAA",
+				Leyenda:          "CFDI de prueba",
+			},
+			CartaPorte20: &cartaporte20.CartaPorte20{
 				//Mercancias:0xc00010e100
 				Version:           "2.0",
 				TranspInternac:    "No",
@@ -451,6 +461,5 @@ func TestCartaPorte(t *testing.T) {
 		t.Errorf("Error Unmarshal(xmlMarshalled): %s", err.Error())
 		return
 	}
-	fmt.Println(string(xmlMarshalled))
 	cfdi40.AssertEqualComprobante(t, &cfdiOriginal, cfdiUnmarshalled)
 }

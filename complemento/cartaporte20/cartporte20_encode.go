@@ -23,15 +23,15 @@ func (cp *CartaPorte20) XmlNS() string {
 	return "http://www.sat.gob.mx/CartaPorte20"
 }
 
-func Encode(cp *CartaPorte20, moneda string) ([]byte, error) {
+func Marshal(cp *CartaPorte20, moneda string) ([]byte, error) {
 	b := bytes.Buffer{}
 	enc := encoder.NewEncoder(&b)
-	cp.EncodeComplemento(enc, moneda)
+	cp.MarshalComplemento(enc, moneda)
 	enc.EndAllFlush()
 	return b.Bytes(), enc.GetError()
 }
 
-func (cp *CartaPorte20) EncodeComplemento(enc *encoder.Encoder, moneda string) {
+func (cp *CartaPorte20) MarshalComplemento(enc *encoder.Encoder, moneda string) {
 	if cp == nil {
 		return
 	}

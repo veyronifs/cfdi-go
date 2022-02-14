@@ -4,7 +4,8 @@ import (
 	"encoding/xml"
 
 	"github.com/shopspring/decimal"
-	"github.com/veyronifs/cfdi-go/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -240,5 +241,6 @@ func (a *Addenda) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 }
 
 type Complemento struct {
-	CartaPorte20 *cartaporte20.CartaPorte20 `xml:"http://www.sat.gob.mx/cartaPorte20 CartaPorte,omitempty"`
+	CartaPorte20 *cartaporte20.CartaPorte20 `xml:"CartaPorte,omitempty"`
+	TFD11        *tfd11.TimbreFiscalDigital `xml:"TimbreFiscalDigital,omitempty"`
 }

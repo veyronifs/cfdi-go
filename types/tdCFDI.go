@@ -23,6 +23,9 @@ func (t TFechaH) MarshalText() ([]byte, error) {
 func (t TFechaH) Encode() string {
 	return time.Time(t).Format("2006-01-02T15:04:05")
 }
+func (t TFechaH) String() string {
+	return time.Time(t).Format("2006-01-02T15:04:05")
+}
 
 type xsdDate time.Time
 
