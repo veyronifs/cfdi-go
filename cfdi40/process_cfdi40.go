@@ -19,7 +19,7 @@ var (
 func NewComprobantePago() *Comprobante {
 	return &Comprobante{
 		Version:           Version,
-		Fecha:             types.TFechaHNow(),
+		Fecha:             types.NewFechaHNow(),
 		Moneda:            types.MonedaXXX,
 		Total:             decimal.Zero,
 		SubTotal:          decimal.Zero,
@@ -36,7 +36,6 @@ func NewComprobantePago() *Comprobante {
 				ObjetoImp:     types.ObjetoImp01,
 			},
 		},
-		Complemento: &Complemento{},
 	}
 }
 
@@ -213,7 +212,7 @@ func NewReceptorExt(
 }
 
 // NewInformacionGlobal genera la informacion global cuando el rfc es de publico en general.
-func NewInformacionGlobal(rfc string, periodicidad types.Periodicidad, fecha types.TFechaH) (*InformacionGlobal, error) {
+func NewInformacionGlobal(rfc string, periodicidad types.Periodicidad, fecha types.FechaH) (*InformacionGlobal, error) {
 	if rfc != RFCPublico {
 		return nil, nil
 	}

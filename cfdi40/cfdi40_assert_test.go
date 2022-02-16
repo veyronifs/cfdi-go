@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/veyronifs/cfdi-go/compare"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 )
@@ -94,7 +95,9 @@ func assertComplemento(t *testing.T, c1, c2 *Complemento) {
 		return
 	}
 	cartaporte20.AssertEqual(t, c1.CartaPorte20, c2.CartaPorte20)
-	tfd11.AssertEqual(t, c1.TFD11, c2.TFD11)
+	diffs := compare.NewDiffs()
+	err := tfd11.Compare(diffs, c1.TFD11, c2.TFD11)
+	assert.NoError(t, err, "Timbre Fiscal Digital")
 }
 
 func assertEqualCfdiRelacionados(t *testing.T, r1, r2 []*CfdiRelacionados) {

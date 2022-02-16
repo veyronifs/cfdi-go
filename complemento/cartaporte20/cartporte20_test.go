@@ -1,7 +1,6 @@
 package cartaporte20
 
 import (
-	"encoding/xml"
 	"testing"
 
 	"github.com/shopspring/decimal"
@@ -38,29 +37,27 @@ func TestUnmarshal(t *testing.T) {
 		`)
 	}
 
-	var cartaPorteUnmarshaled CartaPorte20
-	err := xml.Unmarshal(xmlOriginal, &cartaPorteUnmarshaled)
+	cartaPorteUnmarshaled, err := Unmarshal(xmlOriginal)
 	if err != nil {
 		t.Errorf("Error Unmarshal(xmlOriginal): %s", err)
 	}
 
-	xmlMarshaled, err := Marshal(&cartaPorteUnmarshaled, "MXN")
+	xmlMarshaled, err := Marshal(cartaPorteUnmarshaled, "MXN")
 	if err != nil {
 		t.Errorf("Error Marshal(cartaPorteUnmarshal): %s", err)
 	}
 
-	var cartaPorteUnmarshaled2 CartaPorte20
-	err = xml.Unmarshal(xmlMarshaled, &cartaPorteUnmarshaled2)
+	cartaPorteUnmarshaled2, err := Unmarshal(xmlMarshaled)
 	if err != nil {
 		t.Errorf("Error Unmarshal(xmlMarshaled): %s", err)
 	}
-	AssertEqual(t, &cartaPorteUnmarshaled, &cartaPorteUnmarshaled2)
+	AssertEqual(t, cartaPorteUnmarshaled, cartaPorteUnmarshaled2)
 }
 
 func TestMarshal(t *testing.T) {
 	var cartaPorte *CartaPorte20
 	{
-		fechaHoraSalidaLlegada, _ := types.TFechaHParse("2021-12-15T03:00:00")
+		fechaHoraSalidaLlegada, _ := types.NewFechaH("2021-12-15T03:00:00")
 		cartaPorte = &CartaPorte20{
 			//Mercancias:0xc00010e100
 			Version:           "2.0",
@@ -204,10 +201,10 @@ func TestMarshal(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error Marshal(cartaPorte): %s", err)
 	}
-	var cartaPorteUnmarshaled CartaPorte20
-	err = xml.Unmarshal(xmlMarshaled, &cartaPorteUnmarshaled)
+
+	cartaPorteUnmarshaled, err := Unmarshal(xmlMarshaled)
 	if err != nil {
 		t.Errorf("Error Unmarshal(xmlMarshaled): %s", err)
 	}
-	AssertEqual(t, cartaPorte, &cartaPorteUnmarshaled)
+	AssertEqual(t, cartaPorte, cartaPorteUnmarshaled)
 }

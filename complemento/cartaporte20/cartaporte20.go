@@ -7,10 +7,18 @@ import (
 	"github.com/veyronifs/cfdi-go/types"
 )
 
+func Unmarshal(b []byte) (*CartaPorte20, error) {
+	carta := &CartaPorte20{}
+	if err := xml.Unmarshal(b, carta); err != nil {
+		return nil, err
+	}
+	return carta, nil
+}
+
 type CartaPorte20 struct {
-	Ubicaciones       Ubicaciones       `xml:"Ubicaciones"`                //
-	Mercancias        *Mercancias       `xml:"Mercancias"`                 //
-	FiguraTransporte  *FiguraTransporte `xml:"FiguraTransporte,omitempty"` //
+	Ubicaciones       Ubicaciones       `xml:"Ubicaciones"`
+	Mercancias        *Mercancias       `xml:"Mercancias"`
+	FiguraTransporte  *FiguraTransporte `xml:"FiguraTransporte,omitempty"`
 	Version           string            `xml:"Version,attr"`
 	TranspInternac    string            `xml:"TranspInternac,attr"`
 	EntradaSalidaMerc string            `xml:"EntradaSalidaMerc,attr,omitempty"`
@@ -23,7 +31,7 @@ type Ubicaciones []*Ubicacion
 
 func (u *Ubicaciones) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var ubics struct {
-		Slice []*Ubicacion `xml:"Ubicacion"` //
+		Slice []*Ubicacion `xml:"Ubicacion"`
 	}
 
 	if err := d.DecodeElement(&ubics, &start); err != nil {
@@ -34,7 +42,7 @@ func (u *Ubicaciones) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error
 }
 
 type Ubicacion struct {
-	Domicilio                   *Domicilio      `xml:"Domicilio,omitempty"` //
+	Domicilio                   *Domicilio      `xml:"Domicilio,omitempty"`
 	TipoUbicacion               string          `xml:"TipoUbicacion,attr"`
 	IDUbicacion                 string          `xml:"IDUbicacion,attr,omitempty"`
 	RFCRemitenteDestinatario    string          `xml:"RFCRemitenteDestinatario,attr"`
@@ -44,17 +52,17 @@ type Ubicacion struct {
 	NumEstacion                 string          `xml:"NumEstacion,attr,omitempty"`
 	NombreEstacion              string          `xml:"NombreEstacion,attr,omitempty"`
 	NavegacionTrafico           string          `xml:"NavegacionTrafico,attr,omitempty"`
-	FechaHoraSalidaLlegada      types.TFechaH   `xml:"FechaHoraSalidaLlegada,attr"`
+	FechaHoraSalidaLlegada      types.FechaH    `xml:"FechaHoraSalidaLlegada,attr"`
 	TipoEstacion                string          `xml:"TipoEstacion,attr,omitempty"`
 	DistanciaRecorrida          decimal.Decimal `xml:"DistanciaRecorrida,attr,omitempty"`
 }
 
 type Mercancias struct {
-	Mercancia             []*Mercancia           `xml:"Mercancia"`                       //
-	Autotransporte        *Autotransporte        `xml:"Autotransporte,omitempty"`        //
-	TransporteMaritimo    *TransporteMaritimo    `xml:"TransporteMaritimo,omitempty"`    //
-	TransporteAereo       *TransporteAereo       `xml:"TransporteAereo,omitempty"`       //
-	TransporteFerroviario *TransporteFerroviario `xml:"TransporteFerroviario,omitempty"` //
+	Mercancia             []*Mercancia           `xml:"Mercancia"`
+	Autotransporte        *Autotransporte        `xml:"Autotransporte,omitempty"`
+	TransporteMaritimo    *TransporteMaritimo    `xml:"TransporteMaritimo,omitempty"`
+	TransporteAereo       *TransporteAereo       `xml:"TransporteAereo,omitempty"`
+	TransporteFerroviario *TransporteFerroviario `xml:"TransporteFerroviario,omitempty"`
 	PesoBrutoTotal        decimal.Decimal        `xml:"PesoBrutoTotal,attr"`
 	UnidadPeso            string                 `xml:"UnidadPeso,attr"`
 	PesoNetoTotal         decimal.Decimal        `xml:"PesoNetoTotal,attr,omitempty"`
@@ -63,10 +71,10 @@ type Mercancias struct {
 }
 
 type Mercancia struct {
-	Pedimentos           []*Pedimentos          `xml:"Pedimentos,omitempty"`          //
-	GuiasIdentificacion  []*GuiasIdentificacion `xml:"GuiasIdentificacion,omitempty"` //
-	CantidadTransporta   []*CantidadTransporta  `xml:"CantidadTransporta,omitempty"`  //
-	DetalleMercancia     *DetalleMercancia      `xml:"DetalleMercancia,omitempty"`    //
+	Pedimentos           []*Pedimentos          `xml:"Pedimentos,omitempty"`
+	GuiasIdentificacion  []*GuiasIdentificacion `xml:"GuiasIdentificacion,omitempty"`
+	CantidadTransporta   []*CantidadTransporta  `xml:"CantidadTransporta,omitempty"`
+	DetalleMercancia     *DetalleMercancia      `xml:"DetalleMercancia,omitempty"`
 	BienesTransp         string                 `xml:"BienesTransp,attr"`
 	ClaveSTCC            string                 `xml:"ClaveSTCC,attr,omitempty"`
 	Descripcion          string                 `xml:"Descripcion,attr"`
@@ -86,9 +94,9 @@ type Mercancia struct {
 }
 
 type Autotransporte struct {
-	IdentificacionVehicular *IdentificacionVehicular `xml:"IdentificacionVehicular"` //
-	Seguros                 *Seguros                 `xml:"Seguros"`                 //
-	Remolques               Remolques                `xml:"Remolques,omitempty"`     //
+	IdentificacionVehicular *IdentificacionVehicular `xml:"IdentificacionVehicular"`
+	Seguros                 *Seguros                 `xml:"Seguros"`
+	Remolques               Remolques                `xml:"Remolques,omitempty"`
 	PermSCT                 string                   `xml:"PermSCT,attr"`
 	NumPermisoSCT           string                   `xml:"NumPermisoSCT,attr"`
 }
@@ -126,7 +134,7 @@ type Domicilio struct {
 }
 
 type FiguraTransporte struct {
-	TiposFigura []*TiposFigura `xml:"TiposFigura"` //
+	TiposFigura []*TiposFigura `xml:"TiposFigura"`
 }
 
 type GuiasIdentificacion struct {
@@ -158,7 +166,7 @@ type Remolques []*Remolque
 
 func (rem *Remolques) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 	var rem2 struct {
-		Remolque []*Remolque `xml:"Remolque"` //
+		Remolque []*Remolque `xml:"Remolque"`
 	}
 	if err := d.DecodeElement(&rem2, &start); err != nil {
 		return err
@@ -178,8 +186,8 @@ type Seguros struct {
 }
 
 type TiposFigura struct {
-	PartesTransporte       []*PartesTransporte `xml:"PartesTransporte,omitempty"` //
-	Domicilio              *Domicilio          `xml:"Domicilio,omitempty"`        //
+	PartesTransporte       []*PartesTransporte `xml:"PartesTransporte,omitempty"`
+	Domicilio              *Domicilio          `xml:"Domicilio,omitempty"`
 	TipoFigura             string              `xml:"TipoFigura,attr"`
 	RFCFigura              string              `xml:"RFCFigura,attr,omitempty"`
 	NumLicencia            string              `xml:"NumLicencia,attr,omitempty"`
@@ -204,8 +212,8 @@ type TransporteAereo struct {
 }
 
 type TransporteFerroviario struct {
-	DerechosDePaso  []DerechosDePaso             `xml:"DerechosDePaso,omitempty"` //
-	Carro           []TransporteFerroviarioCarro `xml:"Carro"`                    //
+	DerechosDePaso  []DerechosDePaso             `xml:"DerechosDePaso,omitempty"`
+	Carro           []TransporteFerroviarioCarro `xml:"Carro"`
 	TipoDeServicio  string                       `xml:"TipoDeServicio,attr"`
 	TipoDeTrafico   string                       `xml:"TipoDeTrafico,attr"`
 	NombreAseg      string                       `xml:"NombreAseg,attr,omitempty"`
@@ -226,7 +234,7 @@ type TransporteFerroviarioCarroContenedor struct {
 }
 
 type TransporteMaritimo struct {
-	Contenedor             []ContenedorMaritimo `xml:"Contenedor"` //
+	Contenedor             []ContenedorMaritimo `xml:"Contenedor"`
 	PermSCT                string               `xml:"PermSCT,attr,omitempty"`
 	NumPermisoSCT          string               `xml:"NumPermisoSCT,attr,omitempty"`
 	NombreAseg             string               `xml:"NombreAseg,attr,omitempty"`

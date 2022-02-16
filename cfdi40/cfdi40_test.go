@@ -6,6 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/cfdi40"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
 )
@@ -77,7 +78,7 @@ func TestParseSimplePrecfdi(t *testing.T) {
 }
 
 func TestMarshal(t *testing.T) {
-	cFecha, _ := types.TFechaHParse("2021-12-07T23:59:59")
+	cFecha, _ := types.NewFechaH("2021-12-07T23:59:59")
 	cfdiOriginal := cfdi40.Comprobante{
 		Version:           "4.0",
 		LugarExpedicion:   "99999",
@@ -196,7 +197,7 @@ func TestMarshal(t *testing.T) {
 }
 
 func TestCartaPorte(t *testing.T) {
-	cFecha, _ := types.TFechaHParse("2021-12-07T23:59:59")
+	cFecha, _ := types.NewFechaH("2021-12-07T23:59:59")
 	cfdiOriginal := cfdi40.Comprobante{
 		Version:           "4.0",
 		LugarExpedicion:   "99999",
@@ -462,4 +463,95 @@ func TestCartaPorte(t *testing.T) {
 		return
 	}
 	cfdi40.AssertEqualComprobante(t, &cfdiOriginal, cfdiUnmarshalled)
+}
+
+func TestComplementoPagos(t *testing.T) {
+	var xmlOriginal []byte
+	{
+		xmlOriginal = []byte(`
+			<?xml version="1.0" encoding="utf-8"?>
+			<cfdi:Comprobante xsi:schemaLocation="http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos20
+			http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd" xmlns:pago20="http://www.sat.gob.mx/Pagos20" Version="4.0" Serie="Serie" Folio="Folio" Fecha="2021-12-16T00:18:10" Sello="e" SubTotal="0" Moneda="XXX" Total="0.00" TipoDeComprobante="P" Exportacion="01" LugarExpedicion="20000"  xmlns:cfdi="http://www.sat.gob.mx/cfd/4" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			<cfdi:Emisor Rfc="EQA9003177C9" Nombre="Emisor de prueba" RegimenFiscal="601" />
+			<cfdi:Receptor Rfc="UNI180529TM6" Nombre="UNIVERSIDAD SA DE CV" DomicilioFiscalReceptor="65000" RegimenFiscalReceptor="601" UsoCFDI="G01" />
+			<cfdi:Conceptos>
+				<cfdi:Concepto ClaveProdServ="84111506" Cantidad="1" ClaveUnidad="ACT" Descripcion="Pago" ValorUnitario="0.00" Importe="0.00" ObjetoImp="01" />
+			</cfdi:Conceptos>
+			<cfdi:Complemento>
+					<pago20:Pagos Version="2.0">
+						<pago20:Totales MontoTotalPagos="200.00" />
+						<pago20:Pago FechaPago="2021-12-15T00:00:00" FormaDePagoP="01" MonedaP="MXN" Monto="200.00" TipoCambioP="1">
+							<pago20:DoctoRelacionado IdDocumento="bfc36522-4b8e-45c4-8f14-d11b289f9eb7" MonedaDR="MXN" NumParcialidad="1" ImpSaldoAnt="200.00" ImpPagado="200.00" ImpSaldoInsoluto="0.00" ObjetoImpDR="01" EquivalenciaDR="1"/>
+						</pago20:Pago>
+					</pago20:Pagos>
+				</cfdi:Complemento>
+			</cfdi:Comprobante>
+		`)
+	}
+	expected := cfdi40.NewComprobantePago()
+	expected.LugarExpedicion = "20000"
+	expected.Serie = "Serie"
+	expected.Folio = "Folio"
+	expected.Fecha, _ = types.NewFechaH("2021-12-16T00:18:10")
+	expected.Sello = "e"
+	expected.Emisor = cfdi40.Emisor{
+		Rfc:           "EQA9003177C9",
+		Nombre:        "Emisor de prueba",
+		RegimenFiscal: "601",
+	}
+	expected.Receptor = cfdi40.Receptor{
+		Rfc:                     "UNI180529TM6",
+		Nombre:                  "UNIVERSIDAD SA DE CV",
+		DomicilioFiscalReceptor: "65000",
+		RegimenFiscalReceptor:   "601",
+		UsoCFDI:                 "G01",
+	}
+	expected.Conceptos = []*cfdi40.Concepto{
+		{
+			ClaveProdServ: "84111506",
+			Cantidad:      decimal.NewFromInt(1),
+			ClaveUnidad:   "ACT",
+			Descripcion:   "Pago",
+			ValorUnitario: decimal.NewFromFloat(0),
+			Importe:       decimal.NewFromFloat(0),
+			ObjetoImp:     types.ObjetoImp01,
+		},
+	}
+	fechaPago, _ := types.NewFechaH("2021-12-15T00:00:00")
+	expected.Complemento = &cfdi40.Complemento{
+		Pagos20: &pagos20.Pagos{
+			Version: "2.0",
+			Totales: &pagos20.Totales{
+				MontoTotalPagos: decimal.NewFromFloat(200),
+			},
+			Pago: []*pagos20.Pago{
+				{
+					FechaPago:    fechaPago,
+					FormaDePagoP: types.FormaPago01,
+					MonedaP:      types.MonedaMXN,
+					Monto:        decimal.NewFromFloat(200),
+					TipoCambioP:  decimal.NewFromFloat(1),
+					DoctoRelacionado: []*pagos20.DoctoRelacionado{
+						{
+							IdDocumento:      "bfc36522-4b8e-45c4-8f14-d11b289f9eb7",
+							MonedaDR:         types.MonedaMXN,
+							NumParcialidad:   1,
+							ImpSaldoAnt:      decimal.NewFromFloat(200),
+							ImpPagado:        decimal.NewFromFloat(200),
+							ImpSaldoInsoluto: decimal.NewFromFloat(0),
+							ObjetoImpDR:      types.ObjetoImp01,
+							EquivalenciaDR:   decimal.NewFromFloat(1),
+						},
+					},
+				},
+			},
+		},
+	}
+	cfdiUnmarshaled, err := cfdi40.Unmarshal(xmlOriginal)
+	if err != nil {
+		t.Errorf("Error Unmarshal(xmlOriginal): %s", err.Error())
+		return
+	}
+
+	pagos20.AssertEqual(t, expected.Complemento.Pagos20, cfdiUnmarshaled.Complemento.Pagos20)
 }

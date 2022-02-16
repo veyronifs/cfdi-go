@@ -133,8 +133,11 @@ func (f FormaPago) Desc() string {
 type Impuesto string
 
 const (
-	ImpuestoISR  Impuesto = "001"
-	ImpuestoIVA  Impuesto = "002"
+	//ImpuestoISR 001.
+	ImpuestoISR Impuesto = "001"
+	//ImpuestoIVA 002.
+	ImpuestoIVA Impuesto = "002"
+	//ImpuestoIEPS 003.
 	ImpuestoIEPS Impuesto = "003"
 )
 

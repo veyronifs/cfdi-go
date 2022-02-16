@@ -5,6 +5,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
 )
@@ -28,7 +29,7 @@ type Comprobante struct {
 	Version           string                  `xml:"Version,attr"`
 	Serie             string                  `xml:"Serie,attr,omitempty"`
 	Folio             string                  `xml:"Folio,attr,omitempty"`
-	Fecha             types.TFechaH           `xml:"Fecha,attr"`
+	Fecha             types.FechaH            `xml:"Fecha,attr"`
 	Sello             string                  `xml:"Sello,attr"`
 	FormaPago         types.FormaPago         `xml:"FormaPago,attr,omitempty"`
 	NoCertificado     string                  `xml:"NoCertificado,attr"`
@@ -326,5 +327,6 @@ func (a *Addenda) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 
 type Complemento struct {
 	CartaPorte20 *cartaporte20.CartaPorte20 `xml:"CartaPorte,omitempty"`
+	Pagos20      *pagos20.Pagos             `xml:"Pagos,omitempty"`
 	TFD11        *tfd11.TimbreFiscalDigital `xml:"TimbreFiscalDigital,omitempty"`
 }

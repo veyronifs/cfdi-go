@@ -6,30 +6,31 @@ import (
 	"time"
 )
 
-func TFechaHParse(value string) (TFechaH, error) {
+func NewFechaH(value string) (FechaH, error) {
 	t, err := time.Parse("2006-01-02T15:04:05", value)
-	return TFechaH(t), err
+	return FechaH(t), err
+}
+
+func NewFechaHNow() FechaH {
+	return FechaH(time.Now())
 }
 
 // Tipo definido para la expresión de la fecha y hora. Se expresa en la forma AAAA-MM-DDThh:mm:ss
-type TFechaH time.Time
+type FechaH time.Time
 
-func TFechaHNow() TFechaH {
-	return TFechaH(time.Now())
-}
-func (t *TFechaH) UnmarshalText(text []byte) error {
+func (t *FechaH) UnmarshalText(text []byte) error {
 	return (*xsdDateTime)(t).UnmarshalText(text)
 }
-func (t TFechaH) MarshalText() ([]byte, error) {
+func (t FechaH) MarshalText() ([]byte, error) {
 	return xsdDateTime(t).MarshalText()
 }
-func (t TFechaH) Encode() string {
+func (t FechaH) Encode() string {
 	return time.Time(t).Format("2006-01-02T15:04:05")
 }
-func (t TFechaH) String() string {
+func (t FechaH) String() string {
 	return time.Time(t).Format("2006-01-02T15:04:05")
 }
-func (t TFechaH) Format(s string) string {
+func (t FechaH) Format(s string) string {
 	return time.Time(t).Format(s)
 }
 

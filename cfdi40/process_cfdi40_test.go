@@ -812,8 +812,8 @@ func TestCalcularTotales(t *testing.T) {
 }
 
 func TestNewInformacionGlobal(t *testing.T) {
-	fecha := func(s string) types.TFechaH {
-		t, err := types.TFechaHParse(s)
+	fecha := func(s string) types.FechaH {
+		t, err := types.NewFechaH(s)
 		if err != nil {
 			panic(err)
 		}
@@ -823,7 +823,7 @@ func TestNewInformacionGlobal(t *testing.T) {
 		TestName     string
 		Rfc          string
 		Periodicidad types.Periodicidad
-		Fecha        types.TFechaH
+		Fecha        types.FechaH
 		Expected     *InformacionGlobal
 		ExpectedErr  error
 	}{
@@ -919,7 +919,7 @@ func TestNewInformacionGlobal(t *testing.T) {
 			TestName:     "Required Fecha",
 			Rfc:          RFCPublico,
 			Periodicidad: types.PeriodicidadMensual,
-			Fecha:        types.TFechaH{},
+			Fecha:        types.FechaH{},
 			Expected:     nil,
 			ExpectedErr:  ErrRequired,
 		},
