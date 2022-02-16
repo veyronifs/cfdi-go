@@ -14,6 +14,9 @@ func TFechaHParse(value string) (TFechaH, error) {
 // Tipo definido para la expresión de la fecha y hora. Se expresa en la forma AAAA-MM-DDThh:mm:ss
 type TFechaH time.Time
 
+func TFechaHNow() TFechaH {
+	return TFechaH(time.Now())
+}
 func (t *TFechaH) UnmarshalText(text []byte) error {
 	return (*xsdDateTime)(t).UnmarshalText(text)
 }
@@ -25,6 +28,9 @@ func (t TFechaH) Encode() string {
 }
 func (t TFechaH) String() string {
 	return time.Time(t).Format("2006-01-02T15:04:05")
+}
+func (t TFechaH) Format(s string) string {
+	return time.Time(t).Format(s)
 }
 
 type xsdDate time.Time

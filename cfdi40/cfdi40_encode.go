@@ -78,7 +78,7 @@ func encodeInformacionGlobal(enc *encoder.Encoder, c Comprobante) {
 	enc.StartElem(cfdiXS.Elem("InformacionGlobal"))
 	defer enc.EndElem("InformacionGlobal")
 
-	enc.WriteAttrStr("Periodicidad", c.InformacionGlobal.Periodicidad)
+	enc.WriteAttrStr("Periodicidad", string(c.InformacionGlobal.Periodicidad))
 	enc.WriteAttrStr("Meses", c.InformacionGlobal.Meses)
 	enc.WriteAttrInt("Año", c.InformacionGlobal.Anio)
 }
@@ -89,7 +89,7 @@ func encodeCfdiRelacionadosAll(enc *encoder.Encoder, c Comprobante) {
 	}
 }
 
-func encodeCfdiRelacionados(enc *encoder.Encoder, rel CfdiRelacionados) {
+func encodeCfdiRelacionados(enc *encoder.Encoder, rel *CfdiRelacionados) {
 	enc.StartElem(cfdiXS.Elem("CfdiRelacionados"))
 	defer enc.EndElem("CfdiRelacionados")
 
@@ -133,7 +133,7 @@ func encodeConceptos(enc *encoder.Encoder, c Comprobante) {
 	}
 }
 
-func encodeConcepto(enc *encoder.Encoder, concepto Concepto, moneda string) {
+func encodeConcepto(enc *encoder.Encoder, concepto *Concepto, moneda string) {
 	enc.StartElem(cfdiXS.Elem("Concepto"))
 	defer enc.EndElem("Concepto")
 
@@ -193,7 +193,7 @@ func encodeConceptoImpuestos(enc *encoder.Encoder, impuestos *ConceptoImpuestos,
 		enc.EndElem("Retenciones")
 	}
 }
-func encodeConceptoImpuestosTraslados(enc *encoder.Encoder, impuestos ConceptoImpuestosTraslado, moneda string) {
+func encodeConceptoImpuestosTraslados(enc *encoder.Encoder, impuestos *ConceptoImpuestosTraslado, moneda string) {
 	enc.StartElem(cfdiXS.Elem("Traslado"))
 	defer enc.EndElem("Traslado")
 
@@ -203,7 +203,7 @@ func encodeConceptoImpuestosTraslados(enc *encoder.Encoder, impuestos ConceptoIm
 	enc.WriteAttrDecimal("TasaOCuota", impuestos.TasaOCuota, 6)
 	enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
 }
-func encodeConceptoImpuestosRetenciones(enc *encoder.Encoder, impuestos ConceptoImpuestosRetencion, moneda string) {
+func encodeConceptoImpuestosRetenciones(enc *encoder.Encoder, impuestos *ConceptoImpuestosRetencion, moneda string) {
 	enc.StartElem(cfdiXS.Elem("Retencion"))
 	defer enc.EndElem("Retencion")
 

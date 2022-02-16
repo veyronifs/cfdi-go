@@ -30,22 +30,9 @@ func AssertEqualComprobante(t *testing.T, c1, c2 *Comprobante) {
 	assert.True(t, c1.TipoCambio.Equal(c2.TipoCambio), ".TipoCambio %s != %s", c1.TipoCambio.String(), c2.TipoCambio.String())
 	assert.True(t, c1.Total.Equal(c2.Total), ".Total %s != %s", c1.Total.String(), c2.Total.String())
 
-	assert.Equal(t, c1.InformacionGlobal.Periodicidad, c2.InformacionGlobal.Periodicidad, ".InformacionGlobal.Periodicidad")
-	assert.Equal(t, c1.InformacionGlobal.Meses, c2.InformacionGlobal.Meses, ".InformacionGlobal.Meses")
-	assert.Equal(t, c1.InformacionGlobal.Anio, c2.InformacionGlobal.Anio, ".InformacionGlobal.Anio")
-
-	assert.Equal(t, c1.Emisor.Rfc, c2.Emisor.Rfc, ".Emisor.Rfc")
-	assert.Equal(t, c1.Emisor.Nombre, c2.Emisor.Nombre, ".Emisor.Nombre")
-	assert.Equal(t, c1.Emisor.RegimenFiscal, c2.Emisor.RegimenFiscal, ".Emisor.RegimenFiscal")
-	assert.Equal(t, c1.Emisor.FacAtrAdquirente, c2.Emisor.FacAtrAdquirente, ".Emisor.FacAtrAdquirente")
-
-	assert.Equal(t, c1.Receptor.Rfc, c2.Receptor.Rfc, ".Receptor.Rfc")
-	assert.Equal(t, c1.Receptor.Nombre, c2.Receptor.Nombre, ".Receptor.Nombre")
-	assert.Equal(t, c1.Receptor.DomicilioFiscalReceptor, c2.Receptor.DomicilioFiscalReceptor, ".Receptor.DomicilioFiscalReceptor")
-	assert.Equal(t, c1.Receptor.ResidenciaFiscal, c2.Receptor.ResidenciaFiscal, ".Receptor.ResidenciaFiscal")
-	assert.Equal(t, c1.Receptor.NumRegIdTrib, c2.Receptor.NumRegIdTrib, ".Receptor.NumRegIdTrib")
-	assert.Equal(t, c1.Receptor.RegimenFiscalReceptor, c2.Receptor.RegimenFiscalReceptor, ".Receptor.RegimenFiscalReceptor")
-	assert.Equal(t, c1.Receptor.UsoCFDI, c2.Receptor.UsoCFDI, ".Receptor.UsoCFDI")
+	assertEqualInformacionGlobal(t, c1.InformacionGlobal, c2.InformacionGlobal)
+	assertEqualEmisor(t, &c1.Emisor, &c2.Emisor)
+	assertEqualReceptor(t, &c1.Receptor, &c2.Receptor)
 
 	assertEqualCfdiRelacionados(t, c1.CfdiRelacionados, c2.CfdiRelacionados)
 
@@ -59,6 +46,47 @@ func AssertEqualComprobante(t *testing.T, c1, c2 *Comprobante) {
 	assertComplemento(t, c1.Complemento, c2.Complemento)
 }
 
+func assertEqualInformacionGlobal(t *testing.T, v1, v2 *InformacionGlobal) {
+	if v1 == nil || v2 == nil {
+		assert.Nil(t, v1, ".PeriodicidadPago")
+		assert.Nil(t, v2, ".PeriodicidadPago")
+		return
+	}
+
+	assert.Equal(t, v1.Periodicidad, v2.Periodicidad, ".InformacionGlobal.Periodicidad")
+	assert.Equal(t, v1.Meses, v2.Meses, ".InformacionGlobal.Meses")
+	assert.Equal(t, v1.Anio, v2.Anio, ".InformacionGlobal.Anio")
+}
+
+func assertEqualEmisor(t *testing.T, v1, v2 *Emisor) {
+	if v1 == nil || v2 == nil {
+		assert.Nil(t, v1, "Emisor is nil")
+		assert.Nil(t, v2, "Emisor is nil")
+		return
+	}
+
+	assert.Equal(t, v1.Rfc, v2.Rfc, ".Emisor.Rfc")
+	assert.Equal(t, v1.Nombre, v2.Nombre, ".Emisor.Nombre")
+	assert.Equal(t, v1.RegimenFiscal, v2.RegimenFiscal, ".Emisor.RegimenFiscal")
+	assert.Equal(t, v1.FacAtrAdquirente, v2.FacAtrAdquirente, ".Emisor.FacAtrAdquirente")
+}
+
+func assertEqualReceptor(t *testing.T, v1, v2 *Receptor) {
+	if v1 == nil || v2 == nil {
+		assert.Nil(t, v1, "Receptor is nil")
+		assert.Nil(t, v2, "Receptor is nil")
+		return
+	}
+
+	assert.Equal(t, v1.Rfc, v2.Rfc, ".Receptor.Rfc")
+	assert.Equal(t, v1.Nombre, v2.Nombre, ".Receptor.Nombre")
+	assert.Equal(t, v1.DomicilioFiscalReceptor, v2.DomicilioFiscalReceptor, ".Receptor.DomicilioFiscalReceptor")
+	assert.Equal(t, v1.ResidenciaFiscal, v2.ResidenciaFiscal, ".Receptor.ResidenciaFiscal")
+	assert.Equal(t, v1.NumRegIdTrib, v2.NumRegIdTrib, ".Receptor.NumRegIdTrib")
+	assert.Equal(t, v1.RegimenFiscalReceptor, v2.RegimenFiscalReceptor, ".Receptor.RegimenFiscalReceptor")
+	assert.Equal(t, v1.UsoCFDI, v2.UsoCFDI, ".Receptor.UsoCFDI")
+}
+
 func assertComplemento(t *testing.T, c1, c2 *Complemento) {
 	if c1 == nil || c2 == nil {
 		assert.Nil(t, c1, "c1")
@@ -69,7 +97,7 @@ func assertComplemento(t *testing.T, c1, c2 *Complemento) {
 	tfd11.AssertEqual(t, c1.TFD11, c2.TFD11)
 }
 
-func assertEqualCfdiRelacionados(t *testing.T, r1, r2 []CfdiRelacionados) {
+func assertEqualCfdiRelacionados(t *testing.T, r1, r2 []*CfdiRelacionados) {
 	l1, l2 := len(r1), len(r2)
 	assert.Equal(t, l1, l2, ".CfdiRelacionados len %d != %d", l1, l2)
 	if l1 != l2 {
@@ -91,42 +119,39 @@ func assertEqualCfdiRelacionados(t *testing.T, r1, r2 []CfdiRelacionados) {
 	}
 }
 
-func assertEqualImpuestos(t *testing.T, i1 *Impuestos, i2 *Impuestos) {
-	if i1 == nil {
-		assert.Nil(t, i2)
-		return
-	}
-	assert.NotNil(t, i2)
-	if i2 == nil {
+func assertEqualImpuestos(t *testing.T, v1 *Impuestos, v2 *Impuestos) {
+	if v1 == nil || v2 == nil {
+		assert.Nil(t, v1, ".Impuestos")
+		assert.Nil(t, v2, ".Impuestos")
 		return
 	}
 
-	assert.True(t, i1.TotalImpuestosTrasladados.Equal(i2.TotalImpuestosTrasladados), ".Impuestos.TotalImpuestosTrasladados %s != %s", i1.TotalImpuestosTrasladados, i2.TotalImpuestosTrasladados)
-	assert.True(t, i1.TotalImpuestosRetenidos.Equal(i2.TotalImpuestosRetenidos), ".Impuestos.TotalImpuestosRetenidos %s != %s", i1.TotalImpuestosRetenidos, i2.TotalImpuestosRetenidos)
+	assert.True(t, v1.TotalImpuestosTrasladados.Equal(v2.TotalImpuestosTrasladados), ".Impuestos.TotalImpuestosTrasladados %s != %s", v1.TotalImpuestosTrasladados, v2.TotalImpuestosTrasladados)
+	assert.True(t, v1.TotalImpuestosRetenidos.Equal(v2.TotalImpuestosRetenidos), ".Impuestos.TotalImpuestosRetenidos %s != %s", v1.TotalImpuestosRetenidos, v2.TotalImpuestosRetenidos)
 
-	l1, l2 := len(i1.Traslados), len(i2.Traslados)
+	l1, l2 := len(v1.Traslados), len(v2.Traslados)
 	assert.Equal(t, l1, l2, ".Impuestos.Traslados len %d != %d", l1, l2)
-	if len(i1.Traslados) == len(i2.Traslados) {
-		for i, tras1 := range i1.Traslados {
-			tras2 := i2.Traslados[i]
+	if len(v1.Traslados) == len(v2.Traslados) {
+		for i, tras1 := range v1.Traslados {
+			tras2 := v2.Traslados[i]
 			assert.Equal(t, tras1.Impuesto, tras2.Impuesto, ".Impuestos.Traslados[%d].Impuesto", i)
 			assert.Equal(t, tras1.TipoFactor, tras2.TipoFactor, ".Impuestos.Traslados[%d].TipoFactor", i)
 			assert.True(t, tras1.TasaOCuota.Equal(tras2.TasaOCuota), ".Impuestos.Traslados[%d].TasaOCuota %s != %s", i, tras1.TasaOCuota, tras2.TasaOCuota)
 			assert.True(t, tras1.Importe.Equal(tras2.Importe), ".Impuestos.Traslados[%d].Importe %s != %s", i, tras1.Importe, tras2.Importe)
 		}
 	}
-	l1, l2 = len(i1.Retenciones), len(i2.Retenciones)
+	l1, l2 = len(v1.Retenciones), len(v2.Retenciones)
 	assert.Equal(t, l1, l1, ".Impuestos.Retenciones len %d != %d", l1, l2)
-	if len(i1.Retenciones) == len(i2.Retenciones) {
-		for i, ret1 := range i1.Retenciones {
-			ret2 := i2.Retenciones[i]
+	if len(v1.Retenciones) == len(v2.Retenciones) {
+		for i, ret1 := range v1.Retenciones {
+			ret2 := v2.Retenciones[i]
 			assert.Equal(t, ret1.Impuesto, ret2.Impuesto, ".Impuestos.Retenciones[%d].Impuesto", i)
 			assert.True(t, ret1.Importe.Equal(ret2.Importe), ".Impuestos.Retenciones[%d].Importe %s != %s", i, ret1.Importe, ret2.Importe)
 		}
 	}
 }
 
-func assertEqualComprobanteConceptos(t *testing.T, c1, c2 Concepto, path string) {
+func assertEqualComprobanteConceptos(t *testing.T, c1, c2 *Concepto, path string) {
 	assert.Equal(t, c1.ClaveProdServ, c2.ClaveProdServ, path+".ClaveProdServ")
 	assert.Equal(t, c1.NoIdentificacion, c2.NoIdentificacion, path+".NoIdentificacion")
 	assert.Equal(t, c1.ClaveUnidad, c2.ClaveUnidad, path+".ClaveUnidad")

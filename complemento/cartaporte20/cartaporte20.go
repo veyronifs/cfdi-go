@@ -14,7 +14,7 @@ type CartaPorte20 struct {
 	Version           string            `xml:"Version,attr"`
 	TranspInternac    string            `xml:"TranspInternac,attr"`
 	EntradaSalidaMerc string            `xml:"EntradaSalidaMerc,attr,omitempty"`
-	PaisOrigenDestino types.CPais       `xml:"PaisOrigenDestino,attr,omitempty"`
+	PaisOrigenDestino types.Pais        `xml:"PaisOrigenDestino,attr,omitempty"`
 	ViaEntradaSalida  string            `xml:"ViaEntradaSalida,attr,omitempty"`
 	TotalDistRec      decimal.Decimal   `xml:"TotalDistRec,attr,omitempty"`
 }
@@ -40,7 +40,7 @@ type Ubicacion struct {
 	RFCRemitenteDestinatario    string          `xml:"RFCRemitenteDestinatario,attr"`
 	NombreRemitenteDestinatario string          `xml:"NombreRemitenteDestinatario,attr,omitempty"`
 	NumRegIdTrib                string          `xml:"NumRegIdTrib,attr,omitempty"`
-	ResidenciaFiscal            types.CPais     `xml:"ResidenciaFiscal,attr,omitempty"`
+	ResidenciaFiscal            types.Pais      `xml:"ResidenciaFiscal,attr,omitempty"`
 	NumEstacion                 string          `xml:"NumEstacion,attr,omitempty"`
 	NombreEstacion              string          `xml:"NombreEstacion,attr,omitempty"`
 	NavegacionTrafico           string          `xml:"NavegacionTrafico,attr,omitempty"`
@@ -80,7 +80,7 @@ type Mercancia struct {
 	DescripEmbalaje      string                 `xml:"DescripEmbalaje,attr,omitempty"`
 	PesoEnKg             decimal.Decimal        `xml:"PesoEnKg,attr"`
 	ValorMercancia       decimal.Decimal        `xml:"ValorMercancia,attr,omitempty"`
-	Moneda               types.CMoneda          `xml:"Moneda,attr,omitempty"`
+	Moneda               types.Moneda           `xml:"Moneda,attr,omitempty"`
 	FraccionArancelaria  string                 `xml:"FraccionArancelaria,attr,omitempty"`
 	UUIDComercioExt      string                 `xml:"UUIDComercioExt,attr,omitempty"`
 }
@@ -113,16 +113,16 @@ type DetalleMercancia struct {
 }
 
 type Domicilio struct {
-	Calle          string      `xml:"Calle,attr,omitempty"`
-	NumeroExterior string      `xml:"NumeroExterior,attr,omitempty"`
-	NumeroInterior string      `xml:"NumeroInterior,attr,omitempty"`
-	Colonia        string      `xml:"Colonia,attr,omitempty"`
-	Localidad      string      `xml:"Localidad,attr,omitempty"`
-	Referencia     string      `xml:"Referencia,attr,omitempty"`
-	Municipio      string      `xml:"Municipio,attr,omitempty"`
-	Estado         string      `xml:"Estado,attr"`
-	Pais           types.CPais `xml:"Pais,attr"`
-	CodigoPostal   string      `xml:"CodigoPostal,attr"`
+	Calle          string     `xml:"Calle,attr,omitempty"`
+	NumeroExterior string     `xml:"NumeroExterior,attr,omitempty"`
+	NumeroInterior string     `xml:"NumeroInterior,attr,omitempty"`
+	Colonia        string     `xml:"Colonia,attr,omitempty"`
+	Localidad      string     `xml:"Localidad,attr,omitempty"`
+	Referencia     string     `xml:"Referencia,attr,omitempty"`
+	Municipio      string     `xml:"Municipio,attr,omitempty"`
+	Estado         string     `xml:"Estado,attr"`
+	Pais           types.Pais `xml:"Pais,attr"`
+	CodigoPostal   string     `xml:"CodigoPostal,attr"`
 }
 
 type FiguraTransporte struct {
@@ -185,22 +185,22 @@ type TiposFigura struct {
 	NumLicencia            string              `xml:"NumLicencia,attr,omitempty"`
 	NombreFigura           string              `xml:"NombreFigura,attr,omitempty"`
 	NumRegIdTribFigura     string              `xml:"NumRegIdTribFigura,attr,omitempty"`
-	ResidenciaFiscalFigura types.CPais         `xml:"ResidenciaFiscalFigura,attr,omitempty"`
+	ResidenciaFiscalFigura types.Pais          `xml:"ResidenciaFiscalFigura,attr,omitempty"`
 }
 
 type TransporteAereo struct {
-	PermSCT                string      `xml:"PermSCT,attr"`
-	NumPermisoSCT          string      `xml:"NumPermisoSCT,attr"`
-	MatriculaAeronave      string      `xml:"MatriculaAeronave,attr,omitempty"`
-	NombreAseg             string      `xml:"NombreAseg,attr,omitempty"`
-	NumPolizaSeguro        string      `xml:"NumPolizaSeguro,attr,omitempty"`
-	NumeroGuia             string      `xml:"NumeroGuia,attr"`
-	LugarContrato          string      `xml:"LugarContrato,attr,omitempty"`
-	CodigoTransportista    string      `xml:"CodigoTransportista,attr"`
-	RFCEmbarcador          string      `xml:"RFCEmbarcador,attr,omitempty"`
-	NumRegIdTribEmbarc     string      `xml:"NumRegIdTribEmbarc,attr,omitempty"`
-	ResidenciaFiscalEmbarc types.CPais `xml:"ResidenciaFiscalEmbarc,attr,omitempty"`
-	NombreEmbarcador       string      `xml:"NombreEmbarcador,attr,omitempty"`
+	PermSCT                string     `xml:"PermSCT,attr"`
+	NumPermisoSCT          string     `xml:"NumPermisoSCT,attr"`
+	MatriculaAeronave      string     `xml:"MatriculaAeronave,attr,omitempty"`
+	NombreAseg             string     `xml:"NombreAseg,attr,omitempty"`
+	NumPolizaSeguro        string     `xml:"NumPolizaSeguro,attr,omitempty"`
+	NumeroGuia             string     `xml:"NumeroGuia,attr"`
+	LugarContrato          string     `xml:"LugarContrato,attr,omitempty"`
+	CodigoTransportista    string     `xml:"CodigoTransportista,attr"`
+	RFCEmbarcador          string     `xml:"RFCEmbarcador,attr,omitempty"`
+	NumRegIdTribEmbarc     string     `xml:"NumRegIdTribEmbarc,attr,omitempty"`
+	ResidenciaFiscalEmbarc types.Pais `xml:"ResidenciaFiscalEmbarc,attr,omitempty"`
+	NombreEmbarcador       string     `xml:"NombreEmbarcador,attr,omitempty"`
 }
 
 type TransporteFerroviario struct {
@@ -236,7 +236,7 @@ type TransporteMaritimo struct {
 	NumeroOMI              string               `xml:"NumeroOMI,attr"`
 	AnioEmbarcacion        int                  `xml:"AnioEmbarcacion,attr,omitempty"`
 	NombreEmbarc           string               `xml:"NombreEmbarc,attr,omitempty"`
-	NacionalidadEmbarc     types.CPais          `xml:"NacionalidadEmbarc,attr"`
+	NacionalidadEmbarc     types.Pais           `xml:"NacionalidadEmbarc,attr"`
 	UnidadesDeArqBruto     decimal.Decimal      `xml:"UnidadesDeArqBruto,attr"`
 	TipoCarga              string               `xml:"TipoCarga,attr"`
 	NumCertITC             string               `xml:"NumCertITC,attr"`

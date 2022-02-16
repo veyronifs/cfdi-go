@@ -98,15 +98,15 @@ func TestMarshal(t *testing.T) {
 		NoCertificado:     "30001000000300023708",
 		Certificado:       "ABC",
 		Sello:             "XYZ",
-		InformacionGlobal: cfdi40.InformacionGlobal{
+		InformacionGlobal: &cfdi40.InformacionGlobal{
 			Meses:        "18",
 			Anio:         2021,
 			Periodicidad: "05",
 		},
-		CfdiRelacionados: []cfdi40.CfdiRelacionados{
+		CfdiRelacionados: []*cfdi40.CfdiRelacionados{
 			{
 				TipoRelacion: "09",
-				CfdiRelacionado: []cfdi40.CfdiRelacionado{
+				CfdiRelacionado: []*cfdi40.CfdiRelacionado{
 					{UUID: "ED1752FE-E865-4FF2-BFE1-0F552E770DC9"},
 				},
 			},
@@ -138,7 +138,7 @@ func TestMarshal(t *testing.T) {
 				ValorUnitario:    decimal.NewFromFloat(1500000),
 				Importe:          decimal.NewFromFloat(2250000),
 				Impuestos: &cfdi40.ConceptoImpuestos{
-					Traslados: []cfdi40.ConceptoImpuestosTraslado{
+					Traslados: []*cfdi40.ConceptoImpuestosTraslado{
 						{
 							Base:       decimal.NewFromFloat(2250000),
 							Impuesto:   "002",
@@ -147,7 +147,7 @@ func TestMarshal(t *testing.T) {
 							Importe:    decimal.NewFromFloat(360000),
 						},
 					},
-					Retenciones: []cfdi40.ConceptoImpuestosRetencion{
+					Retenciones: []*cfdi40.ConceptoImpuestosRetencion{
 						{
 							Base:       decimal.NewFromFloat(2250000),
 							Impuesto:   "001",
@@ -217,15 +217,15 @@ func TestCartaPorte(t *testing.T) {
 		NoCertificado:     "30001000000300023708",
 		Certificado:       "ABC",
 		Sello:             "XYZ",
-		InformacionGlobal: cfdi40.InformacionGlobal{
+		InformacionGlobal: &cfdi40.InformacionGlobal{
 			Meses:        "18",
 			Anio:         2021,
 			Periodicidad: "05",
 		},
-		CfdiRelacionados: []cfdi40.CfdiRelacionados{
+		CfdiRelacionados: []*cfdi40.CfdiRelacionados{
 			{
 				TipoRelacion: "09",
-				CfdiRelacionado: []cfdi40.CfdiRelacionado{
+				CfdiRelacionado: []*cfdi40.CfdiRelacionado{
 					{UUID: "ED1752FE-E865-4FF2-BFE1-0F552E770DC9"},
 				},
 			},
@@ -257,7 +257,7 @@ func TestCartaPorte(t *testing.T) {
 				ValorUnitario:    decimal.NewFromFloat(1500000),
 				Importe:          decimal.NewFromFloat(2250000),
 				Impuestos: &cfdi40.ConceptoImpuestos{
-					Traslados: []cfdi40.ConceptoImpuestosTraslado{
+					Traslados: []*cfdi40.ConceptoImpuestosTraslado{
 						{
 							Base:       decimal.NewFromFloat(2250000),
 							Impuesto:   "002",
@@ -266,7 +266,7 @@ func TestCartaPorte(t *testing.T) {
 							Importe:    decimal.NewFromFloat(360000),
 						},
 					},
-					Retenciones: []cfdi40.ConceptoImpuestosRetencion{
+					Retenciones: []*cfdi40.ConceptoImpuestosRetencion{
 						{
 							Base:       decimal.NewFromFloat(2250000),
 							Impuesto:   "001",
@@ -426,7 +426,7 @@ func TestCartaPorte(t *testing.T) {
 							NumLicencia:            "N03626578",
 							NombreFigura:           "MANUEL ENRIQUE VELAZQUEZ ESPINOSA",
 							NumRegIdTribFigura:     "0132456789",
-							ResidenciaFiscalFigura: types.CPais("MEX"),
+							ResidenciaFiscalFigura: types.Pais("MEX"),
 							PartesTransporte: []*cartaporte20.PartesTransporte{
 								{ParteTransporte: "ABCD"},
 							},

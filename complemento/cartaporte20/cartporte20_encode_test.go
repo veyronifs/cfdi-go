@@ -179,7 +179,7 @@ func TestMarshal(t *testing.T) {
 						NumLicencia:            "N03626578",
 						NombreFigura:           "MANUEL ENRIQUE VELAZQUEZ ESPINOSA",
 						NumRegIdTribFigura:     "0132456789",
-						ResidenciaFiscalFigura: types.CPais("MEX"),
+						ResidenciaFiscalFigura: types.Pais("MEX"),
 						PartesTransporte: []*PartesTransporte{
 							{ParteTransporte: "ABCD"},
 						},
