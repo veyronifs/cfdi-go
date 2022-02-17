@@ -42,7 +42,7 @@ func (tfd *TimbreFiscalDigital) MarshalComplemento(enc *encoder.Encoder) {
 
 	enc.WriteAttrStr("Version", tfd.Version)
 	enc.WriteAttrStr("UUID", tfd.UUID)
-	enc.WriteAttrStr("FechaTimbrado", tfd.FechaTimbrado.Encode())
+	enc.WriteAttrStr("FechaTimbrado", tfd.FechaTimbrado.String())
 	enc.WriteAttrStr("RfcProvCertif", tfd.RfcProvCertif)
 	enc.WriteAttrStr("SelloCFD", tfd.SelloCFD)
 	enc.WriteAttrStr("NoCertificadoSAT", tfd.NoCertificadoSAT)

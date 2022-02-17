@@ -70,7 +70,7 @@ func (cp *CartaPorte20) encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubic
 	enc.WriteAttrStrZ("NumEstacion", u.NumEstacion)
 	enc.WriteAttrStrZ("NombreEstacion", u.NombreEstacion)
 	enc.WriteAttrStrZ("NavegacionTrafico", u.NavegacionTrafico)
-	enc.WriteAttrStrZ("FechaHoraSalidaLlegada", u.FechaHoraSalidaLlegada.Encode())
+	enc.WriteAttrStrZ("FechaHoraSalidaLlegada", u.FechaHoraSalidaLlegada.String())
 	enc.WriteAttrStrZ("TipoEstacion", u.TipoEstacion)
 	enc.WriteAttrDecimalZ("DistanciaRecorrida", u.DistanciaRecorrida, 2)
 

@@ -56,7 +56,7 @@ func encodeHeader(enc *encoder.Encoder, c Comprobante) {
 	enc.WriteAttrStrZ("Version", c.Version)
 	enc.WriteAttrStrZ("Serie", c.Serie)
 	enc.WriteAttrStrZ("Folio", c.Folio)
-	enc.WriteAttrStrZ("Fecha", c.Fecha.Encode())
+	enc.WriteAttrStrZ("Fecha", c.Fecha.String())
 	enc.WriteAttrStrZ("Sello", c.Sello)
 	enc.WriteAttrStrZ("NoCertificado", c.NoCertificado)
 	enc.WriteAttrStrZ("Certificado", c.Certificado)

@@ -24,9 +24,6 @@ func (t *FechaH) UnmarshalText(text []byte) error {
 func (t FechaH) MarshalText() ([]byte, error) {
 	return xsdDateTime(t).MarshalText()
 }
-func (t FechaH) Encode() string {
-	return time.Time(t).Format("2006-01-02T15:04:05")
-}
 func (t FechaH) String() string {
 	return time.Time(t).Format("2006-01-02T15:04:05")
 }

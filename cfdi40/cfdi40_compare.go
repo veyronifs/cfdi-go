@@ -26,7 +26,7 @@ func Compare(diffs *compare.Diffs, v1, v2 *Comprobante) {
 	compare.Comparable(diffs, v1.Version, v2.Version, path+".Version")
 	compare.Comparable(diffs, v1.Serie, v2.Serie, path+".Serie")
 	compare.Comparable(diffs, v1.Folio, v2.Folio, path+".Folio")
-	compare.Comparable(diffs, v1.Fecha.Encode(), v2.Fecha.Encode(), path+".Fecha")
+	compare.Comparable(diffs, v1.Fecha.String(), v2.Fecha.String(), path+".Fecha")
 	compare.Comparable(diffs, v1.Sello, v2.Sello, path+".Sello")
 	compare.Comparable(diffs, v1.FormaPago, v2.FormaPago, path+".FormaPago")
 	compare.Comparable(diffs, v1.NoCertificado, v2.NoCertificado, path+".NoCertificado")
