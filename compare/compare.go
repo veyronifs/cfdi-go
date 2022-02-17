@@ -2,6 +2,8 @@ package compare
 
 import (
 	"fmt"
+
+	"github.com/shopspring/decimal"
 )
 
 type Diffs []*Diff
@@ -52,6 +54,15 @@ func Nil(d *Diffs, v1, v2 any, msg string, args ...interface{}) bool {
 func Comparable[S comparable](d *Diffs, v1, v2 S, msg string, args ...interface{}) bool {
 	if v1 != v2 {
 		d.Append(v1, v2, msg, args...)
+		return true
+	}
+
+	return false
+}
+
+func Decimal(d *Diffs, v1, v2 decimal.Decimal, msg string, args ...interface{}) bool {
+	if !v1.Equal(v2) {
+		d.Append(v1.String(), v2.String(), msg, args...)
 		return true
 	}
 

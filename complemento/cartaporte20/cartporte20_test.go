@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/shopspring/decimal"
+	"github.com/stretchr/testify/assert"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -51,7 +52,9 @@ func TestUnmarshal(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error Unmarshal(xmlMarshaled): %s", err)
 	}
-	AssertEqual(t, cartaPorteUnmarshaled, cartaPorteUnmarshaled2)
+	err = CompareEqual(cartaPorteUnmarshaled, cartaPorteUnmarshaled2)
+	assert.NoError(t, err)
+
 }
 
 func TestMarshal(t *testing.T) {
@@ -206,5 +209,6 @@ func TestMarshal(t *testing.T) {
 	if err != nil {
 		t.Errorf("Error Unmarshal(xmlMarshaled): %s", err)
 	}
-	AssertEqual(t, cartaPorte, cartaPorteUnmarshaled)
+	err = CompareEqual(cartaPorte, cartaPorteUnmarshaled)
+	assert.NoError(t, err)
 }

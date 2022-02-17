@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/shopspring/decimal"
+	"github.com/stretchr/testify/assert"
 	"github.com/veyronifs/cfdi-go/cfdi40"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
@@ -74,7 +75,8 @@ func TestParseSimplePrecfdi(t *testing.T) {
 		return
 	}
 
-	cfdi40.AssertEqualComprobante(t, cfdiUnmarshalled1, cfdiUnmarshalled2)
+	err = cfdi40.CompareEqual(cfdiUnmarshalled1, cfdiUnmarshalled2)
+	assert.NoError(t, err)
 }
 
 func TestMarshal(t *testing.T) {
@@ -193,7 +195,8 @@ func TestMarshal(t *testing.T) {
 		return
 	}
 
-	cfdi40.AssertEqualComprobante(t, &cfdiOriginal, cfdiUnmarshalled)
+	err = cfdi40.CompareEqual(&cfdiOriginal, cfdiUnmarshalled)
+	assert.NoError(t, err)
 }
 
 func TestCartaPorte(t *testing.T) {
@@ -462,7 +465,8 @@ func TestCartaPorte(t *testing.T) {
 		t.Errorf("Error Unmarshal(xmlMarshalled): %s", err.Error())
 		return
 	}
-	cfdi40.AssertEqualComprobante(t, &cfdiOriginal, cfdiUnmarshalled)
+	err = cfdi40.CompareEqual(&cfdiOriginal, cfdiUnmarshalled)
+	assert.NoError(t, err)
 }
 
 func TestComplementoPagos(t *testing.T) {
@@ -553,5 +557,6 @@ func TestComplementoPagos(t *testing.T) {
 		return
 	}
 
-	pagos20.AssertEqual(t, expected.Complemento.Pagos20, cfdiUnmarshaled.Complemento.Pagos20)
+	err = cfdi40.CompareEqual(expected, cfdiUnmarshaled)
+	assert.NoError(t, err)
 }

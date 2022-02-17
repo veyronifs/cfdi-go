@@ -6,15 +6,16 @@ import (
 
 func CompareEqual(v1, v2 *TimbreFiscalDigital) error {
 	diffs := compare.NewDiffs()
-	return Compare(diffs, v1, v2)
+	Compare(diffs, v1, v2)
+	return diffs.Err()
 }
 
-func Compare(diffs *compare.Diffs, v1, v2 *TimbreFiscalDigital) error {
+func Compare(diffs *compare.Diffs, v1, v2 *TimbreFiscalDigital) {
 	path := "TimbreFiscalDigital11"
 	if compare.Nil(diffs, v1, v2, path) {
-		return diffs.Err()
+		return
 	} else if v1 == nil || v2 == nil {
-		return nil
+		return
 	}
 
 	compare.Comparable(diffs, v1.Version, v2.Version, path+".Version")
@@ -25,6 +26,4 @@ func Compare(diffs *compare.Diffs, v1, v2 *TimbreFiscalDigital) error {
 	compare.Comparable(diffs, v1.SelloCFD, v2.SelloCFD, path+".SelloCFD")
 	compare.Comparable(diffs, v1.NoCertificadoSAT, v2.NoCertificadoSAT, path+".NoCertificadoSAT")
 	compare.Comparable(diffs, v1.SelloSAT, v2.SelloSAT, path+".SelloSAT")
-
-	return diffs.Err()
 }

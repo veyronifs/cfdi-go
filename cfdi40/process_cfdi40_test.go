@@ -5,6 +5,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
+	"github.com/veyronifs/cfdi-go/compare"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -253,7 +254,9 @@ func TestNewImpuestos(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.TestName, func(t *testing.T) {
 			actual := NewImpuestos(tt.Comprobante)
-			assertEqualImpuestos(t, tt.Expected, actual)
+			diffs := compare.NewDiffs()
+			compareEqualImpuestos(diffs, tt.Expected, actual, "")
+			assert.NoError(t, diffs.Err())
 		})
 	}
 }
@@ -323,7 +326,9 @@ func TestNewEmisor(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			assertEqualEmisor(t, tt.Expected, actual)
+			diffs := compare.NewDiffs()
+			compareEqualEmisor(diffs, tt.Expected, actual, "")
+			assert.NoError(t, diffs.Err())
 		})
 	}
 }
@@ -362,7 +367,9 @@ func TestNewReceptorPublico(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			assertEqualReceptor(t, tt.Expected, actual)
+			diffs := compare.NewDiffs()
+			compareEqualReceptor(diffs, tt.Expected, actual, "")
+			assert.NoError(t, diffs.Err())
 		})
 	}
 }
@@ -458,7 +465,9 @@ func TestNewReceptor(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			assertEqualReceptor(t, tt.Expected, actual)
+			diffs := compare.NewDiffs()
+			compareEqualReceptor(diffs, tt.Expected, actual, "")
+			assert.NoError(t, diffs.Err())
 		})
 	}
 }
@@ -554,7 +563,9 @@ func TestNewReceptorExt(t *testing.T) {
 			} else {
 				assert.NoError(t, err)
 			}
-			assertEqualReceptor(t, tt.Expected, actual)
+			diffs := compare.NewDiffs()
+			compareEqualReceptor(diffs, tt.Expected, actual, "")
+			assert.NoError(t, diffs.Err())
 		})
 	}
 }
@@ -926,13 +937,15 @@ func TestNewInformacionGlobal(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.TestName, func(t *testing.T) {
-			got, err := NewInformacionGlobal(tt.Rfc, tt.Periodicidad, tt.Fecha)
+			actual, err := NewInformacionGlobal(tt.Rfc, tt.Periodicidad, tt.Fecha)
 			if tt.ExpectedErr != nil {
 				assert.ErrorIs(t, err, tt.ExpectedErr)
 			} else {
 				assert.NoError(t, err)
 			}
-			assertEqualInformacionGlobal(t, tt.Expected, got)
+			diffs := compare.NewDiffs()
+			compareEqualInformacionGlobal(diffs, tt.Expected, actual, "")
+			assert.NoError(t, diffs.Err())
 		})
 	}
 }

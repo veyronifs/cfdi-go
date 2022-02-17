@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/shopspring/decimal"
+	"github.com/stretchr/testify/assert"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -159,5 +160,6 @@ func TestUnmarshal(t *testing.T) {
 			},
 		},
 	}
-	AssertEqual(t, expectedPagos, pagosUnmarshaled)
+	err = CompareEqual(expectedPagos, pagosUnmarshaled)
+	assert.NoError(t, err)
 }
