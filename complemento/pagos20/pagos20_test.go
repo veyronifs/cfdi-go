@@ -162,4 +162,19 @@ func TestUnmarshal(t *testing.T) {
 	}
 	err = CompareEqual(expectedPagos, pagosUnmarshaled)
 	assert.NoError(t, err)
+
+	t.Run("PagosMarshal", func(t *testing.T) {
+		xmlMarshaled, err := Marshal(expectedPagos)
+		if err != nil {
+			t.Errorf("Error marshaling: %v", err)
+			return
+		}
+		pagosUnmarshaled, err := Unmarshal(xmlMarshaled)
+		if err != nil {
+			t.Errorf("Error Unmarshal(xmlMarshaled): %s", err)
+			return
+		}
+		err = CompareEqual(expectedPagos, pagosUnmarshaled)
+		assert.NoError(t, err)
+	})
 }

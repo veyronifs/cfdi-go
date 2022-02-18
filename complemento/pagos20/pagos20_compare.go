@@ -109,7 +109,7 @@ func compareEqualImpuestosDR(diffs *compare.Diffs, v1, v2 *ImpuestosDR, path str
 	}
 
 	l1, l2 := len(v1.TrasladosDR), len(v2.TrasladosDR)
-	compare.Comparable(diffs, l1, l2, path+".Len()")
+	compare.Comparable(diffs, l1, l2, path+"TrasladosDR.Len()")
 	if l1 == l2 {
 		for i := 0; i < l1; i++ {
 			compareEqualTrasladoDR(diffs, v1.TrasladosDR[i], v2.TrasladosDR[i], fmt.Sprintf("%s.TrasladosDR[%d]", path, i))
@@ -117,7 +117,7 @@ func compareEqualImpuestosDR(diffs *compare.Diffs, v1, v2 *ImpuestosDR, path str
 	}
 
 	l1, l2 = len(v1.RetencionesDR), len(v2.RetencionesDR)
-	compare.Comparable(diffs, l1, l2, path+".Len()")
+	compare.Comparable(diffs, l1, l2, path+"RetencionesDR.Len()")
 	if l1 == l2 {
 		for i := 0; i < l1; i++ {
 			compareEqualRetencionDR(diffs, v1.RetencionesDR[i], v2.RetencionesDR[i], fmt.Sprintf("%s.RetencionesDR[%d]", path, i))
@@ -148,7 +148,7 @@ func compareEqualImpuestosP(diffs *compare.Diffs, v1, v2 *ImpuestosP, path strin
 		return
 	}
 	l1, l2 := len(v1.TrasladosP), len(v2.TrasladosP)
-	compare.Comparable(diffs, l1, l2, path+".Len()")
+	compare.Comparable(diffs, l1, l2, path+".TrasladosP.Len()")
 	if l1 == l2 {
 		for i := 0; i < l1; i++ {
 			compareEqualTrasladoP(diffs, v1.TrasladosP[i], v2.TrasladosP[i], fmt.Sprintf("%s.TrasladosP[%d]", path, i))
@@ -156,7 +156,7 @@ func compareEqualImpuestosP(diffs *compare.Diffs, v1, v2 *ImpuestosP, path strin
 	}
 
 	l1, l2 = len(v1.RetencionesP), len(v2.RetencionesP)
-	compare.Comparable(diffs, l1, l2, path+".Len()")
+	compare.Comparable(diffs, l1, l2, path+".RetencionesP.Len()")
 	if l1 == l2 {
 		for i := 0; i < l1; i++ {
 			compareEqualRetencionP(diffs, v1.RetencionesP[i], v2.RetencionesP[i], fmt.Sprintf("%s.RetencionesP[%d]", path, i))
