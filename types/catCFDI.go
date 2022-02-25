@@ -1,6 +1,17 @@
 package types
 
-type ClaveProdServ string
+// ClaveProdServ01 01010101 No existe en el catálogo.
+const ClaveProdServ01 = "01010101"
+
+const (
+	UnidadServicio  = "E48"
+	UnidadActividad = "ACT"
+	UnidadPieza     = "H87"
+	UnidadKilogramo = "KGM"
+	UnidadUno       = "C62"
+	UnidadLitro     = "LTR"
+	UnidadMetro     = "MTR"
+)
 
 // May be one of AGU, BCN, BCS, CAM, CHP, CHH, COA, COL, DIF, CMX, DUR, GUA, GRO, HID, JAL, MEX, MIC, MOR, NAY, NLE, OAX, PUE, QUE, ROO, SLP, SIN, SON, TAB, TAM, TLA, VER, YUC, ZAC, AL, AK, AZ, AR, CA, NC, SC, CO, CT, ND, SD, DE, FL, GA, HI, ID, IL, IN, IA, KS, KY, LA, ME, MD, MA, MI, MN, MS, MO, MT, NE, NV, NJ, NY, NH, NM, OH, OK, OR, PA, RI, TN, TX, UT, VT, VA, WV, WA, WI, WY, ON, QC, NS, NB, MB, BC, PE, SK, AB, NL, NT, YT, UN
 type Estado string

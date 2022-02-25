@@ -22,7 +22,7 @@ var cfdiXS = encoder.NSElem{
 	NS:     "http://www.sat.gob.mx/cfd/4",
 }
 
-func Marshal(c Comprobante) ([]byte, error) {
+func Marshal(c *Comprobante) ([]byte, error) {
 	b := bytes.Buffer{}
 	enc := encoder.NewEncoder(&b)
 	enc.StartElem(cfdiXS.ElemXS("Comprobante"))
@@ -42,8 +42,8 @@ func Marshal(c Comprobante) ([]byte, error) {
 	encodeHeader(enc, c)
 	encodeInformacionGlobal(enc, c)
 	encodeCfdiRelacionadosAll(enc, c)
-	encodeEmisor(enc, c)
-	encodeReceptor(enc, c)
+	encodeEmisor(enc, c.Emisor)
+	encodeReceptor(enc, c.Receptor)
 	encodeConceptos(enc, c)
 	encodeImpuestos(enc, c)
 	encodeComplemento(enc, c)
@@ -51,7 +51,7 @@ func Marshal(c Comprobante) ([]byte, error) {
 	return b.Bytes(), enc.GetError()
 }
 
-func encodeHeader(enc *encoder.Encoder, c Comprobante) {
+func encodeHeader(enc *encoder.Encoder, c *Comprobante) {
 	moneda := string(c.Moneda)
 	enc.WriteAttrStrZ("Version", c.Version)
 	enc.WriteAttrStrZ("Serie", c.Serie)
@@ -74,7 +74,11 @@ func encodeHeader(enc *encoder.Encoder, c Comprobante) {
 	enc.WriteAttrDecimalZ("TipoCambio", c.TipoCambio, 6)
 }
 
-func encodeInformacionGlobal(enc *encoder.Encoder, c Comprobante) {
+func encodeInformacionGlobal(enc *encoder.Encoder, c *Comprobante) {
+	if c.InformacionGlobal == nil {
+		return
+	}
+
 	enc.StartElem(cfdiXS.Elem("InformacionGlobal"))
 	defer enc.EndElem("InformacionGlobal")
 
@@ -83,7 +87,7 @@ func encodeInformacionGlobal(enc *encoder.Encoder, c Comprobante) {
 	enc.WriteAttrInt("Año", c.InformacionGlobal.Anio)
 }
 
-func encodeCfdiRelacionadosAll(enc *encoder.Encoder, c Comprobante) {
+func encodeCfdiRelacionadosAll(enc *encoder.Encoder, c *Comprobante) {
 	for _, rel := range c.CfdiRelacionados {
 		encodeCfdiRelacionados(enc, rel)
 	}
@@ -102,29 +106,35 @@ func encodeCfdiRelacionados(enc *encoder.Encoder, rel *CfdiRelacionados) {
 	}
 }
 
-func encodeEmisor(enc *encoder.Encoder, c Comprobante) {
+func encodeEmisor(enc *encoder.Encoder, c *Emisor) {
+	if c == nil {
+		return
+	}
 	enc.StartElem(cfdiXS.Elem("Emisor"))
 	defer enc.EndElem("Emisor")
 
-	enc.WriteAttrStrZ("Rfc", c.Emisor.Rfc)
-	enc.WriteAttrStrZ("Nombre", c.Emisor.Nombre)
-	enc.WriteAttrStrZ("RegimenFiscal", string(c.Emisor.RegimenFiscal))
-	enc.WriteAttrStrZ("FacAtrAdquirente", c.Emisor.FacAtrAdquirente)
+	enc.WriteAttrStrZ("Rfc", c.Rfc)
+	enc.WriteAttrStrZ("Nombre", c.Nombre)
+	enc.WriteAttrStrZ("RegimenFiscal", string(c.RegimenFiscal))
+	enc.WriteAttrStrZ("FacAtrAdquirente", c.FacAtrAdquirente)
 }
 
-func encodeReceptor(enc *encoder.Encoder, c Comprobante) {
+func encodeReceptor(enc *encoder.Encoder, c *Receptor) {
+	if c == nil {
+		return
+	}
 	enc.StartElem(cfdiXS.Elem("Receptor"))
 	defer enc.EndElem("Receptor")
 
-	enc.WriteAttrStrZ("Rfc", c.Receptor.Rfc)
-	enc.WriteAttrStrZ("Nombre", c.Receptor.Nombre)
-	enc.WriteAttrStrZ("DomicilioFiscalReceptor", c.Receptor.DomicilioFiscalReceptor)
-	enc.WriteAttrStrZ("ResidenciaFiscal", string(c.Receptor.ResidenciaFiscal))
-	enc.WriteAttrStrZ("NumRegIdTrib", c.Receptor.NumRegIdTrib)
-	enc.WriteAttrStrZ("RegimenFiscalReceptor", string(c.Receptor.RegimenFiscalReceptor))
-	enc.WriteAttrStrZ("UsoCFDI", string(c.Receptor.UsoCFDI))
+	enc.WriteAttrStrZ("Rfc", c.Rfc)
+	enc.WriteAttrStrZ("Nombre", c.Nombre)
+	enc.WriteAttrStrZ("DomicilioFiscalReceptor", c.DomicilioFiscalReceptor)
+	enc.WriteAttrStrZ("ResidenciaFiscal", string(c.ResidenciaFiscal))
+	enc.WriteAttrStrZ("NumRegIdTrib", c.NumRegIdTrib)
+	enc.WriteAttrStrZ("RegimenFiscalReceptor", string(c.RegimenFiscalReceptor))
+	enc.WriteAttrStrZ("UsoCFDI", string(c.UsoCFDI))
 }
-func encodeConceptos(enc *encoder.Encoder, c Comprobante) {
+func encodeConceptos(enc *encoder.Encoder, c *Comprobante) {
 	enc.StartElem(cfdiXS.Elem("Conceptos"))
 	defer enc.EndElem("Conceptos")
 
@@ -214,7 +224,7 @@ func encodeConceptoImpuestosRetenciones(enc *encoder.Encoder, impuestos *Concept
 	enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
 }
 
-func encodeImpuestos(enc *encoder.Encoder, c Comprobante) {
+func encodeImpuestos(enc *encoder.Encoder, c *Comprobante) {
 	if c.Impuestos == nil {
 		return
 	}
@@ -259,7 +269,7 @@ func encodeImpuestosTraslados(enc *encoder.Encoder, tras ImpuestosTraslados, mon
 	}
 }
 
-func encodeComplemento(enc *encoder.Encoder, c Comprobante) {
+func encodeComplemento(enc *encoder.Encoder, c *Comprobante) {
 	if c.Complemento == nil {
 		return
 	}

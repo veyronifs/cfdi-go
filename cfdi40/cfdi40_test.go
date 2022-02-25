@@ -63,7 +63,7 @@ func TestParseSimplePrecfdi(t *testing.T) {
 		t.Errorf("Error Unmarshal(xmlOriginal): %s", err.Error())
 		return
 	}
-	xmlMarshalled, err := cfdi40.Marshal(*cfdiUnmarshalled1)
+	xmlMarshalled, err := cfdi40.Marshal(cfdiUnmarshalled1)
 	if err != nil {
 		t.Errorf("Error Marshal(*cfdiUnmarshalled1): %s", err.Error())
 		return
@@ -114,13 +114,13 @@ func TestMarshal(t *testing.T) {
 				},
 			},
 		},
-		Emisor: cfdi40.Emisor{
+		Emisor: &cfdi40.Emisor{
 			FacAtrAdquirente: "0123456789",
 			Nombre:           "Esta es una demostración",
 			RegimenFiscal:    "630",
 			Rfc:              "AAA010101AAA",
 		},
-		Receptor: cfdi40.Receptor{
+		Receptor: &cfdi40.Receptor{
 			ResidenciaFiscal:        "MEX",
 			DomicilioFiscalReceptor: "99999",
 			RegimenFiscalReceptor:   "630",
@@ -183,7 +183,7 @@ func TestMarshal(t *testing.T) {
 	}
 
 	// marshal expected
-	xmlMarshalled, err := cfdi40.Marshal(cfdiOriginal)
+	xmlMarshalled, err := cfdi40.Marshal(&cfdiOriginal)
 	if err != nil {
 		t.Errorf("Error Marshal(cfdiOriginal): %s", err.Error())
 		return
@@ -234,13 +234,13 @@ func TestCartaPorte(t *testing.T) {
 				},
 			},
 		},
-		Emisor: cfdi40.Emisor{
+		Emisor: &cfdi40.Emisor{
 			FacAtrAdquirente: "0123456789",
 			Nombre:           "Esta es una demostración",
 			RegimenFiscal:    "630",
 			Rfc:              "AAA010101AAA",
 		},
-		Receptor: cfdi40.Receptor{
+		Receptor: &cfdi40.Receptor{
 			ResidenciaFiscal:        "MEX",
 			DomicilioFiscalReceptor: "99999",
 			RegimenFiscalReceptor:   "630",
@@ -454,7 +454,7 @@ func TestCartaPorte(t *testing.T) {
 	}
 
 	// marshal expected
-	xmlMarshalled, err := cfdi40.Marshal(cfdiOriginal)
+	xmlMarshalled, err := cfdi40.Marshal(&cfdiOriginal)
 	if err != nil {
 		t.Errorf("Error Marshal(cfdiOriginal): %s", err.Error())
 		return
@@ -498,12 +498,12 @@ func TestComplementoPagos(t *testing.T) {
 	expected.Folio = "Folio"
 	expected.Fecha, _ = types.NewFechaH("2021-12-16T00:18:10")
 	expected.Sello = "e"
-	expected.Emisor = cfdi40.Emisor{
+	expected.Emisor = &cfdi40.Emisor{
 		Rfc:           "EQA9003177C9",
 		Nombre:        "Emisor de prueba",
 		RegimenFiscal: "601",
 	}
-	expected.Receptor = cfdi40.Receptor{
+	expected.Receptor = &cfdi40.Receptor{
 		Rfc:                     "UNI180529TM6",
 		Nombre:                  "UNIVERSIDAD SA DE CV",
 		DomicilioFiscalReceptor: "65000",
@@ -558,5 +558,25 @@ func TestComplementoPagos(t *testing.T) {
 	}
 
 	err = cfdi40.CompareEqual(expected, cfdiUnmarshaled)
+	assert.NoError(t, err)
+}
+
+func TestAcentos(t *testing.T) {
+	comprobanteOriginal := cfdi40.NewComprobantePago()
+	comprobanteOriginal.Serie = "áéíóúñÁÉÍÓÚÑ"
+
+	xml1, err := cfdi40.Marshal(comprobanteOriginal)
+	if err != nil {
+		t.Errorf("Error Marshal(comprobanteOriginal): %s", err.Error())
+		return
+	}
+
+	comprobanteUnmarshaled, err := cfdi40.Unmarshal(xml1)
+	if err != nil {
+		t.Errorf("Error Unmarshal(xml1): %s", err.Error())
+		return
+	}
+
+	err = cfdi40.CompareEqual(comprobanteOriginal, comprobanteUnmarshaled)
 	assert.NoError(t, err)
 }

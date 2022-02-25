@@ -44,8 +44,8 @@ func Compare(diffs *compare.Diffs, v1, v2 *Comprobante) {
 	compare.Decimal(diffs, v1.Total, v2.Total, path+".Total")
 
 	compareEqualInformacionGlobal(diffs, v1.InformacionGlobal, v2.InformacionGlobal, path+".InformacionGlobal")
-	compareEqualEmisor(diffs, &v1.Emisor, &v2.Emisor, path+".Emisor")
-	compareEqualReceptor(diffs, &v1.Receptor, &v2.Receptor, path+".Receptor")
+	compareEqualEmisor(diffs, v1.Emisor, v2.Emisor, path+".Emisor")
+	compareEqualReceptor(diffs, v1.Receptor, v2.Receptor, path+".Receptor")
 
 	compareEqualCfdiRelacionados(diffs, v1.CfdiRelacionados, v2.CfdiRelacionados, path+".CfdiRelacionados")
 

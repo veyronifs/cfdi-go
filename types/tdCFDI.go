@@ -12,7 +12,7 @@ func NewFechaH(value string) (FechaH, error) {
 }
 
 func NewFechaHNow() FechaH {
-	return FechaH(time.Now())
+	return FechaH(time.Now().Truncate(time.Second))
 }
 
 // Tipo definido para la expresión de la fecha y hora. Se expresa en la forma AAAA-MM-DDThh:mm:ss

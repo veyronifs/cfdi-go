@@ -2,6 +2,8 @@ package cfdi40
 
 import (
 	"encoding/xml"
+	"errors"
+	"fmt"
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
@@ -20,8 +22,8 @@ const (
 type Comprobante struct {
 	InformacionGlobal *InformacionGlobal      `xml:"InformacionGlobal,omitempty"`
 	CfdiRelacionados  []*CfdiRelacionados     `xml:"CfdiRelacionados,omitempty"`
-	Emisor            Emisor                  `xml:"Emisor"`
-	Receptor          Receptor                `xml:"Receptor"`
+	Emisor            *Emisor                 `xml:"Emisor"`
+	Receptor          *Receptor               `xml:"Receptor"`
 	Conceptos         Conceptos               `xml:"Conceptos"`
 	Impuestos         *Impuestos              `xml:"Impuestos,omitempty"`
 	Addenda           *Addenda                `xml:"Addenda,omitempty"`
@@ -45,6 +47,25 @@ type Comprobante struct {
 	MetodoPago        types.MetodoPago        `xml:"MetodoPago,attr,omitempty"`
 	LugarExpedicion   string                  `xml:"LugarExpedicion,attr"`
 	Confirmacion      string                  `xml:"Confirmacion,attr,omitempty"`
+}
+
+var ErrNoTimbrado = errors.New("comprobante no timbrado")
+
+func (c Comprobante) QRText() (string, error) {
+	if c.Complemento.TFD11 == nil {
+		return "", ErrNoTimbrado
+	}
+
+	idxSubstr := len(c.Complemento.TFD11.SelloCFD) - 8
+	if idxSubstr < 0 {
+		return "", fmt.Errorf("%w selloCFD invalido", ErrNoTimbrado)
+	}
+	return "https://verificacfdi.facturaelectronica.sat.gob.mx/default.aspx?" +
+		"&id=" + c.Complemento.TFD11.UUID +
+		"&re=" + c.Emisor.Rfc +
+		"&rr=" + c.Receptor.Rfc +
+		"&tt=" + c.Total.String() +
+		"&fe=" + c.Complemento.TFD11.SelloCFD[idxSubstr:], nil
 }
 
 type InformacionGlobal struct {
@@ -196,7 +217,7 @@ type ConceptoCuentaPredial struct {
 
 type Parte struct {
 	InformacionAduanera []ConceptoInformacionAduanera `xml:"http://www.sat.gob.mx/cfd/4 InformacionAduanera,omitempty"`
-	ClaveProdServ       types.ClaveProdServ           `xml:"ClaveProdServ,attr"`
+	ClaveProdServ       string                        `xml:"ClaveProdServ,attr"`
 	NoIdentificacion    string                        `xml:"NoIdentificacion,attr,omitempty"`
 	Cantidad            decimal.Decimal               `xml:"Cantidad,attr"`
 	Unidad              string                        `xml:"Unidad,attr,omitempty"`

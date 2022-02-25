@@ -43,6 +43,19 @@ func NewComprobantePago() *Comprobante {
 func NewComprobante() *Comprobante {
 	return &Comprobante{
 		Version: Version,
+		Fecha:   types.NewFechaHNow(),
+	}
+}
+
+// NewComprobanteT crea la base de un comprobante 4.0.
+func NewComprobanteT() *Comprobante {
+	return &Comprobante{
+		Version:           Version,
+		Fecha:             types.NewFechaHNow(),
+		Moneda:            types.MonedaXXX,
+		Total:             decimal.Zero,
+		SubTotal:          decimal.Zero,
+		TipoDeComprobante: types.ComprobanteT,
 	}
 }
 
