@@ -471,3 +471,19 @@ func (p Periodicidad) Desc() string {
 	}
 	return ""
 }
+
+// Banco es un elemento del Catálogo de bancos.
+//
+// Catálogo de bancos se utiliza cuando los contribuyentes realicen operaciones con diferentes bancos
+// nacionales, para el registro contable de cada póliza debe apoyarse en el catálogo de bancos.
+type Banco string
+
+// CodAgrup es un elemento del código agrupador de cuentas del sat.
+//
+// El código agrupador del SAT tiene el objetivo de que la información sea presentada de manera
+// uniforme, para lo cual es necesario que los contribuyentes asocien las cuentas de su catálogo de
+// cuentas al código agrupador por naturaleza y preponderancia de la cuenta.
+type CodAgrup string
+
+// CodAgrupH es un elemento del catálogo de códigos agrupadores hidrocarburos.
+type CodAgrupH string
