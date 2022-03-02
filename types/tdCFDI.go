@@ -93,3 +93,28 @@ func (t xsdDateTime) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 	m, err := t.MarshalText()
 	return xml.Attr{Name: name, Value: string(m)}, err
 }
+
+func NewFecha(value string) (Fecha, error) {
+	t, err := time.Parse("2006-01-02", value)
+	return Fecha(t), err
+}
+
+func NewFechaNow() Fecha {
+	return Fecha(time.Now().Truncate(time.Second))
+}
+
+// Tipo definido para la expresión de la fecha. Se expresa en la forma AAAA-MM-DD.
+type Fecha time.Time
+
+func (t *Fecha) UnmarshalText(text []byte) error {
+	return (*xsdDate)(t).UnmarshalText(text)
+}
+func (t Fecha) MarshalText() ([]byte, error) {
+	return xsdDate(t).MarshalText()
+}
+func (t Fecha) String() string {
+	return time.Time(t).Format("2006-01-02")
+}
+func (t Fecha) Format(s string) string {
+	return time.Time(t).Format(s)
+}
