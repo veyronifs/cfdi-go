@@ -21,7 +21,6 @@
 go.work
 
 
-schema/
 .idea/
 gen/
 outtests/
