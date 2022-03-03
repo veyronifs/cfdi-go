@@ -64,7 +64,7 @@ func encodeHeader(enc *encoder.Encoder, c *Comprobante) {
 	enc.WriteAttrStrZ("TipoDeComprobante", string(c.TipoDeComprobante))
 	enc.WriteAttrStrZ("LugarExpedicion", c.LugarExpedicion)
 	enc.WriteAttrStrZ("FormaPago", string(c.FormaPago))
-	enc.WriteAttrStrZ("CondicionesDePago", c.CondicionesDePago)
+	enc.WriteAttrStrMaxEllipsisZ("CondicionesDePago", c.CondicionesDePago, 1000)
 	enc.WriteAttrStrZ("MetodoPago", string(c.MetodoPago))
 	enc.WriteAttrStrZ("Exportacion", string(c.Exportacion))
 	enc.WriteAttrStrZ("Confirmacion", c.Confirmacion)
@@ -114,7 +114,7 @@ func encodeEmisor(enc *encoder.Encoder, c *Emisor) {
 	defer enc.EndElem("Emisor")
 
 	enc.WriteAttrStrZ("Rfc", c.Rfc)
-	enc.WriteAttrStrZ("Nombre", c.Nombre)
+	enc.WriteAttrStrMaxZ("Nombre", c.Nombre, 254)
 	enc.WriteAttrStrZ("RegimenFiscal", string(c.RegimenFiscal))
 	enc.WriteAttrStrZ("FacAtrAdquirente", c.FacAtrAdquirente)
 }
@@ -127,7 +127,7 @@ func encodeReceptor(enc *encoder.Encoder, c *Receptor) {
 	defer enc.EndElem("Receptor")
 
 	enc.WriteAttrStrZ("Rfc", c.Rfc)
-	enc.WriteAttrStrZ("Nombre", c.Nombre)
+	enc.WriteAttrStrMaxZ("Nombre", c.Nombre, 254)
 	enc.WriteAttrStrZ("DomicilioFiscalReceptor", c.DomicilioFiscalReceptor)
 	enc.WriteAttrStrZ("ResidenciaFiscal", string(c.ResidenciaFiscal))
 	enc.WriteAttrStrZ("NumRegIdTrib", c.NumRegIdTrib)
@@ -148,10 +148,10 @@ func encodeConcepto(enc *encoder.Encoder, concepto *Concepto, moneda string) {
 	defer enc.EndElem("Concepto")
 
 	enc.WriteAttrStrZ("ClaveProdServ", concepto.ClaveProdServ)
-	enc.WriteAttrStrZ("NoIdentificacion", concepto.NoIdentificacion)
+	enc.WriteAttrStrMaxZ("NoIdentificacion", concepto.NoIdentificacion, 100)
 	enc.WriteAttrStrZ("ClaveUnidad", concepto.ClaveUnidad)
-	enc.WriteAttrStrZ("Unidad", concepto.Unidad)
-	enc.WriteAttrStrZ("Descripcion", concepto.Descripcion)
+	enc.WriteAttrStrMaxZ("Unidad", concepto.Unidad, 20)
+	enc.WriteAttrStrMaxEllipsisZ("Descripcion", concepto.Descripcion, 1000)
 	enc.WriteAttrStrZ("ObjetoImp", string(concepto.ObjetoImp))
 	enc.WriteAttrDecimalCurr("ValorUnitario", concepto.ValorUnitario, moneda)
 	enc.WriteAttrDecimal("Cantidad", concepto.Cantidad, 6)
@@ -160,16 +160,13 @@ func encodeConcepto(enc *encoder.Encoder, concepto *Concepto, moneda string) {
 
 	encodeConceptoImpuestos(enc, concepto.Impuestos, moneda)
 	encodeConceptoACuentaTerceros(enc, concepto.ACuentaTerceros)
-	for _, ia := range concepto.InformacionAduanera {
-		enc.StartElem(cfdiXS.Elem("InformacionAduanera"))
-		enc.WriteAttrStr("NumeroPedimento", ia.NumeroPedimento)
-		enc.EndElem("InformacionAduanera")
-	}
+	encodeConceptoInformacionAduanera(enc, concepto.InformacionAduanera)
 	for _, cPred := range concepto.CuentaPredial {
 		enc.StartElem(cfdiXS.Elem("CuentaPredial"))
-		enc.WriteAttrStr("Numero", cPred.Numero)
+		enc.WriteAttrStrMax("Numero", cPred.Numero, 150)
 		enc.EndElem("CuentaPredial")
 	}
+	encodeConceptoPartes(enc, concepto.Parte, moneda)
 }
 func encodeConceptoACuentaTerceros(enc *encoder.Encoder, at *ConceptoACuentaTerceros) {
 	if at == nil {
@@ -178,7 +175,7 @@ func encodeConceptoACuentaTerceros(enc *encoder.Encoder, at *ConceptoACuentaTerc
 	enc.StartElem(cfdiXS.Elem("ACuentaTerceros"))
 	defer enc.EndElem("ACuentaTerceros")
 	enc.WriteAttrStrZ("RfcACuentaTerceros", at.RfcACuentaTerceros)
-	enc.WriteAttrStrZ("NombreACuentaTerceros", at.NombreACuentaTerceros)
+	enc.WriteAttrStrMaxZ("NombreACuentaTerceros", at.NombreACuentaTerceros, 254)
 	enc.WriteAttrStrZ("RegimenFiscalACuentaTerceros", string(at.RegimenFiscalACuentaTerceros))
 	enc.WriteAttrStrZ("DomicilioFiscalACuentaTerceros", at.DomicilioFiscalACuentaTerceros)
 }
@@ -224,6 +221,34 @@ func encodeConceptoImpuestosRetenciones(enc *encoder.Encoder, impuestos *Concept
 	enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
 }
 
+func encodeConceptoInformacionAduanera(enc *encoder.Encoder, ci []*ConceptoInformacionAduanera) {
+	for _, ia := range ci {
+		enc.StartElem(cfdiXS.Elem("InformacionAduanera"))
+		enc.WriteAttrStr("NumeroPedimento", ia.NumeroPedimento)
+		enc.EndElem("InformacionAduanera")
+	}
+}
+func encodeConceptoPartes(enc *encoder.Encoder, parte []*Parte, moneda string) {
+	if len(parte) == 0 {
+		return
+	}
+	for _, p := range parte {
+		encodeConceptoParte(enc, p, moneda)
+	}
+}
+
+func encodeConceptoParte(enc *encoder.Encoder, parte *Parte, moneda string) {
+	enc.StartElem(cfdiXS.Elem("Parte"))
+	defer enc.EndElem("Parte")
+	enc.WriteAttrStrZ("ClaveProdServ", parte.ClaveProdServ)
+	enc.WriteAttrStrMaxZ("NoIdentificacion", parte.NoIdentificacion, 100)
+	enc.WriteAttrDecimalCurr("Cantidad", parte.Cantidad, moneda)
+	enc.WriteAttrStrMaxZ("Unidad", parte.Unidad, 20)
+	enc.WriteAttrStrMaxEllipsisZ("Descripcion", parte.Descripcion, 1000)
+	enc.WriteAttrDecimalCurr("ValorUnitario", parte.ValorUnitario, moneda)
+	enc.WriteAttrDecimalCurr("Importe", parte.Importe, moneda)
+	encodeConceptoInformacionAduanera(enc, parte.InformacionAduanera)
+}
 func encodeImpuestos(enc *encoder.Encoder, c *Comprobante) {
 	if c.Impuestos == nil {
 		return

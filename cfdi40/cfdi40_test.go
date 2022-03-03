@@ -87,7 +87,7 @@ func TestMarshal(t *testing.T) {
 		MetodoPago:        "PPD",
 		Confirmacion:      "A1234",
 		Moneda:            "MXN",
-		Descuento:         decimal.NewFromFloat(0.00),
+		Descuento:         decimal.NewFromFloat(10.00),
 		Folio:             "123ABC",
 		TipoCambio:        decimal.NewFromFloat(1.0),
 		Serie:             "A",
@@ -140,6 +140,7 @@ func TestMarshal(t *testing.T) {
 				Descripcion:      "ACERO",
 				ValorUnitario:    decimal.NewFromFloat(1500000),
 				Importe:          decimal.NewFromFloat(2250000),
+				Descuento:        decimal.NewFromFloat(10.00),
 				Impuestos: &cfdi40.ConceptoImpuestos{
 					Traslados: []*cfdi40.ConceptoImpuestosTraslado{
 						{
@@ -158,6 +159,38 @@ func TestMarshal(t *testing.T) {
 							TasaOCuota: decimal.NewFromFloat(0.300000),
 							Importe:    decimal.NewFromFloat(247500),
 						},
+					},
+				},
+				ACuentaTerceros: &cfdi40.ConceptoACuentaTerceros{
+					RfcACuentaTerceros:             "AAA010101AAA",
+					NombreACuentaTerceros:          "Nombre de la cuenta",
+					RegimenFiscalACuentaTerceros:   types.RegimenFiscal601,
+					DomicilioFiscalACuentaTerceros: "99999",
+				},
+				InformacionAduanera: []*cfdi40.ConceptoInformacionAduanera{
+					{
+						NumeroPedimento: "1234567890",
+					},
+				},
+				CuentaPredial: []*cfdi40.ConceptoCuentaPredial{
+					{
+						Numero: "1234567890123456789012345678901234567890",
+					},
+				},
+				Parte: []*cfdi40.Parte{
+					{
+						InformacionAduanera: []*cfdi40.ConceptoInformacionAduanera{
+							{
+								NumeroPedimento: "1234567890",
+							},
+						},
+						ClaveProdServ:    "01010101",
+						NoIdentificacion: "00001",
+						Cantidad:         decimal.NewFromFloat(1),
+						Unidad:           "TONELADA",
+						Descripcion:      "ACERO",
+						ValorUnitario:    decimal.NewFromFloat(1500000),
+						Importe:          decimal.NewFromFloat(2250000),
 					},
 				},
 			},

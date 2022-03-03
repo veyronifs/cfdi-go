@@ -312,7 +312,7 @@ type ConceptoCuentaPredial struct {
 // Parte Nodo opcional para expresar las partes o componentes que integran la totalidad del concepto expresado en el comprobante fiscal digital por Internet.
 type Parte struct {
 	// InformacionAduanera Nodo opcional para introducir la información aduanera aplicable cuando se trate de ventas de primera mano de mercancías importadas o se trate de operaciones de comercio exterior con bienes o servicios.
-	InformacionAduanera []ConceptoInformacionAduanera `xml:"http://www.sat.gob.mx/cfd/4 InformacionAduanera,omitempty"`
+	InformacionAduanera []*ConceptoInformacionAduanera `xml:"http://www.sat.gob.mx/cfd/4 InformacionAduanera,omitempty"`
 	// ClaveProdServ Atributo requerido para expresar la clave del producto o del servicio amparado por la presente parte. Es requerido y deben utilizar las claves del catálogo de productos y servicios, cuando los conceptos que registren por sus actividades correspondan con dichos conceptos.
 	ClaveProdServ string `xml:"ClaveProdServ,attr"`
 	// NoIdentificacion Atributo opcional para expresar el número de serie, número de parte del bien o identificador del producto o del servicio amparado por la presente parte. Opcionalmente se puede utilizar claves del estándar GTIN.
