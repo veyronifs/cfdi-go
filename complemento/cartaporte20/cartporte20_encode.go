@@ -12,15 +12,15 @@ var cartaPorte20XS = encoder.NSElem{
 }
 
 func (cp *CartaPorte20) SchemaLocation() string {
-	return "http://www.sat.gob.mx/CartaPorte20 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd"
+	return cartaPorte20XS.NS + " http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd"
 }
 
 func (cp *CartaPorte20) XmlNSPrefix() string {
-	return "cartaporte20"
+	return cartaPorte20XS.Prefix
 }
 
 func (cp *CartaPorte20) XmlNS() string {
-	return "http://www.sat.gob.mx/CartaPorte20"
+	return cartaPorte20XS.NS
 }
 
 func Marshal(cp *CartaPorte20, moneda string) ([]byte, error) {
@@ -93,6 +93,9 @@ func (cp *CartaPorte20) encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubic
 }
 
 func (cp *CartaPorte20) encodeMercancias(enc *encoder.Encoder) {
+	if cp.Mercancias == nil {
+		return
+	}
 	enc.StartElem(cartaPorte20XS.Elem("Mercancias"))
 	defer enc.EndElem("Mercancias")
 

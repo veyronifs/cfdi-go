@@ -3,6 +3,8 @@ package cfdi40
 import (
 	"bytes"
 	"encoding/xml"
+	"fmt"
+	"reflect"
 
 	"github.com/veyronifs/cfdi-go/encoder"
 )
@@ -22,6 +24,12 @@ var cfdiXS = encoder.NSElem{
 	NS:     "http://www.sat.gob.mx/cfd/4",
 }
 
+type ComplementoNS interface {
+	SchemaLocation() string
+	XmlNSPrefix() string
+	XmlNS() string
+}
+
 func Marshal(c *Comprobante) ([]byte, error) {
 	b := bytes.Buffer{}
 	enc := encoder.NewEncoder(&b)
@@ -32,9 +40,30 @@ func Marshal(c *Comprobante) ([]byte, error) {
 	eschema := "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd"
 
 	if c.Complemento != nil {
-		if cp := c.Complemento.CartaPorte20; cp != nil {
-			eschema += cp.SchemaLocation()
-			enc.WriteAttrStr(cp.XmlNSPrefix(), cp.XmlNS())
+		/*
+			if cp := c.Complemento.CartaPorte20; cp != nil {
+				eschema += cp.SchemaLocation()
+				enc.WriteAttrStr(cp.XmlNSPrefix(), cp.XmlNS())
+			}
+		*/
+
+		// Usings reflection to get the namespaces instead of hardcoding them.
+		val := reflect.ValueOf(c.Complemento).Elem()
+		typeNS := reflect.TypeOf((*ComplementoNS)(nil)).Elem()
+
+		for i := 0; i < val.NumField(); i++ {
+			f := val.Field(i)
+			if f.IsNil() {
+				continue
+			}
+			// check if implements ComplementoNS
+			if f.Type().Implements(typeNS) {
+				v := f.Interface().(ComplementoNS)
+				eschema += " " + v.SchemaLocation()
+				enc.WriteAttrStr("xmlns:"+v.XmlNSPrefix(), v.XmlNS())
+			} else if f.Type().String() != "*tfd11.TimbreFiscalDigital" {
+				return nil, fmt.Errorf("complemento %T does not implement ComplementoNS", f.Interface())
+			}
 		}
 	}
 	enc.WriteAttrStr("xsi:schemaLocation", eschema)

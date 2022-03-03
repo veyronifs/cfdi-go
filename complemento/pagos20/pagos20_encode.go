@@ -12,15 +12,15 @@ var pagos20XS = encoder.NSElem{
 }
 
 func (pagos *Pagos) SchemaLocation() string {
-	return "http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"
+	return pagos20XS.NS + " http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd"
 }
 
 func (pagos *Pagos) XmlNSPrefix() string {
-	return "pagos20"
+	return pagos20XS.Prefix
 }
 
 func (pagos *Pagos) XmlNS() string {
-	return "http://www.sat.gob.mx/Pagos20"
+	return pagos20XS.NS
 }
 
 func Marshal(cp *Pagos) ([]byte, error) {
