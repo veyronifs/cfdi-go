@@ -7,6 +7,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/comext11"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
@@ -473,4 +474,6 @@ type Complemento struct {
 	Pagos20 *pagos20.Pagos `xml:"Pagos,omitempty"`
 	// TFD11 Complemento requerido para el Timbrado Fiscal Digital que da validez al Comprobante fiscal digital por Internet.
 	TFD11 *tfd11.TimbreFiscalDigital `xml:"TimbreFiscalDigital,omitempty"`
+
+	CCE11 *comext11.ComercioExterior `xml:"ComercioExterior,omitempty"`
 }
