@@ -66,21 +66,18 @@ func (ce *ComercioExterior) MarshalComplemento(enc *encoder.Encoder) {
 	enc.WriteAttrDecimalZ("TipoCambioUSD", ce.TipoCambioUSD, 2)
 	enc.WriteAttrDecimalZ("TotalUSD", ce.TotalUSD, 2)
 
-	ce.encodeMercancias(enc)
 	ce.encodeEmisor(enc)
+	ce.encodePropietarios(enc, ce.Propietarios)
+	ce.encodeDestinatarios(enc, ce.Destinatarios)
+	ce.encodeMercancias(enc)
 
-	for _, m := range ce.Propietarios {
-		enc.WriteAttrStrZ("NumRegIdTrib", m.NumRegIdTrib)
-		enc.WriteAttrStrZ("ResidenciaFiscal", string(m.ResidenciaFiscal))
-	}
+	// for _, m := range ce.Propietarios {
+	// 	enc.StartElem(comext11XS.Elem("Propietario"))
+	// 	defer enc.EndElem("Propietario")
+	// 	enc.WriteAttrStrZ("NumRegIdTrib", m.NumRegIdTrib)
+	// 	enc.WriteAttrStrZ("ResidenciaFiscal", string(m.ResidenciaFiscal))
+	// }
 
-	for _, m := range ce.Destinatarios {
-		enc.WriteAttrStrZ("NumRegIdTrib", m.NumRegIdTrib)
-		enc.WriteAttrStrZ("Nombre", m.Nombre)
-		for _, domicilio := range m.Domicilios {
-			ce.encodeDomicilio(enc, domicilio)
-		}
-	}
 }
 
 func (ce *ComercioExterior) encodeMercancias(enc *encoder.Encoder) {
@@ -125,6 +122,27 @@ func (ce *ComercioExterior) encodeReceptor(enc *encoder.Encoder) {
 
 	enc.WriteAttrStrZ("NumRegIdTrib", ce.Receptor.NumRegIdTrib)
 	ce.encodeDomicilio(enc, ce.Receptor.Domicilio)
+}
+
+func (ce *ComercioExterior) encodePropietarios(enc *encoder.Encoder, Propietarios []*Propietario) {
+	for _, propietario := range Propietarios {
+		enc.StartElem(comext11XS.Elem("Propietario"))
+		enc.WriteAttrStrZ("NumRegIdTrib", propietario.NumRegIdTrib)
+		enc.WriteAttrStrZ("ResidenciaFiscal", string(propietario.ResidenciaFiscal))
+		enc.EndElem("Propietario")
+	}
+}
+
+func (ce *ComercioExterior) encodeDestinatarios(enc *encoder.Encoder, Destinatarios []*Destinatario) {
+	for _, m := range Destinatarios {
+		enc.StartElem(comext11XS.Elem("Destinatario"))
+		enc.WriteAttrStrZ("NumRegIdTrib", m.NumRegIdTrib)
+		enc.WriteAttrStrZ("Nombre", m.Nombre)
+		for _, domicilio := range m.Domicilios {
+			ce.encodeDomicilio(enc, domicilio)
+		}
+		enc.EndElem("Destinatario")
+	}
 }
 
 func (ce *ComercioExterior) encodeDomicilio(enc *encoder.Encoder, m *Domicilio) {
