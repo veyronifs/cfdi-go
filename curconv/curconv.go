@@ -71,5 +71,5 @@ func RoundToDec(v decimal.Decimal, dec int) decimal.Decimal {
 }
 
 func RoundToDecStr(v decimal.Decimal, dec int) string {
-	return RoundToDec(v, dec).StringFixed(int32(dec))
+	return RoundToDec(v, dec).String()
 }

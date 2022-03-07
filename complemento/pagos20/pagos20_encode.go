@@ -7,7 +7,7 @@ import (
 )
 
 var pagos20XS = encoder.NSElem{
-	Prefix: "pagos20",
+	Prefix: "pago20",
 	NS:     "http://www.sat.gob.mx/Pagos20",
 }
 
@@ -56,16 +56,16 @@ func encodeTotales(enc *encoder.Encoder, v *Totales) {
 	}
 	enc.StartElem(pagos20XS.Elem("Totales"))
 	defer enc.EndElem("Totales")
-	enc.WriteAttrDecimal("TotalRetencionesIVA", v.TotalRetencionesIVA, 2)
-	enc.WriteAttrDecimal("TotalRetencionesISR", v.TotalRetencionesISR, 2)
-	enc.WriteAttrDecimal("TotalRetencionesIEPS", v.TotalRetencionesIEPS, 2)
-	enc.WriteAttrDecimal("TotalTrasladosBaseIVA16", v.TotalTrasladosBaseIVA16, 2)
-	enc.WriteAttrDecimal("TotalTrasladosImpuestoIVA16", v.TotalTrasladosImpuestoIVA16, 2)
-	enc.WriteAttrDecimal("TotalTrasladosBaseIVA8", v.TotalTrasladosBaseIVA8, 2)
-	enc.WriteAttrDecimal("TotalTrasladosImpuestoIVA8", v.TotalTrasladosImpuestoIVA8, 2)
-	enc.WriteAttrDecimal("TotalTrasladosBaseIVA0", v.TotalTrasladosBaseIVA0, 2)
-	enc.WriteAttrDecimal("TotalTrasladosImpuestoIVA0", v.TotalTrasladosImpuestoIVA0, 2)
-	enc.WriteAttrDecimal("TotalTrasladosBaseIVAExento", v.TotalTrasladosBaseIVAExento, 2)
+	enc.WriteAttrNullDecimal("TotalRetencionesIVA", v.TotalRetencionesIVA, 2)
+	enc.WriteAttrNullDecimal("TotalRetencionesISR", v.TotalRetencionesISR, 2)
+	enc.WriteAttrNullDecimal("TotalRetencionesIEPS", v.TotalRetencionesIEPS, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosBaseIVA16", v.TotalTrasladosBaseIVA16, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosImpuestoIVA16", v.TotalTrasladosImpuestoIVA16, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosBaseIVA8", v.TotalTrasladosBaseIVA8, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosImpuestoIVA8", v.TotalTrasladosImpuestoIVA8, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosBaseIVA0", v.TotalTrasladosBaseIVA0, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosImpuestoIVA0", v.TotalTrasladosImpuestoIVA0, 2)
+	enc.WriteAttrNullDecimal("TotalTrasladosBaseIVAExento", v.TotalTrasladosBaseIVAExento, 2)
 	enc.WriteAttrDecimal("MontoTotalPagos", v.MontoTotalPagos, 2)
 
 }
@@ -159,7 +159,7 @@ func encodeRetencionDR(enc *encoder.Encoder, v *RetencionDR, monedaDR string) {
 	enc.WriteAttrDecimalCurr("BaseDR", v.BaseDR, monedaDR)
 	enc.WriteAttrStrZ("ImpuestoDR", string(v.ImpuestoDR))
 	enc.WriteAttrStrZ("TipoFactorDR", string(v.TipoFactorDR))
-	enc.WriteAttrDecimalCurr("TasaOCuotaDR", v.TasaOCuotaDR, monedaDR)
+	enc.WriteAttrDecimal("TasaOCuotaDR", v.TasaOCuotaDR, 6)
 	enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
 }
 
@@ -173,7 +173,7 @@ func encodeTrasladoDR(enc *encoder.Encoder, v *TrasladoDR, monedaDR string) {
 	enc.WriteAttrDecimalCurr("BaseDR", v.BaseDR, monedaDR)
 	enc.WriteAttrStrZ("ImpuestoDR", string(v.ImpuestoDR))
 	enc.WriteAttrStrZ("TipoFactorDR", string(v.TipoFactorDR))
-	enc.WriteAttrDecimalCurr("TasaOCuotaDR", v.TasaOCuotaDR, monedaDR)
+	enc.WriteAttrDecimal("TasaOCuotaDR", v.TasaOCuotaDR, 6)
 	enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
 }
 

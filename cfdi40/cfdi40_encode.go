@@ -7,6 +7,7 @@ import (
 	"reflect"
 
 	"github.com/veyronifs/cfdi-go/encoder"
+	"github.com/veyronifs/cfdi-go/types"
 )
 
 // Unmarshal parses the XML-encoded data and creates a Comprobante valuenc.
@@ -99,7 +100,7 @@ func encodeHeader(enc *encoder.Encoder, c *Comprobante) {
 	enc.WriteAttrStrZ("Confirmacion", c.Confirmacion)
 	enc.WriteAttrDecimalCurr("SubTotal", c.SubTotal, moneda)
 	enc.WriteAttrDecimalCurr("Total", c.Total, moneda)
-	enc.WriteAttrDecimalCurr("Descuento", c.Descuento, moneda)
+	enc.WriteAttrDecimalCurrZ("Descuento", c.Descuento, moneda)
 	enc.WriteAttrDecimalZ("TipoCambio", c.TipoCambio, 6)
 }
 
@@ -221,7 +222,7 @@ func encodeConceptoImpuestos(enc *encoder.Encoder, impuestos *ConceptoImpuestos,
 		}
 		enc.EndElem("Traslados")
 	}
-	if len(impuestos.Traslados) > 0 {
+	if len(impuestos.Retenciones) > 0 {
 		enc.StartElem(cfdiXS.Elem("Retenciones"))
 		for _, impuesto := range impuestos.Retenciones {
 			encodeConceptoImpuestosRetenciones(enc, impuesto, moneda)
@@ -236,8 +237,10 @@ func encodeConceptoImpuestosTraslados(enc *encoder.Encoder, impuestos *ConceptoI
 	enc.WriteAttrDecimalCurr("Base", impuestos.Base, moneda)
 	enc.WriteAttrStrZ("Impuesto", string(impuestos.Impuesto))
 	enc.WriteAttrStrZ("TipoFactor", string(impuestos.TipoFactor))
-	enc.WriteAttrDecimal("TasaOCuota", impuestos.TasaOCuota, 6)
-	enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
+	if impuestos.TipoFactor != types.TipoFactorExento {
+		enc.WriteAttrDecimal("TasaOCuota", impuestos.TasaOCuota, 6)
+		enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
+	}
 }
 func encodeConceptoImpuestosRetenciones(enc *encoder.Encoder, impuestos *ConceptoImpuestosRetencion, moneda string) {
 	enc.StartElem(cfdiXS.Elem("Retencion"))
@@ -314,11 +317,14 @@ func encodeImpuestosTraslados(enc *encoder.Encoder, tras ImpuestosTraslados, mon
 	defer enc.EndElem("Traslados")
 	for _, r := range tras {
 		enc.StartElem(cfdiXS.Elem("Traslado"))
-		enc.WriteAttrDecimalCurr("Base", r.Importe, moneda)
+		enc.WriteAttrDecimalCurr("Base", r.Base, moneda)
 		enc.WriteAttrStr("Impuesto", string(r.Impuesto))
 		enc.WriteAttrStr("TipoFactor", string(r.TipoFactor))
-		enc.WriteAttrDecimal("TasaOCuota", r.TasaOCuota, 6)
-		enc.WriteAttrDecimalCurr("Importe", r.Importe, moneda)
+		if r.TipoFactor != types.TipoFactorExento {
+			enc.WriteAttrDecimal("TasaOCuota", r.TasaOCuota, 6)
+			enc.WriteAttrDecimalCurr("Importe", r.Importe, moneda)
+		}
+
 		enc.EndElem("Traslado")
 	}
 }
@@ -332,8 +338,16 @@ func encodeComplemento(enc *encoder.Encoder, c *Comprobante) {
 	if c.Complemento.CartaPorte20 != nil {
 		c.Complemento.CartaPorte20.MarshalComplemento(enc, string(c.Moneda))
 	}
+	if c.Complemento.Pagos20 != nil {
+		c.Complemento.Pagos20.MarshalComplemento(enc)
+	}
+
+	if c.Complemento.CCE11 != nil {
+		c.Complemento.CCE11.MarshalComplemento(enc)
+	}
 
 	if c.Complemento.TFD11 != nil {
 		c.Complemento.TFD11.MarshalComplemento(enc)
 	}
+
 }

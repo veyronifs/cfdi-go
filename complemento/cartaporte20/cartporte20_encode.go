@@ -45,20 +45,20 @@ func (cp *CartaPorte20) MarshalComplemento(enc *encoder.Encoder, moneda string) 
 	enc.WriteAttrStrZ("ViaEntradaSalida", cp.ViaEntradaSalida)
 	enc.WriteAttrDecimalZ("TotalDistRec", cp.TotalDistRec, 2)
 
-	cp.encodeUbicaciones(enc)
-	cp.encodeMercancias(enc)
-	cp.encodeFiguraTransporte(enc, cp.FiguraTransporte)
+	encodeUbicaciones(enc, cp.Ubicaciones)
+	encodeMercancias(enc, cp.Mercancias)
+	encodeFiguraTransporte(enc, cp.FiguraTransporte)
 
 }
 
-func (cp *CartaPorte20) encodeUbicaciones(enc *encoder.Encoder) {
+func encodeUbicaciones(enc *encoder.Encoder, ubicaciones []*Ubicacion) {
 	enc.StartElem(cartaPorte20XS.Elem("Ubicaciones"))
 	defer enc.EndElem("Ubicaciones")
-	for _, u := range cp.Ubicaciones {
-		cp.encodeUbicacionesUbicacion(enc, u)
+	for _, u := range ubicaciones {
+		encodeUbicacionesUbicacion(enc, u)
 	}
 }
-func (cp *CartaPorte20) encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubicacion) {
+func encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubicacion) {
 	enc.StartElem(cartaPorte20XS.Elem("Ubicacion"))
 	defer enc.EndElem("Ubicacion")
 	enc.WriteAttrStrZ("TipoUbicacion", u.TipoUbicacion)
@@ -92,30 +92,30 @@ func (cp *CartaPorte20) encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubic
 	enc.WriteAttrStrZ("CodigoPostal", u.Domicilio.CodigoPostal)
 }
 
-func (cp *CartaPorte20) encodeMercancias(enc *encoder.Encoder) {
-	if cp.Mercancias == nil {
+func encodeMercancias(enc *encoder.Encoder, mercancias *Mercancias) {
+	if mercancias == nil {
 		return
 	}
 	enc.StartElem(cartaPorte20XS.Elem("Mercancias"))
 	defer enc.EndElem("Mercancias")
 
-	enc.WriteAttrDecimalZ("PesoBrutoTotal", cp.Mercancias.PesoBrutoTotal, 3)
-	enc.WriteAttrStrZ("UnidadPeso", cp.Mercancias.UnidadPeso)
-	enc.WriteAttrDecimalZ("PesoNetoTotal", cp.Mercancias.PesoNetoTotal, 3)
-	enc.WriteAttrInt("NumTotalMercancias", cp.Mercancias.NumTotalMercancias)
-	enc.WriteAttrDecimalZ("CargoPorTasacion", cp.Mercancias.CargoPorTasacion, 2)
+	enc.WriteAttrDecimalZ("PesoBrutoTotal", mercancias.PesoBrutoTotal, 3)
+	enc.WriteAttrStrZ("UnidadPeso", mercancias.UnidadPeso)
+	enc.WriteAttrDecimalZ("PesoNetoTotal", mercancias.PesoNetoTotal, 3)
+	enc.WriteAttrInt("NumTotalMercancias", mercancias.NumTotalMercancias)
+	enc.WriteAttrDecimalZ("CargoPorTasacion", mercancias.CargoPorTasacion, 2)
 
-	for _, m := range cp.Mercancias.Mercancia {
-		cp.encodeMercancia(enc, m)
+	for _, m := range mercancias.Mercancia {
+		encodeMercancia(enc, m)
 	}
 
-	cp.encodeAutotransporte(enc, cp.Mercancias.Autotransporte)
-	cp.encodeTransporteMaritimo(enc, cp.Mercancias.TransporteMaritimo)
-	cp.encodeTransporteAereo(enc, cp.Mercancias.TransporteAereo)
-	cp.encodeTransporteFerroviario(enc, cp.Mercancias.TransporteFerroviario)
+	encodeAutotransporte(enc, mercancias.Autotransporte)
+	encodeTransporteMaritimo(enc, mercancias.TransporteMaritimo)
+	encodeTransporteAereo(enc, mercancias.TransporteAereo)
+	encodeTransporteFerroviario(enc, mercancias.TransporteFerroviario)
 }
 
-func (cp *CartaPorte20) encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
+func encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
 	enc.StartElem(cartaPorte20XS.Elem("Mercancia"))
 	defer enc.EndElem("Mercancia")
 
@@ -170,7 +170,7 @@ func (cp *CartaPorte20) encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
 	}
 }
 
-func (cp *CartaPorte20) encodeAutotransporte(enc *encoder.Encoder, at *Autotransporte) {
+func encodeAutotransporte(enc *encoder.Encoder, at *Autotransporte) {
 	if at == nil {
 		return
 	}
@@ -211,37 +211,37 @@ func (cp *CartaPorte20) encodeAutotransporte(enc *encoder.Encoder, at *Autotrans
 	}
 }
 
-func (cp *CartaPorte20) encodeTransporteMaritimo(enc *encoder.Encoder, tm *TransporteMaritimo) {
+func encodeTransporteMaritimo(enc *encoder.Encoder, tm *TransporteMaritimo) {
 	if tm == nil {
 		return
 	}
 	panic("not implemented")
 }
-func (cp *CartaPorte20) encodeTransporteAereo(enc *encoder.Encoder, ta *TransporteAereo) {
+func encodeTransporteAereo(enc *encoder.Encoder, ta *TransporteAereo) {
 	if ta == nil {
 		return
 	}
 	panic("not implemented")
 }
-func (cp *CartaPorte20) encodeTransporteFerroviario(enc *encoder.Encoder, tf *TransporteFerroviario) {
+func encodeTransporteFerroviario(enc *encoder.Encoder, tf *TransporteFerroviario) {
 	if tf == nil {
 		return
 	}
 	panic("not implemented")
 }
 
-func (cp *CartaPorte20) encodeFiguraTransporte(enc *encoder.Encoder, ft *FiguraTransporte) {
+func encodeFiguraTransporte(enc *encoder.Encoder, ft *FiguraTransporte) {
 	if ft == nil {
 		return
 	}
 	enc.StartElem(cartaPorte20XS.Elem("FiguraTransporte"))
 	defer enc.EndElem("FiguraTransporte")
 	for _, f := range ft.TiposFigura {
-		cp.encodeFiguraTransporteTiposFigura(enc, f)
+		encodeFiguraTransporteTiposFigura(enc, f)
 	}
 }
 
-func (cp *CartaPorte20) encodeFiguraTransporteTiposFigura(enc *encoder.Encoder, ft *TiposFigura) {
+func encodeFiguraTransporteTiposFigura(enc *encoder.Encoder, ft *TiposFigura) {
 	if ft == nil {
 		return
 	}

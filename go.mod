@@ -6,6 +6,7 @@ require (
 	github.com/shabbyrobe/xmlwriter v0.0.0-20210324110748-440e98cf0c87
 	github.com/shopspring/decimal v1.3.1
 	github.com/stretchr/testify v1.7.0
+	github.com/veyronifs/pac-timbrado-go v0.0.0-20220307163805-ecf3404cc631
 )
 
 require (
@@ -14,3 +15,5 @@ require (
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
+
+// replace github.com/veyronifs/pac-timbrado-go => ../pac-timbrado-go

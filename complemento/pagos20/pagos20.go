@@ -28,25 +28,25 @@ type Pagos struct {
 // Totales Nodo requerido para especificar el monto total de los pagos y el total de los impuestos, deben ser expresados en MXN.
 type Totales struct {
 	// TotalRetencionesIVA Atributo condicional para expresar el total de los impuestos retenidos de IVA que se desprenden de los pagos. No se permiten valores negativos.
-	TotalRetencionesIVA decimal.Decimal `xml:"TotalRetencionesIVA,attr,omitempty"`
+	TotalRetencionesIVA decimal.NullDecimal `xml:"TotalRetencionesIVA,attr,omitempty"`
 	// TotalRetencionesISR Atributo condicional para expresar el total de los impuestos retenidos de ISR que se desprenden de los pagos. No se permiten valores negativos.
-	TotalRetencionesISR decimal.Decimal `xml:"TotalRetencionesISR,attr,omitempty"`
+	TotalRetencionesISR decimal.NullDecimal `xml:"TotalRetencionesISR,attr,omitempty"`
 	// TotalRetencionesIEPS Atributo condicional para expresar el total de los impuestos retenidos de IEPS que se desprenden de los pagos. No se permiten valores negativos.
-	TotalRetencionesIEPS decimal.Decimal `xml:"TotalRetencionesIEPS,attr,omitempty"`
+	TotalRetencionesIEPS decimal.NullDecimal `xml:"TotalRetencionesIEPS,attr,omitempty"`
 	// TotalTrasladosBaseIVA16 Atributo condicional para expresar el total de la base de IVA trasladado a la tasa del 16% que se desprende de los pagos. No se permiten valores negativos.
-	TotalTrasladosBaseIVA16 decimal.Decimal `xml:"TotalTrasladosBaseIVA16,attr,omitempty"`
+	TotalTrasladosBaseIVA16 decimal.NullDecimal `xml:"TotalTrasladosBaseIVA16,attr,omitempty"`
 	// TotalTrasladosImpuestoIVA16 Atributo condicional para expresar el total de los impuestos de IVA trasladado a la tasa del 16% que se desprenden de los pagos. No se permiten valores negativos.
-	TotalTrasladosImpuestoIVA16 decimal.Decimal `xml:"TotalTrasladosImpuestoIVA16,attr,omitempty"`
+	TotalTrasladosImpuestoIVA16 decimal.NullDecimal `xml:"TotalTrasladosImpuestoIVA16,attr,omitempty"`
 	// TotalTrasladosBaseIVA8 Atributo condicional para expresar el total de la base de IVA trasladado a la tasa del 8% que se desprende de los pagos. No se permiten valores negativos.
-	TotalTrasladosBaseIVA8 decimal.Decimal `xml:"TotalTrasladosBaseIVA8,attr,omitempty"`
+	TotalTrasladosBaseIVA8 decimal.NullDecimal `xml:"TotalTrasladosBaseIVA8,attr,omitempty"`
 	// TotalTrasladosImpuestoIVA8 Atributo condicional para expresar el total de los impuestos de IVA trasladado a la tasa del 8% que se desprenden de los pagos. No se permiten valores negativos.
-	TotalTrasladosImpuestoIVA8 decimal.Decimal `xml:"TotalTrasladosImpuestoIVA8,attr,omitempty"`
+	TotalTrasladosImpuestoIVA8 decimal.NullDecimal `xml:"TotalTrasladosImpuestoIVA8,attr,omitempty"`
 	// TotalTrasladosBaseIVA0 Atributo condicional para expresar el total de la base de IVA trasladado a la tasa del 0% que se desprende de los pagos. No se permiten valores negativos.
-	TotalTrasladosBaseIVA0 decimal.Decimal `xml:"TotalTrasladosBaseIVA0,attr,omitempty"`
+	TotalTrasladosBaseIVA0 decimal.NullDecimal `xml:"TotalTrasladosBaseIVA0,attr,omitempty"`
 	// TotalTrasladosImpuestoIVA0 Atributo condicional para expresar el total de los impuestos de IVA trasladado a la tasa del 0% que se desprenden de los pagos. No se permiten valores negativos.
-	TotalTrasladosImpuestoIVA0 decimal.Decimal `xml:"TotalTrasladosImpuestoIVA0,attr,omitempty"`
+	TotalTrasladosImpuestoIVA0 decimal.NullDecimal `xml:"TotalTrasladosImpuestoIVA0,attr,omitempty"`
 	// TotalTrasladosBaseIVAExento Atributo condicional para expresar el total de la base de IVA trasladado exento que se desprende de los pagos. No se permiten valores negativos.
-	TotalTrasladosBaseIVAExento decimal.Decimal `xml:"TotalTrasladosBaseIVAExento,attr,omitempty"`
+	TotalTrasladosBaseIVAExento decimal.NullDecimal `xml:"TotalTrasladosBaseIVAExento,attr,omitempty"`
 	// MontoTotalPagos Atributo requerido para expresar el total de los pagos que se desprenden de los nodos Pago. No se permiten valores negativos.
 	MontoTotalPagos decimal.Decimal `xml:"MontoTotalPagos,attr"`
 }

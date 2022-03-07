@@ -399,51 +399,109 @@ func (t TipoRelacion) Desc() string {
 type UsoCFDI string
 
 const (
-	// UsoCFDIG01	Adquisición de mercancias.
+	// UsoCFDIG01 Adquisición de mercancías.
 	UsoCFDIG01 UsoCFDI = "G01"
-	// UsoCFDIG02	Devoluciones, descuentos o bonificacione
+	// UsoCFDIG02 Devoluciones, descuentos o bonificaciones.
 	UsoCFDIG02 UsoCFDI = "G02"
-	// UsoCFDIG03	Gastos en general.
+	// UsoCFDIG03 Gastos en general.
 	UsoCFDIG03 UsoCFDI = "G03"
-	// UsoCFDII01	Construcciones.
+	// UsoCFDII01 Construcciones.
 	UsoCFDII01 UsoCFDI = "I01"
-	// UsoCFDII02	Mobilario y equipo de oficina por invers
+	// UsoCFDII02 Mobiliario y equipo de oficina por inversiones.
 	UsoCFDII02 UsoCFDI = "I02"
-	// UsoCFDII03	Equipo de transporte.
+	// UsoCFDII03 Equipo de transporte.
 	UsoCFDII03 UsoCFDI = "I03"
-	// UsoCFDII04	Equipo de computo y accesorios.
+	// UsoCFDII04 Equipo de computo y accesorios.
 	UsoCFDII04 UsoCFDI = "I04"
-	// UsoCFDII05	Dados, troqueles, moldes, matrices y her
+	// UsoCFDII05 Dados, troqueles, moldes, matrices y herramental.
 	UsoCFDII05 UsoCFDI = "I05"
-	// UsoCFDII06	Comunicaciones telefónicas.
+	// UsoCFDII06 Comunicaciones telefónicas.
 	UsoCFDII06 UsoCFDI = "I06"
-	// UsoCFDII07	Comunicaciones satelitales.
+	// UsoCFDII07 Comunicaciones satelitales.
 	UsoCFDII07 UsoCFDI = "I07"
-	// UsoCFDII08	Otra maquinaria y equipo.
+	// UsoCFDII08 Otra maquinaria y equipo.
 	UsoCFDII08 UsoCFDI = "I08"
-	// UsoCFDID01	Honorarios médicos, dentales y gastos ho
+	// UsoCFDID01 Honorarios médicos, dentales y gastos hospitalarios.
 	UsoCFDID01 UsoCFDI = "D01"
-	// UsoCFDID02	Gastos médicos por incapacidad o discapa
+	// UsoCFDID02 Gastos médicos por incapacidad o discapacidad.
 	UsoCFDID02 UsoCFDI = "D02"
-	// UsoCFDID03	Gastos funerales.
+	// UsoCFDID03 Gastos funerales.
 	UsoCFDID03 UsoCFDI = "D03"
-	// UsoCFDID04	Donativos.
+	// UsoCFDID04 Donativos.
 	UsoCFDID04 UsoCFDI = "D04"
-	// UsoCFDID05	Intereses reales efectivamente pagados p
+	// UsoCFDID05 Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación).
 	UsoCFDID05 UsoCFDI = "D05"
-	// UsoCFDID06	Aportaciones voluntarias al SAR.
+	// UsoCFDID06 Aportaciones voluntarias al SAR.
 	UsoCFDID06 UsoCFDI = "D06"
-	// UsoCFDID07	Primas por seguros de gastos médicos.
+	// UsoCFDID07 Primas por seguros de gastos médicos.
 	UsoCFDID07 UsoCFDI = "D07"
-	// UsoCFDID08	Gastos de transportación escolar obligat
+	// UsoCFDID08 Gastos de transportación escolar obligatoria.
 	UsoCFDID08 UsoCFDI = "D08"
-	// UsoCFDID09	Depósitos en cuentas para el ahorro, pri
+	// UsoCFDID09 Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones.
 	UsoCFDID09 UsoCFDI = "D09"
-	// UsoCFDID10	Pagos por servicios educativos (colegiat
+	// UsoCFDID10 Pagos por servicios educativos (colegiaturas).
 	UsoCFDID10 UsoCFDI = "D10"
-	// UsoCFDIS01	Sin efectos fiscales.
+	// UsoCFDIS01 Sin efectos fiscales.
 	UsoCFDIS01 UsoCFDI = "S01"
+	// UsoCFDICP01 Pagos
+	UsoCFDICP01 UsoCFDI = "CP01"
+	// UsoCFDICN01 Nómina
+	UsoCFDICN01 UsoCFDI = "CN01"
 )
+
+func (uso UsoCFDI) Desc() string {
+	switch uso {
+	case UsoCFDIG01:
+		return "Adquisición de mercancías."
+	case UsoCFDIG02:
+		return "Devoluciones, descuentos o bonificaciones."
+	case UsoCFDIG03:
+		return "Gastos en general."
+	case UsoCFDII01:
+		return "Construcciones."
+	case UsoCFDII02:
+		return "Mobiliario y equipo de oficina por inversiones."
+	case UsoCFDII03:
+		return "Equipo de transporte."
+	case UsoCFDII04:
+		return "Equipo de computo y accesorios."
+	case UsoCFDII05:
+		return "Dados, troqueles, moldes, matrices y herramental."
+	case UsoCFDII06:
+		return "Comunicaciones telefónicas."
+	case UsoCFDII07:
+		return "Comunicaciones satelitales."
+	case UsoCFDII08:
+		return "Otra maquinaria y equipo."
+	case UsoCFDID01:
+		return "Honorarios médicos, dentales y gastos hospitalarios."
+	case UsoCFDID02:
+		return "Gastos médicos por incapacidad o discapacidad."
+	case UsoCFDID03:
+		return "Gastos funerales."
+	case UsoCFDID04:
+		return "Donativos."
+	case UsoCFDID05:
+		return "Intereses reales efectivamente pagados por créditos hipotecarios (casa habitación)."
+	case UsoCFDID06:
+		return "Aportaciones voluntarias al SAR."
+	case UsoCFDID07:
+		return "Primas por seguros de gastos médicos."
+	case UsoCFDID08:
+		return "Gastos de transportación escolar obligatoria."
+	case UsoCFDID09:
+		return "Depósitos en cuentas para el ahorro, primas que tengan como base planes de pensiones."
+	case UsoCFDID10:
+		return "Pagos por servicios educativos (colegiaturas)."
+	case UsoCFDIS01:
+		return "Sin efectos fiscales.  "
+	case UsoCFDICP01:
+		return "Pagos"
+	case UsoCFDICN01:
+		return "Nómina"
+	}
+	return ""
+}
 
 // May be one 01, 02, 03, 04, 05
 type Periodicidad string

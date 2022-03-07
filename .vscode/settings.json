@@ -1,0 +1,6 @@
+{
+    "go.testEnvFile": "${workspaceFolder}/test.env",
+    "files.associations": {
+        "*.env_": "dotenv"
+    },
+}

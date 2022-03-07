@@ -41,16 +41,16 @@ func compareEqualTotales(diffs *compare.Diffs, v1, v2 *Totales, path string) {
 		return
 	}
 
-	compare.Decimal(diffs, v1.TotalRetencionesIVA, v2.TotalRetencionesIVA, path+".TotalRetencionesIVA")
-	compare.Decimal(diffs, v1.TotalRetencionesISR, v2.TotalRetencionesISR, path+".TotalRetencionesISR")
-	compare.Decimal(diffs, v1.TotalRetencionesIEPS, v2.TotalRetencionesIEPS, path+".TotalRetencionesIEPS")
-	compare.Decimal(diffs, v1.TotalTrasladosBaseIVA16, v2.TotalTrasladosBaseIVA16, path+".TotalTrasladosBaseIVA16")
-	compare.Decimal(diffs, v1.TotalTrasladosImpuestoIVA16, v2.TotalTrasladosImpuestoIVA16, path+".TotalTrasladosImpuestoIVA16")
-	compare.Decimal(diffs, v1.TotalTrasladosBaseIVA8, v2.TotalTrasladosBaseIVA8, path+".TotalTrasladosBaseIVA8")
-	compare.Decimal(diffs, v1.TotalTrasladosImpuestoIVA8, v2.TotalTrasladosImpuestoIVA8, path+".TotalTrasladosImpuestoIVA8")
-	compare.Decimal(diffs, v1.TotalTrasladosBaseIVA0, v2.TotalTrasladosBaseIVA0, path+".TotalTrasladosBaseIVA0")
-	compare.Decimal(diffs, v1.TotalTrasladosImpuestoIVA0, v2.TotalTrasladosImpuestoIVA0, path+".TotalTrasladosImpuestoIVA0")
-	compare.Decimal(diffs, v1.TotalTrasladosBaseIVAExento, v2.TotalTrasladosBaseIVAExento, path+".TotalTrasladosBaseIVAExento")
+	compare.NullDecimal(diffs, v1.TotalRetencionesIVA, v2.TotalRetencionesIVA, path+".TotalRetencionesIVA")
+	compare.NullDecimal(diffs, v1.TotalRetencionesISR, v2.TotalRetencionesISR, path+".TotalRetencionesISR")
+	compare.NullDecimal(diffs, v1.TotalRetencionesIEPS, v2.TotalRetencionesIEPS, path+".TotalRetencionesIEPS")
+	compare.NullDecimal(diffs, v1.TotalTrasladosBaseIVA16, v2.TotalTrasladosBaseIVA16, path+".TotalTrasladosBaseIVA16")
+	compare.NullDecimal(diffs, v1.TotalTrasladosImpuestoIVA16, v2.TotalTrasladosImpuestoIVA16, path+".TotalTrasladosImpuestoIVA16")
+	compare.NullDecimal(diffs, v1.TotalTrasladosBaseIVA8, v2.TotalTrasladosBaseIVA8, path+".TotalTrasladosBaseIVA8")
+	compare.NullDecimal(diffs, v1.TotalTrasladosImpuestoIVA8, v2.TotalTrasladosImpuestoIVA8, path+".TotalTrasladosImpuestoIVA8")
+	compare.NullDecimal(diffs, v1.TotalTrasladosBaseIVA0, v2.TotalTrasladosBaseIVA0, path+".TotalTrasladosBaseIVA0")
+	compare.NullDecimal(diffs, v1.TotalTrasladosImpuestoIVA0, v2.TotalTrasladosImpuestoIVA0, path+".TotalTrasladosImpuestoIVA0")
+	compare.NullDecimal(diffs, v1.TotalTrasladosBaseIVAExento, v2.TotalTrasladosBaseIVAExento, path+".TotalTrasladosBaseIVAExento")
 	compare.Decimal(diffs, v1.MontoTotalPagos, v2.MontoTotalPagos, path+".MontoTotalPagos")
 }
 

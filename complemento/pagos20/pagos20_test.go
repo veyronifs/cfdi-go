@@ -57,12 +57,12 @@ func TestUnmarshal(t *testing.T) {
 	expectedPagos := &Pagos{
 		Version: "2.0",
 		Totales: &Totales{
-			TotalRetencionesIVA:         decimal.NewFromFloat(1),
-			TotalRetencionesISR:         decimal.NewFromFloat(1),
-			TotalTrasladosBaseIVA16:     decimal.NewFromFloat(100),
-			TotalTrasladosImpuestoIVA16: decimal.NewFromFloat(16),
-			TotalTrasladosBaseIVA8:      decimal.NewFromFloat(100),
-			TotalTrasladosImpuestoIVA8:  decimal.NewFromFloat(8),
+			TotalRetencionesIVA:         decimal.NewNullDecimal(decimal.NewFromFloat(1)),
+			TotalRetencionesISR:         decimal.NewNullDecimal(decimal.NewFromFloat(1)),
+			TotalTrasladosBaseIVA16:     decimal.NewNullDecimal(decimal.NewFromFloat(100)),
+			TotalTrasladosImpuestoIVA16: decimal.NewNullDecimal(decimal.NewFromFloat(16)),
+			TotalTrasladosBaseIVA8:      decimal.NewNullDecimal(decimal.NewFromFloat(100)),
+			TotalTrasladosImpuestoIVA8:  decimal.NewNullDecimal(decimal.NewFromFloat(8)),
 			MontoTotalPagos:             decimal.NewFromFloat(1000),
 		},
 		Pago: []*Pago{

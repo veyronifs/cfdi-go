@@ -107,6 +107,13 @@ func (e *Encoder) WriteAttrDecimalCurr(attr string, value decimal.Decimal, curr 
 	e.WriteAttrStr(attr, curconv.RoundToMaxStr(value, curr))
 }
 
+// WriteAttrNullDecimalCurr writes the named attribute with the value rounded to the MAX currency decimal.
+func (e *Encoder) WriteAttrNullDecimalCurr(attr string, value decimal.NullDecimal, curr string) {
+	if value.Valid {
+		e.WriteAttrDecimalCurr(attr, value.Decimal, curr)
+	}
+}
+
 // WriteAttrDecimalCurrZ writes the named attribute with the value rounded to the MAX currency decimal,
 // if the value is not a zero value.
 func (e *Encoder) WriteAttrDecimalCurrZ(attr string, value decimal.Decimal, moneda string) {
@@ -118,6 +125,13 @@ func (e *Encoder) WriteAttrDecimalCurrZ(attr string, value decimal.Decimal, mone
 // WriteAttrDecimal writes the named attribute with the value rounded to nDec decimals.
 func (e *Encoder) WriteAttrDecimal(attr string, value decimal.Decimal, nDec int) {
 	e.WriteAttrStr(attr, curconv.RoundToDecStr(value, nDec))
+}
+
+// WriteAttrNullDecimal writes the named attribute with the value rounded to nDec decimals.
+func (e *Encoder) WriteAttrNullDecimal(attr string, value decimal.NullDecimal, nDec int) {
+	if value.Valid {
+		e.WriteAttrDecimal(attr, value.Decimal, nDec)
+	}
 }
 
 // WriteAttrDecimal writes the named attribute with the value rounded to nDec decimals,

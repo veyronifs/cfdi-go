@@ -60,11 +60,19 @@ func Comparable[S comparable](d *Diffs, v1, v2 S, msg string, args ...interface{
 	return false
 }
 
-func Decimal(d *Diffs, v1, v2 decimal.Decimal, msg string, args ...interface{}) bool {
+func Decimal(d *Diffs, v1, v2 decimal.Decimal, msg string, args ...interface{}) {
 	if !v1.Equal(v2) {
 		d.Append(v1.String(), v2.String(), msg, args...)
-		return true
+	}
+}
+
+func NullDecimal(d *Diffs, v1, v2 decimal.NullDecimal, msg string, args ...interface{}) {
+	if !v1.Valid && !v2.Valid { // both are invalid
+		return
+	} else if (!v1.Valid && v2.Valid) || (v1.Valid && !v2.Valid) { // xor
+		d.Append(v1.Valid, v2.Valid, msg+" (validity): ", args...)
+		return
 	}
 
-	return false
+	Decimal(d, v1.Decimal, v2.Decimal, msg, args...)
 }
