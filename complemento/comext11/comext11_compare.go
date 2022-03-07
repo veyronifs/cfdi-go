@@ -34,8 +34,8 @@ func Compare(diffs *compare.Diffs, v1, v2 *ComercioExterior) {
 	compare.Decimal(diffs, v1.TotalUSD, v2.TotalUSD, path+".TotalUSD")
 
 	compareMercancias(diffs, v1.Mercancias, v2.Mercancias, path+".Mercancias")
-	compareEmisor(diffs, v1.Emisor, v2.Emisor, path+".Mercancias")
-	compareReceptor(diffs, v1.Receptor, v2.Receptor, path+".Mercancias")
+	compareEmisor(diffs, v1.Emisor, v2.Emisor, path+".Emisor")
+	compareReceptor(diffs, v1.Receptor, v2.Receptor, path+".Receptor")
 
 	l1, l2 := len(v1.Propietarios), len(v2.Propietarios)
 	compare.Comparable(diffs, l1, l2, path+".Propietarios.len()")
