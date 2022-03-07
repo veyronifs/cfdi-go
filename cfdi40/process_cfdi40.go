@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/types"
@@ -232,8 +231,7 @@ func NewInformacionGlobal(rfc string, periodicidad types.Periodicidad, fecha typ
 	if periodicidad == "" {
 		return nil, fmt.Errorf("InformacionGlobal.Peridiocidad %w", ErrRequired)
 	}
-	time := time.Time(fecha)
-	if time.IsZero() {
+	if fecha.IsZero() {
 		return nil, fmt.Errorf("InformacionGlobal.Fecha %w", ErrRequired)
 	}
 
@@ -241,16 +239,16 @@ func NewInformacionGlobal(rfc string, periodicidad types.Periodicidad, fecha typ
 	if periodicidad != types.PeriodicidadBimestral {
 		return &InformacionGlobal{
 			Periodicidad: periodicidad,
-			Meses:        time.Format("01"),
-			Anio:         time.Year(),
+			Meses:        fecha.Format("01"),
+			Anio:         fecha.Year(),
 		}, nil
 	}
 
 	// Si la Periodicidad es "05" Bimestral, Meses debe contener 13, 14, 15, 16, 17 o 18.
 	info := InformacionGlobal{
 		Periodicidad: periodicidad,
-		Meses:        strconv.Itoa(int((time.Month()-1)/2 + 13)),
-		Anio:         time.Year(),
+		Meses:        strconv.Itoa(int((fecha.Month()-1)/2 + 13)),
+		Anio:         fecha.Year(),
 	}
 
 	return &info, nil

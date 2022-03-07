@@ -99,7 +99,7 @@ func TestTrasladoCartaPorte20Autotransporte(t *testing.T) {
 						TipoUbicacion:               "Destino",
 						RFCRemitenteDestinatario:    "BAR011108CC6",
 						NombreRemitenteDestinatario: "BARCEL",
-						FechaHoraSalidaLlegada:      types.FechaH(time.Now().Add(time.Hour * 2)),
+						FechaHoraSalidaLlegada:      types.NewFechaHTime(time.Now().Add(time.Hour * 2)),
 						DistanciaRecorrida:          decimal.NewFromFloat(10),
 						Domicilio: &cartaporte20.Domicilio{
 							Calle:          "KM 54 Carretera Mexico-Toluca",

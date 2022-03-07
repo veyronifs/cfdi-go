@@ -8,27 +8,29 @@ import (
 
 func NewFechaH(value string) (FechaH, error) {
 	t, err := time.Parse("2006-01-02T15:04:05", value)
-	return FechaH(t), err
+	return FechaH{t}, err
+}
+func NewFechaHTime(t time.Time) FechaH {
+	return FechaH{t}
 }
 
 func NewFechaHNow() FechaH {
-	return FechaH(time.Now().Truncate(time.Second))
+	return FechaH{time.Now().Truncate(time.Second)}
 }
 
 // Tipo definido para la expresión de la fecha y hora. Se expresa en la forma AAAA-MM-DDThh:mm:ss
-type FechaH time.Time
+type FechaH struct {
+	time.Time
+}
 
 func (t *FechaH) UnmarshalText(text []byte) error {
-	return (*xsdDateTime)(t).UnmarshalText(text)
+	return (*xsdDateTime)(&t.Time).UnmarshalText(text)
 }
 func (t FechaH) MarshalText() ([]byte, error) {
-	return xsdDateTime(t).MarshalText()
+	return xsdDateTime(t.Time).MarshalText()
 }
 func (t FechaH) String() string {
-	return time.Time(t).Format("2006-01-02T15:04:05")
-}
-func (t FechaH) Format(s string) string {
-	return time.Time(t).Format(s)
+	return time.Time(t.Time).Format("2006-01-02T15:04:05")
 }
 
 type xsdDate time.Time
@@ -96,25 +98,28 @@ func (t xsdDateTime) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 
 func NewFecha(value string) (Fecha, error) {
 	t, err := time.Parse("2006-01-02", value)
-	return Fecha(t), err
+	return Fecha{t}, err
+}
+
+func NewFechaTime(t time.Time) Fecha {
+	return Fecha{t}
 }
 
 func NewFechaNow() Fecha {
-	return Fecha(time.Now().Truncate(time.Second))
+	return Fecha{time.Now().Truncate(time.Second)}
 }
 
 // Tipo definido para la expresión de la fecha. Se expresa en la forma AAAA-MM-DD.
-type Fecha time.Time
+type Fecha struct {
+	time.Time
+}
 
 func (t *Fecha) UnmarshalText(text []byte) error {
-	return (*xsdDate)(t).UnmarshalText(text)
+	return (*xsdDate)(&t.Time).UnmarshalText(text)
 }
 func (t Fecha) MarshalText() ([]byte, error) {
-	return xsdDate(t).MarshalText()
+	return xsdDate(t.Time).MarshalText()
 }
 func (t Fecha) String() string {
-	return time.Time(t).Format("2006-01-02")
-}
-func (t Fecha) Format(s string) string {
-	return time.Time(t).Format(s)
+	return time.Time(t.Time).Format("2006-01-02")
 }

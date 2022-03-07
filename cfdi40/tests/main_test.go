@@ -75,7 +75,7 @@ var emisor16_8_0 *cfdi40.Emisor = &cfdi40.Emisor{
 func newFechaHNow2() types.FechaH {
 	now := time.Now()
 	now = now.Add(time.Hour * -2)
-	return types.FechaH(now)
+	return types.NewFechaHTime(now)
 }
 
 func save(name string, xmlTimbrado []byte) {
