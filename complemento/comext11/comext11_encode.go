@@ -109,6 +109,9 @@ func encodeMercanciasMercancia(enc *encoder.Encoder, m *Mercancia) {
 }
 
 func encodeEmisor(enc *encoder.Encoder, emisor *Emisor) {
+	if emisor == nil {
+		return
+	}
 	enc.StartElem(comext11XS.Elem("Emisor"))
 	defer enc.EndElem("Emisor")
 
