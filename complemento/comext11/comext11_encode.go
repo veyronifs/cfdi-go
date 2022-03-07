@@ -66,10 +66,10 @@ func (ce *ComercioExterior) MarshalComplemento(enc *encoder.Encoder) {
 	enc.WriteAttrDecimalZ("TipoCambioUSD", ce.TipoCambioUSD, 2)
 	enc.WriteAttrDecimalZ("TotalUSD", ce.TotalUSD, 2)
 
-	ce.encodeEmisor(enc)
-	ce.encodePropietarios(enc, ce.Propietarios)
-	ce.encodeDestinatarios(enc, ce.Destinatarios)
-	ce.encodeMercancias(enc)
+	encodeEmisor(enc, ce.Emisor)
+	encodePropietarios(enc, ce.Propietarios)
+	encodeDestinatarios(enc, ce.Destinatarios)
+	encodeMercancias(enc, ce.Mercancias)
 
 	// for _, m := range ce.Propietarios {
 	// 	enc.StartElem(comext11XS.Elem("Propietario"))
@@ -80,15 +80,15 @@ func (ce *ComercioExterior) MarshalComplemento(enc *encoder.Encoder) {
 
 }
 
-func (ce *ComercioExterior) encodeMercancias(enc *encoder.Encoder) {
+func encodeMercancias(enc *encoder.Encoder, mercancias []*Mercancia) {
 	enc.StartElem(comext11XS.Elem("Mercancias"))
 	defer enc.EndElem("Mercancias")
-	for _, m := range ce.Mercancias {
-		ce.encodeMercanciasMercancia(enc, m)
+	for _, m := range mercancias {
+		encodeMercanciasMercancia(enc, m)
 	}
 }
 
-func (ce *ComercioExterior) encodeMercanciasMercancia(enc *encoder.Encoder, m *Mercancia) {
+func encodeMercanciasMercancia(enc *encoder.Encoder, m *Mercancia) {
 	enc.StartElem(comext11XS.Elem("Mercancia"))
 	defer enc.EndElem("Mercancia")
 
@@ -108,23 +108,23 @@ func (ce *ComercioExterior) encodeMercanciasMercancia(enc *encoder.Encoder, m *M
 
 }
 
-func (ce *ComercioExterior) encodeEmisor(enc *encoder.Encoder) {
+func encodeEmisor(enc *encoder.Encoder, emisor *Emisor) {
 	enc.StartElem(comext11XS.Elem("Emisor"))
 	defer enc.EndElem("Emisor")
 
-	enc.WriteAttrStrZ("Curp", ce.Emisor.Curp)
-	ce.encodeDomicilio(enc, ce.Emisor.Domicilio)
+	enc.WriteAttrStrZ("Curp", emisor.Curp)
+	encodeDomicilio(enc, emisor.Domicilio)
 }
 
-func (ce *ComercioExterior) encodeReceptor(enc *encoder.Encoder) {
+func encodeReceptor(enc *encoder.Encoder, receptor *Receptor) {
 	enc.StartElem(comext11XS.Elem("Receptor"))
 	defer enc.EndElem("Receptor")
 
-	enc.WriteAttrStrZ("NumRegIdTrib", ce.Receptor.NumRegIdTrib)
-	ce.encodeDomicilio(enc, ce.Receptor.Domicilio)
+	enc.WriteAttrStrZ("NumRegIdTrib", receptor.NumRegIdTrib)
+	encodeDomicilio(enc, receptor.Domicilio)
 }
 
-func (ce *ComercioExterior) encodePropietarios(enc *encoder.Encoder, Propietarios []*Propietario) {
+func encodePropietarios(enc *encoder.Encoder, Propietarios []*Propietario) {
 	for _, propietario := range Propietarios {
 		enc.StartElem(comext11XS.Elem("Propietario"))
 		enc.WriteAttrStrZ("NumRegIdTrib", propietario.NumRegIdTrib)
@@ -133,19 +133,19 @@ func (ce *ComercioExterior) encodePropietarios(enc *encoder.Encoder, Propietario
 	}
 }
 
-func (ce *ComercioExterior) encodeDestinatarios(enc *encoder.Encoder, Destinatarios []*Destinatario) {
+func encodeDestinatarios(enc *encoder.Encoder, Destinatarios []*Destinatario) {
 	for _, m := range Destinatarios {
 		enc.StartElem(comext11XS.Elem("Destinatario"))
 		enc.WriteAttrStrZ("NumRegIdTrib", m.NumRegIdTrib)
 		enc.WriteAttrStrZ("Nombre", m.Nombre)
 		for _, domicilio := range m.Domicilios {
-			ce.encodeDomicilio(enc, domicilio)
+			encodeDomicilio(enc, domicilio)
 		}
 		enc.EndElem("Destinatario")
 	}
 }
 
-func (ce *ComercioExterior) encodeDomicilio(enc *encoder.Encoder, m *Domicilio) {
+func encodeDomicilio(enc *encoder.Encoder, m *Domicilio) {
 	enc.StartElem(comext11XS.Elem("Domicilio"))
 	defer enc.EndElem("Domicilio")
 
