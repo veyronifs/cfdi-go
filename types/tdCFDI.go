@@ -7,9 +7,10 @@ import (
 )
 
 func NewFechaH(value string) (FechaH, error) {
-	t, err := time.Parse("2006-01-02T15:04:05", value)
+	t, err := time.ParseInLocation("2006-01-02T15:04:05", value, time.Local)
 	return FechaH{t}, err
 }
+
 func NewFechaHTime(t time.Time) FechaH {
 	return FechaH{t}
 }
@@ -97,7 +98,7 @@ func (t xsdDateTime) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 }
 
 func NewFecha(value string) (Fecha, error) {
-	t, err := time.Parse("2006-01-02", value)
+	t, err := time.ParseInLocation("2006-01-02", value, time.Local)
 	return Fecha{t}, err
 }
 

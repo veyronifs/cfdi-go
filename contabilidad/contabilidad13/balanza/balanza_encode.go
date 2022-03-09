@@ -19,18 +19,18 @@ func Unmarshal(data []byte) (*Balanza, error) {
 }
 
 var catXS = encoder.NSElem{
-	Prefix: "catalogocuentas",
+	Prefix: "BCE",
 	NS:     "http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion",
 }
 
 func Marshal(bal *Balanza) ([]byte, error) {
 	b := bytes.Buffer{}
 	enc := encoder.NewEncoder(&b)
-	enc.StartElem(catXS.ElemXS("Catalogo"))
-	defer enc.EndElem("Catalogo")
+	enc.StartElem(catXS.ElemXS("Balanza"))
+	defer enc.EndElem("Balanza")
 
 	enc.WriteAttrStr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-	enc.WriteAttrStr("xsi:schemaLocation", catXS.NS+" https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion/BalanzaComprobacion_1_3.xsd")
+	enc.WriteAttrStr("xsi:schemaLocation", catXS.NS+" http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/BalanzaComprobacion/BalanzaComprobacion_1_3.xsd")
 
 	encodeHeader(enc, bal)
 	enc.EndAllFlush()
@@ -43,7 +43,9 @@ func encodeHeader(enc *encoder.Encoder, bal *Balanza) {
 	enc.WriteAttrStrZ("Mes", fmt.Sprintf("%02d", bal.Mes))
 	enc.WriteAttrIntZ("Anio", bal.Anio)
 	enc.WriteAttrStrZ("TipoEnvio", string(bal.TipoEnvio))
-	enc.WriteAttrStrZ("FechaModBal", bal.FechaModBal.String())
+	if !bal.FechaModBal.IsZero() {
+		enc.WriteAttrStrZ("FechaModBal", bal.FechaModBal.String())
+	}
 	enc.WriteAttrStrZ("Sello", bal.Sello)
 	enc.WriteAttrStrZ("noCertificado", bal.NoCertificado)
 	enc.WriteAttrStrZ("Certificado", bal.Certificado)
@@ -54,7 +56,7 @@ func encodeHeader(enc *encoder.Encoder, bal *Balanza) {
 func encodeCtas(enc *encoder.Encoder, ctas []*Cta) {
 	for _, cta := range ctas {
 		enc.StartElem(catXS.Elem("Ctas"))
-		enc.WriteAttrStrZ("NumCta", cta.NumCta)
+		enc.WriteAttrStrMaxEllipsisZ("NumCta", cta.NumCta, 100)
 		enc.WriteAttrDecimal("SaldoIni", cta.SaldoIni, 2)
 		enc.WriteAttrDecimal("Debe", cta.Debe, 2)
 		enc.WriteAttrDecimal("Haber", cta.Haber, 2)
