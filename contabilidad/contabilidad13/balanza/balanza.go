@@ -1,6 +1,8 @@
 package balanza
 
 import (
+	"fmt"
+
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/types"
 )
@@ -27,6 +29,24 @@ type Balanza struct {
 	NoCertificado string `xml:"noCertificado,attr,omitempty"`
 	// Certificado Atributo opcional que sirve para expresar el certificado de sello digital que ampara al archivo de contabilidad electrónica como texto, en formato base 64.
 	Certificado string `xml:"Certificado,attr,omitempty"`
+}
+
+var ErrRequerido = fmt.Errorf("requerido")
+
+func (b Balanza) FileName() (string, error) {
+	if b.RFC == "" {
+		return "", fmt.Errorf("RFC %w", ErrRequerido)
+	}
+	if b.Mes == 0 {
+		return "", fmt.Errorf("mes %w", ErrRequerido)
+	}
+	if b.Anio == 0 {
+		return "", fmt.Errorf("año %w", ErrRequerido)
+	}
+	if b.TipoEnvio == "" {
+		return "", fmt.Errorf("tipo envio %w", ErrRequerido)
+	}
+	return fmt.Sprintf("%s%d%02dB%s", b.RFC, b.Anio, b.Mes, b.TipoEnvio), nil
 }
 
 // Cta Nodo obligatorio para expresar el detalle de cada cuenta o subcuenta de la balanza de comprobación.
