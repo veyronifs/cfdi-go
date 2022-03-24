@@ -54,19 +54,22 @@ func (ce *ComercioExterior) MarshalComplemento(enc *encoder.Encoder) {
 	)
 
 	enc.WriteAttrStr("Version", ce.Version)
-	enc.WriteAttrStr("MotivoTraslado", ce.MotivoTraslado)
+	enc.WriteAttrStrZ("MotivoTraslado", ce.MotivoTraslado)
 	enc.WriteAttrStr("TipoOperacion", ce.TipoOperacion)
 	enc.WriteAttrStr("ClaveDePedimento", ce.ClaveDePedimento)
 	enc.WriteAttrStr("CertificadoOrigen", strconv.Itoa(ce.CertificadoOrigen))
-	enc.WriteAttrStr("NumCertificadoOrigen", ce.NumCertificadoOrigen)
-	enc.WriteAttrStr("NumeroExportadorConfiable", ce.NumeroExportadorConfiable)
+	enc.WriteAttrStrZ("NumCertificadoOrigen", ce.NumCertificadoOrigen)
+	enc.WriteAttrStrZ("NumeroExportadorConfiable", ce.NumeroExportadorConfiable)
 	enc.WriteAttrStrZ("Incoterm", ce.Incoterm)
 	enc.WriteAttrStr("Subdivision", strconv.Itoa(ce.Subdivision))
-	enc.WriteAttrStr("Observaciones", ce.Observaciones)
+	enc.WriteAttrStrZ("Observaciones", ce.Observaciones)
 	enc.WriteAttrDecimalZ("TipoCambioUSD", ce.TipoCambioUSD, 2)
-	enc.WriteAttrDecimalZ("TotalUSD", ce.TotalUSD, 2)
+	if !ce.TotalUSD.IsZero() {
+		enc.WriteAttrStr("TotalUSD", ce.TotalUSD.StringFixed(2))
+	}
 
 	encodeEmisor(enc, ce.Emisor)
+	encodeReceptor(enc, ce.Receptor)
 	encodePropietarios(enc, ce.Propietarios)
 	encodeDestinatarios(enc, ce.Destinatarios)
 	encodeMercancias(enc, ce.Mercancias)
