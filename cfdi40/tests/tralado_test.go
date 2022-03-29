@@ -57,10 +57,10 @@ func TestTrasladoCartaPorte20Autotransporte(t *testing.T) {
 		Fecha:             newFechaHNow2(),
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
-			Rfc:                     "BAR011108CC6",
-			Nombre:                  "BARCEL",
-			DomicilioFiscalReceptor: "52000",
-			RegimenFiscalReceptor:   "601",
+			Rfc:                     "KAHO641101B39",
+			Nombre:                  "OSCAR KALA HAAK",
+			DomicilioFiscalReceptor: "29950",
+			RegimenFiscalReceptor:   "612",
 			UsoCFDI:                 types.UsoCFDIS01,
 		},
 		Conceptos: cfdi40.Conceptos{
