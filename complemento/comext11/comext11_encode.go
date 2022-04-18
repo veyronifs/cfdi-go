@@ -123,6 +123,9 @@ func encodeEmisor(enc *encoder.Encoder, emisor *Emisor) {
 }
 
 func encodeReceptor(enc *encoder.Encoder, receptor *Receptor) {
+	if receptor == nil {
+		return
+	}
 	enc.StartElem(comext11XS.Elem("Receptor"))
 	defer enc.EndElem("Receptor")
 

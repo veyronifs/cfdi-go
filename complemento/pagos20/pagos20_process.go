@@ -80,3 +80,19 @@ func decimalMxn(d decimal.Decimal, moneda types.Moneda, tipoCambio decimal.Decim
 	}
 	return d.Mul(tipoCambio)
 }
+
+func CalcImpuestosP(pago *Pago) *ImpuestosP {
+	impP := &ImpuestosP{}
+	for _, docRel := range pago.DoctoRelacionado {
+		if docRel.ImpuestosDR == nil {
+			continue
+		}
+		for _, tras := range docRel.ImpuestosDR.TrasladosDR {
+			impP.AddTraslado(tras.BaseDR, tras.ImpuestoDR, tras.TipoFactorDR, tras.TasaOCuotaDR, tras.ImporteDR)
+		}
+		for _, ret := range docRel.ImpuestosDR.RetencionesDR {
+			impP.AddRetencion(ret.ImpuestoDR, ret.ImporteDR)
+		}
+	}
+	return impP
+}

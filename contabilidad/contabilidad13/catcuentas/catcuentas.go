@@ -1,6 +1,9 @@
 package catcuentas
 
 import (
+	"fmt"
+
+	"github.com/veyronifs/cfdi-go/contabilidad/contabilidad13"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -70,6 +73,17 @@ type Cta struct {
 	//
 	// Existen cuentas de Activo, Pasivo y Capital que por  su naturaleza pueden presentarse de manera Deudora o Acreedora
 	Natur Natur `xml:"Natur,attr"`
+}
+
+var ErrRequerido = fmt.Errorf("requerido")
+
+func (b Catalogo) Archivo() *contabilidad13.Archivo {
+	return &contabilidad13.Archivo{
+		RFC:  b.RFC,
+		Anio: b.Anio,
+		Mes:  b.Mes,
+		Tipo: "CT",
+	}
 }
 
 // Natur naturaleza de la cuenta o subcuenta.

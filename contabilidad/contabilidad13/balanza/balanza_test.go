@@ -105,75 +105,37 @@ func TestMarshal(t *testing.T) {
 
 func TestBalanzaFileName(t *testing.T) {
 	tests := []struct {
-		name        string
-		balanza     *Balanza
-		expected    string
-		expectedErr error
+		name     string
+		balanza  *Balanza
+		expected string
 	}{
 		{
-			name: "AAA010101AAA202012BN",
+			name: "Mes 12",
 			balanza: &Balanza{
 				RFC:       "AAA010101AAA",
 				Anio:      2020,
 				Mes:       12,
 				TipoEnvio: TipoEnvioN,
 			},
-			expected:    "AAA010101AAA202012BN",
-			expectedErr: nil,
+			expected: "AAA010101AAA202012BN",
 		},
 		{
-			name: "AAA010101AAA202012BC",
+			name: "Mes 01",
 			balanza: &Balanza{
 				RFC:       "AAA010101AAA",
 				Anio:      2020,
 				Mes:       1,
 				TipoEnvio: TipoEnvioC,
 			},
-			expected:    "AAA010101AAA202001BC",
-			expectedErr: nil,
-		},
-		{
-			name: "RFC REQUERIDO",
-			balanza: &Balanza{
-				Anio:      2020,
-				Mes:       12,
-				TipoEnvio: TipoEnvioN,
-			},
-			expected:    "",
-			expectedErr: ErrRequerido,
-		},
-		{
-			name: "ANIO REQUERIDO",
-			balanza: &Balanza{
-				RFC:       "AAA010101AAA",
-				Mes:       12,
-				TipoEnvio: TipoEnvioN,
-			},
-			expected:    "",
-			expectedErr: ErrRequerido,
-		},
-		{
-			name: "MES REQUERIDO",
-			balanza: &Balanza{
-				RFC:       "AAA010101AAA",
-				Anio:      2020,
-				TipoEnvio: TipoEnvioN,
-			},
-			expected:    "",
-			expectedErr: ErrRequerido,
+			expected: "AAA010101AAA202001BC",
 		},
 	}
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			actual, err := test.balanza.FileName()
-			if test.expectedErr != nil {
-				assert.ErrorIs(t, err, test.expectedErr)
-				assert.Empty(t, actual)
-			} else {
-				assert.Equal(t, test.expected, actual)
-				assert.NoError(t, err)
-			}
+			archivo := test.balanza.Archivo()
+			actual := archivo.FileName()
+			assert.Equal(t, test.expected, actual)
 		})
 	}
 

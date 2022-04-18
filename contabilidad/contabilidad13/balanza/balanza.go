@@ -1,9 +1,8 @@
 package balanza
 
 import (
-	"fmt"
-
 	"github.com/shopspring/decimal"
+	"github.com/veyronifs/cfdi-go/contabilidad/contabilidad13"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -31,22 +30,13 @@ type Balanza struct {
 	Certificado string `xml:"Certificado,attr,omitempty"`
 }
 
-var ErrRequerido = fmt.Errorf("requerido")
-
-func (b Balanza) FileName() (string, error) {
-	if b.RFC == "" {
-		return "", fmt.Errorf("RFC %w", ErrRequerido)
+func (b Balanza) Archivo() *contabilidad13.Archivo {
+	return &contabilidad13.Archivo{
+		RFC:  b.RFC,
+		Anio: b.Anio,
+		Mes:  b.Mes,
+		Tipo: "B" + string(b.TipoEnvio),
 	}
-	if b.Mes == 0 {
-		return "", fmt.Errorf("mes %w", ErrRequerido)
-	}
-	if b.Anio == 0 {
-		return "", fmt.Errorf("año %w", ErrRequerido)
-	}
-	if b.TipoEnvio == "" {
-		return "", fmt.Errorf("tipo envio %w", ErrRequerido)
-	}
-	return fmt.Sprintf("%s%d%02dB%s", b.RFC, b.Anio, b.Mes, b.TipoEnvio), nil
 }
 
 // Cta Nodo obligatorio para expresar el detalle de cada cuenta o subcuenta de la balanza de comprobación.
@@ -61,6 +51,8 @@ type Cta struct {
 	Haber decimal.Decimal `xml:"Haber,attr"`
 	// SaldoFin Atributo requerido para expresar el monto del saldo final de la cuenta o subcuenta en el periodo. De acuerdo a la naturaleza de la cuenta o subcuenta, deberá de corresponder el saldo final, de lo contrario se entenderá que es un saldo final de naturaleza inversa. En caso de no existir dato, colocar cero (0)
 	SaldoFin decimal.Decimal `xml:"SaldoFin,attr"`
+	// Desc Atributo no existente en el xsd, se usa para expresar la descripción de la cuenta o subcuenta.
+	Desc string `xml:"-"`
 }
 
 // Must match the pattern [NC]
@@ -72,3 +64,14 @@ const (
 	// TipoEnvioC Complementaria.
 	TipoEnvioC TipoEnvio = "C"
 )
+
+func (t TipoEnvio) Desc() string {
+	switch t {
+	case TipoEnvioN:
+		return "Normal"
+	case TipoEnvioC:
+		return "Complementaria"
+	default:
+		return ""
+	}
+}

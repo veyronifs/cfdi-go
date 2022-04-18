@@ -4,6 +4,7 @@ import (
 	"bytes"
 
 	"github.com/veyronifs/cfdi-go/encoder"
+	"github.com/veyronifs/cfdi-go/types"
 )
 
 var pagos20XS = encoder.NSElem{
@@ -159,7 +160,6 @@ func encodeRetencionDR(enc *encoder.Encoder, v *RetencionDR, monedaDR string) {
 	enc.WriteAttrDecimalCurr("BaseDR", v.BaseDR, monedaDR)
 	enc.WriteAttrStrZ("ImpuestoDR", string(v.ImpuestoDR))
 	enc.WriteAttrStrZ("TipoFactorDR", string(v.TipoFactorDR))
-	//enc.WriteAttrDecimal("TasaOCuotaDR", v.TasaOCuotaDR, 6)
 	enc.WriteAttrStr("TasaOCuotaDR", v.TasaOCuotaDR.StringFixed(6))
 	enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
 }
@@ -174,8 +174,10 @@ func encodeTrasladoDR(enc *encoder.Encoder, v *TrasladoDR, monedaDR string) {
 	enc.WriteAttrDecimalCurr("BaseDR", v.BaseDR, monedaDR)
 	enc.WriteAttrStrZ("ImpuestoDR", string(v.ImpuestoDR))
 	enc.WriteAttrStrZ("TipoFactorDR", string(v.TipoFactorDR))
-	enc.WriteAttrStr("TasaOCuotaDR", v.TasaOCuotaDR.StringFixed(6))
-	enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
+	if v.TipoFactorDR != types.TipoFactorExento {
+		enc.WriteAttrStr("TasaOCuotaDR", v.TasaOCuotaDR.StringFixed(6))
+		enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
+	}
 }
 
 func encodeImpuestosP(enc *encoder.Encoder, v *ImpuestosP, monedaP string) {
@@ -225,7 +227,8 @@ func encodeTrasladoP(enc *encoder.Encoder, v *TrasladoP, monedaP string) {
 	enc.WriteAttrDecimalCurr("BaseP", v.BaseP, monedaP)
 	enc.WriteAttrStrZ("ImpuestoP", string(v.ImpuestoP))
 	enc.WriteAttrStrZ("TipoFactorP", string(v.TipoFactorP))
-	//enc.WriteAttrDecimalCurr("TasaOCuotaP", v.TasaOCuotaP, monedaP)
-	enc.WriteAttrStr("TasaOCuotaP", v.TasaOCuotaP.StringFixed(6))
-	enc.WriteAttrDecimalCurr("ImporteP", v.ImporteP, monedaP)
+	if v.TipoFactorP != types.TipoFactorExento {
+		enc.WriteAttrStr("TasaOCuotaP", v.TasaOCuotaP.StringFixed(6))
+		enc.WriteAttrDecimalCurr("ImporteP", v.ImporteP, monedaP)
+	}
 }

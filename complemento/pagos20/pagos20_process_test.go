@@ -339,3 +339,61 @@ func Test_decimalMxn(t *testing.T) {
 		})
 	}
 }
+
+func TestImpuestoPAddRetencionTraslado(t *testing.T) {
+	impP := &ImpuestosP{}
+
+	decimalF := decimal.NewFromFloat
+	impP.AddRetencion(types.ImpuestoIVA, decimalF(106.67))
+	impP.AddRetencion(types.ImpuestoISR, decimalF(100))
+	impP.AddRetencion(types.ImpuestoIVA, decimalF(106.67))
+	impP.AddRetencion(types.ImpuestoISR, decimalF(100))
+	impP.AddRetencion(types.ImpuestoISR, decimalF(400))
+
+	impP.AddTraslado(decimalF(1000), types.ImpuestoIVA, types.TipoFactorTasa, decimalF(0.16), decimalF(160))
+	impP.AddTraslado(decimalF(1000), types.ImpuestoIVA, types.TipoFactorTasa, decimalF(0.16), decimalF(160))
+	impP.AddTraslado(decimalF(1000), types.ImpuestoIVA, types.TipoFactorTasa, decimalF(0.08), decimalF(80))
+	impP.AddTraslado(decimalF(1000), types.ImpuestoIVA, types.TipoFactorTasa, decimalF(0.00), decimalF(0))
+
+	diffs := compare.NewDiffs()
+	compareEqualImpuestosP(diffs, impP, &ImpuestosP{
+		RetencionesP: RetencionesP{
+			{
+				ImpuestoP: types.ImpuestoIVA,
+				ImporteP:  decimalF(213.34),
+			},
+			{
+				ImpuestoP: types.ImpuestoISR,
+				ImporteP:  decimalF(600),
+			},
+		},
+		TrasladosP: TrasladosP{
+			{
+				BaseP:       decimalF(2000),
+				ImpuestoP:   types.ImpuestoIVA,
+				TipoFactorP: types.TipoFactorTasa,
+				TasaOCuotaP: decimalF(0.16),
+				ImporteP:    decimalF(320),
+			},
+			{
+				BaseP:       decimalF(1000),
+				ImpuestoP:   types.ImpuestoIVA,
+				TipoFactorP: types.TipoFactorTasa,
+				TasaOCuotaP: decimalF(0.08),
+				ImporteP:    decimalF(80),
+			},
+			{
+				BaseP:       decimalF(1000),
+				ImpuestoP:   types.ImpuestoIVA,
+				TipoFactorP: types.TipoFactorTasa,
+				TasaOCuotaP: decimalF(0.00),
+				ImporteP:    decimalF(0),
+			},
+		},
+	}, t.Name())
+
+	if err := diffs.Err(); err != nil {
+		t.Errorf("%s\n%s", t.Name(), err)
+	}
+
+}

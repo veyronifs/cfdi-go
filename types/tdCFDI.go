@@ -25,7 +25,12 @@ type FechaH struct {
 }
 
 func (t *FechaH) UnmarshalText(text []byte) error {
-	return (*xsdDateTime)(&t.Time).UnmarshalText(text)
+	tim, err := time.ParseInLocation("2006-01-02T15:04:05", string(text), time.Local)
+	if err != nil {
+		return err
+	}
+	*t = FechaH{tim}
+	return nil
 }
 func (t FechaH) MarshalText() ([]byte, error) {
 	return xsdDateTime(t.Time).MarshalText()
@@ -116,7 +121,12 @@ type Fecha struct {
 }
 
 func (t *Fecha) UnmarshalText(text []byte) error {
-	return (*xsdDate)(&t.Time).UnmarshalText(text)
+	tim, err := time.ParseInLocation("2006-01-02", string(text), time.Local)
+	if err != nil {
+		return err
+	}
+	*t = Fecha{tim}
+	return nil
 }
 func (t Fecha) MarshalText() ([]byte, error) {
 	return xsdDate(t.Time).MarshalText()

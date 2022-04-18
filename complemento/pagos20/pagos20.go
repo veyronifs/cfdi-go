@@ -194,6 +194,47 @@ type ImpuestosP struct {
 	TrasladosP TrasladosP `xml:"TrasladosP,omitempty"`
 }
 
+// AddRetencion Suma el importe del retencion de acuerdo al tipo del impuesto.
+func (i *ImpuestosP) AddRetencion(impuestoP types.Impuesto, importeP decimal.Decimal) {
+	for _, ret := range i.RetencionesP {
+		if ret.ImpuestoP == impuestoP {
+			ret.ImporteP = ret.ImporteP.Add(importeP)
+			return
+		}
+	}
+
+	i.RetencionesP = append(i.RetencionesP, &RetencionP{
+		ImpuestoP: impuestoP,
+		ImporteP:  importeP,
+	})
+	return
+}
+
+// AddTraslado Suma el importe del traslado de acuerdo al tipo del impuesto.
+func (i *ImpuestosP) AddTraslado(
+	baseP decimal.Decimal,
+	impuestoP types.Impuesto,
+	tipoFactorP types.TipoFactor,
+	tasaOCuotaP decimal.Decimal,
+	importeP decimal.Decimal,
+) {
+	for _, tras := range i.TrasladosP {
+		if tras.ImpuestoP == impuestoP && tras.TipoFactorP == tipoFactorP && tras.TasaOCuotaP.Equal(tasaOCuotaP) {
+			tras.BaseP = tras.BaseP.Add(baseP)
+			tras.ImporteP = tras.ImporteP.Add(importeP)
+			return
+		}
+	}
+
+	i.TrasladosP = append(i.TrasladosP, &TrasladoP{
+		BaseP:       baseP,
+		ImpuestoP:   impuestoP,
+		TipoFactorP: tipoFactorP,
+		TasaOCuotaP: tasaOCuotaP,
+		ImporteP:    importeP,
+	})
+}
+
 // RetencionesP Nodo condicional para señalar los impuestos retenidos aplicables conforme al monto del pago recibido. Es requerido cuando en los documentos relacionados se registre algún impuesto retenido.
 type RetencionesP []*RetencionP
 

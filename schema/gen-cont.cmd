@@ -20,3 +20,10 @@ md "./gen/contabilidad13/balanza" 2>NUL
 
 xsdgen -pkg balanza -o ./gen/contabilidad13/balanza/_BalanzaComprobacion_1_3.go ^
 ./contabilidad13/BalanzaComprobacion_1_3.xsd
+
+ECHO #######################################################################
+md "./gen/contabilidad13/polizasperiodo" 2>NUL
+
+xsdgen -pkg catcuentas -o ./gen/contabilidad13/polizasperiodo/_polizasperiodo_1_3.go
+./contabilidad13/CatalogosParaEsqContE.xsd
+./contabilidad13/polizasperiodo_1_3.xsd

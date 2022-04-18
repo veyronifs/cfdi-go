@@ -217,24 +217,6 @@ func TestIngresoIvaExento(t *testing.T) {
 	testTimbrar(t, c)
 }
 
-/* TODO: TestIngresoIva16_0_exento
-
-Este test falla porque el calculo de impuestos de acuerdo al PAC no es correcto.
-
-RESUMEN DE IMPUESTOS CREADO
-Base	Impuesto	TipoFactor	TasaOCuota	Importe
-1000	002	Tasa	0.160000	160
-1000	002	Tasa	0.000000	0
-1000	002	Exento
-
-RESUMEN IMPUESTOS ESPERADO POR EL PAC
-Base	Impuesto	TipoFactor	TasaOCuota	Importe
-1000	002	Tasa	0.160000	160
-2000	002	Tasa	0.000000	0
-2000	002	Exento
-
-*/
-/*
 func TestIngresoIva16_0_exento(t *testing.T) {
 	c := &cfdi40.Comprobante{
 		Version:           cfdi40.Version,
@@ -321,10 +303,8 @@ func TestIngresoIva16_0_exento(t *testing.T) {
 	}
 	c.Impuestos = cfdi40.NewImpuestos(*c)
 	c.SubTotal, c.Descuento, c.Total = cfdi40.CalcularTotales(*c)
-	c.Impuestos.Traslados[1].Base = decimal.NewFromFloat(3000)
-	c.Impuestos.Traslados[2].Base = decimal.NewFromFloat(3000)
 	testTimbrar(t, c)
-}*/
+}
 
 func TestIngresoIva8(t *testing.T) {
 	c := &cfdi40.Comprobante{
