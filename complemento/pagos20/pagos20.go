@@ -25,6 +25,27 @@ type Pagos struct {
 	Version string `xml:"Version,attr"`
 }
 
+func (pagos Pagos) TotalImpuestoTrasladoIEPSMXN() decimal.NullDecimal {
+	ieps := decimal.New(0, 0)
+	hasIEPS := false
+	for _, pago := range pagos.Pago {
+		if pago.ImpuestosP == nil || pago.ImpuestosP.TrasladosP == nil {
+			continue
+		}
+		for _, tras := range pago.ImpuestosP.TrasladosP {
+			if tras.ImpuestoP == types.ImpuestoIEPS {
+				hasIEPS = true
+				importeMxn := decimalMxn(tras.ImporteP, pago.MonedaP, pago.TipoCambioP)
+				ieps = ieps.Add(importeMxn)
+			}
+		}
+	}
+	if hasIEPS {
+		return decimal.NullDecimal{Valid: true, Decimal: ieps}
+	}
+	return decimal.NullDecimal{}
+}
+
 // Totales Nodo requerido para especificar el monto total de los pagos y el total de los impuestos, deben ser expresados en MXN.
 type Totales struct {
 	// TotalRetencionesIVA Atributo condicional para expresar el total de los impuestos retenidos de IVA que se desprenden de los pagos. No se permiten valores negativos.
