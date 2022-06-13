@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"reflect"
 
+	"github.com/veyronifs/cfdi-go/curconv"
 	"github.com/veyronifs/cfdi-go/encoder"
 	"github.com/veyronifs/cfdi-go/types"
 )
@@ -98,9 +99,14 @@ func encodeHeader(enc *encoder.Encoder, c *Comprobante) {
 	enc.WriteAttrStrZ("MetodoPago", string(c.MetodoPago))
 	enc.WriteAttrStrZ("Exportacion", string(c.Exportacion))
 	enc.WriteAttrStrZ("Confirmacion", c.Confirmacion)
-	enc.WriteAttrDecimalCurr("SubTotal", c.SubTotal, moneda)
-	enc.WriteAttrDecimalCurr("Total", c.Total, moneda)
-	enc.WriteAttrDecimalCurrZ("Descuento", c.Descuento, moneda)
+	if c.TipoDeComprobante == types.ComprobanteP {
+		enc.WriteAttrStr("SubTotal", "0")
+		enc.WriteAttrStr("Total", "0")
+	} else {
+		enc.WriteAttrStr("SubTotal", curconv.RoundFixed(c.SubTotal, c.Moneda))
+		enc.WriteAttrStr("Total", curconv.RoundFixed(c.Total, c.Moneda))
+		enc.WriteAttrDecimalCurrZ("Descuento", c.Descuento, moneda)
+	}
 	enc.WriteAttrDecimalZ("TipoCambio", c.TipoCambio, 6)
 }
 
@@ -238,7 +244,7 @@ func encodeConceptoImpuestosTraslados(enc *encoder.Encoder, impuestos *ConceptoI
 	enc.WriteAttrStrZ("Impuesto", string(impuestos.Impuesto))
 	enc.WriteAttrStrZ("TipoFactor", string(impuestos.TipoFactor))
 	if impuestos.TipoFactor != types.TipoFactorExento {
-		enc.WriteAttrDecimal("TasaOCuota", impuestos.TasaOCuota, 6)
+		enc.WriteAttrStr("TasaOCuota", impuestos.TasaOCuota.StringFixed(6))
 		enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
 	}
 }
@@ -249,7 +255,7 @@ func encodeConceptoImpuestosRetenciones(enc *encoder.Encoder, impuestos *Concept
 	enc.WriteAttrDecimalCurr("Base", impuestos.Base, moneda)
 	enc.WriteAttrStrZ("Impuesto", string(impuestos.Impuesto))
 	enc.WriteAttrStrZ("TipoFactor", string(impuestos.TipoFactor))
-	enc.WriteAttrDecimal("TasaOCuota", impuestos.TasaOCuota, 6)
+	enc.WriteAttrStr("TasaOCuota", impuestos.TasaOCuota.StringFixed(6))
 	enc.WriteAttrDecimalCurr("Importe", impuestos.Importe, moneda)
 }
 
@@ -288,10 +294,10 @@ func encodeImpuestos(enc *encoder.Encoder, c *Comprobante) {
 	enc.StartElem(cfdiXS.Elem("Impuestos"))
 	defer enc.EndElem("Impuestos")
 	if len(c.Impuestos.Retenciones) > 0 {
-		enc.WriteAttrDecimalCurr("TotalImpuestosRetenidos", c.Impuestos.TotalImpuestosRetenidos, string(c.Moneda))
+		enc.WriteAttrStr("TotalImpuestosRetenidos", curconv.RoundFixed(c.Impuestos.TotalImpuestosRetenidos, c.Moneda))
 	}
-	if len(c.Impuestos.Traslados) > 0 {
-		enc.WriteAttrDecimalCurr("TotalImpuestosTrasladados", c.Impuestos.TotalImpuestosTrasladados, string(c.Moneda))
+	if len(c.Impuestos.Traslados) > 0 && c.Impuestos.WriteTotalImpuestosTrasladados() {
+		enc.WriteAttrStr("TotalImpuestosTrasladados", curconv.RoundFixed(c.Impuestos.TotalImpuestosTrasladados, c.Moneda))
 	}
 	encodeImpuestosRetenciones(enc, c.Impuestos.Retenciones, string(c.Moneda))
 	encodeImpuestosTraslados(enc, c.Impuestos.Traslados, string(c.Moneda))
@@ -305,7 +311,7 @@ func encodeImpuestosRetenciones(enc *encoder.Encoder, ret ImpuestosRetenciones, 
 	for _, r := range ret {
 		enc.StartElem(cfdiXS.Elem("Retencion"))
 		enc.WriteAttrStr("Impuesto", string(r.Impuesto))
-		enc.WriteAttrDecimalCurr("Importe", r.Importe, moneda)
+		enc.WriteAttrStr("Importe", curconv.RoundFixed(r.Importe, moneda))
 		enc.EndElem("Retencion")
 	}
 }
@@ -317,12 +323,12 @@ func encodeImpuestosTraslados(enc *encoder.Encoder, tras ImpuestosTraslados, mon
 	defer enc.EndElem("Traslados")
 	for _, r := range tras {
 		enc.StartElem(cfdiXS.Elem("Traslado"))
-		enc.WriteAttrDecimalCurr("Base", r.Base, moneda)
+		enc.WriteAttrStr("Base", curconv.RoundFixed(r.Base, moneda))
 		enc.WriteAttrStr("Impuesto", string(r.Impuesto))
 		enc.WriteAttrStr("TipoFactor", string(r.TipoFactor))
 		if r.TipoFactor != types.TipoFactorExento {
-			enc.WriteAttrDecimal("TasaOCuota", r.TasaOCuota, 6)
-			enc.WriteAttrDecimalCurr("Importe", r.Importe, moneda)
+			enc.WriteAttrStr("TasaOCuota", r.TasaOCuota.StringFixed(6))
+			enc.WriteAttrStr("Importe", curconv.RoundFixed(r.Importe, moneda))
 		}
 
 		enc.EndElem("Traslado")

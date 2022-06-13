@@ -178,7 +178,7 @@ func NewReceptorPublico(LugarExpedicion string) (*Receptor, error) {
 		ResidenciaFiscal:        "",
 		NumRegIdTrib:            "",
 		RegimenFiscalReceptor:   types.RegimenFiscal616,
-		UsoCFDI:                 types.UsoCFDIG03,
+		UsoCFDI:                 types.UsoCFDIS01,
 	}, nil
 }
 

@@ -29,8 +29,8 @@ func calcTotalesSumTras(totales *Totales, pago *Pago, docRel *DoctoRelacionado, 
 	if tras.ImpuestoDR != types.ImpuestoIVA {
 		return
 	}
-	importeMxn := decimalMxn(tras.ImporteDR, pago.MonedaP, pago.TipoCambioP)
-	baseMxn := decimalMxn(tras.BaseDR, docRel.MonedaDR, pago.TipoCambioP)
+	importeMxn := decimalMxn(tras.ImporteDR.Div(docRel.EquivalenciaDR), pago.MonedaP, pago.TipoCambioP)
+	baseMxn := decimalMxn(tras.BaseDR.Div(docRel.EquivalenciaDR), pago.MonedaP, pago.TipoCambioP)
 	switch tras.TipoFactorDR {
 	case types.TipoFactorExento:
 		totales.TotalTrasladosBaseIVAExento.Valid = true
@@ -61,7 +61,7 @@ func calcTotalesSumTras(totales *Totales, pago *Pago, docRel *DoctoRelacionado, 
 }
 
 func calcTotalesSumRet(totales *Totales, pago *Pago, docRel *DoctoRelacionado, ret *RetencionDR) {
-	importeMxn := decimalMxn(ret.ImporteDR, pago.MonedaP, pago.TipoCambioP)
+	importeMxn := decimalMxn(ret.ImporteDR.Div(docRel.EquivalenciaDR), pago.MonedaP, pago.TipoCambioP)
 	switch ret.ImpuestoDR {
 	case types.ImpuestoIVA:
 		totales.TotalRetencionesIVA.Valid = true
@@ -88,10 +88,10 @@ func CalcImpuestosP(pago *Pago) *ImpuestosP {
 			continue
 		}
 		for _, tras := range docRel.ImpuestosDR.TrasladosDR {
-			impP.AddTraslado(tras.BaseDR, tras.ImpuestoDR, tras.TipoFactorDR, tras.TasaOCuotaDR, tras.ImporteDR)
+			impP.AddTraslado(tras.BaseDR.Div(docRel.EquivalenciaDR), tras.ImpuestoDR, tras.TipoFactorDR, tras.TasaOCuotaDR, tras.ImporteDR.Div(docRel.EquivalenciaDR))
 		}
 		for _, ret := range docRel.ImpuestosDR.RetencionesDR {
-			impP.AddRetencion(ret.ImpuestoDR, ret.ImporteDR)
+			impP.AddRetencion(ret.ImpuestoDR, ret.ImporteDR.Div(docRel.EquivalenciaDR))
 		}
 	}
 	return impP

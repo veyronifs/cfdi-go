@@ -18,6 +18,8 @@ func TestEgresoIva16(t *testing.T) {
 		Serie:             "Serie",
 		Folio:             "Folio",
 		Fecha:             types.NewFechaHNow(),
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
 			Rfc:                     "BAR011108CC6",

@@ -56,6 +56,11 @@ func getDecimals(curr string) int {
 	return n
 }
 
+func RoundFixed[S ~string](v decimal.Decimal, curr S) string {
+	dec := getDecimals(string(curr))
+	return RoundToDec(v, dec).StringFixed(int32(dec))
+}
+
 func RoundToMax[S ~string](v decimal.Decimal, curr S) decimal.Decimal {
 	dec := getDecimals(string(curr))
 	return RoundToDec(v, dec)
