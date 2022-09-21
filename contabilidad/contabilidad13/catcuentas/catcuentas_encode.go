@@ -30,7 +30,7 @@ func Marshal(c *Catalogo) ([]byte, error) {
 	defer enc.EndElem("Catalogo")
 
 	enc.WriteAttrStr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-	enc.WriteAttrStr("xsi:schemaLocation", catXS.NS+" https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas/CatalogoCuentas_1_3.xsd")
+	enc.WriteAttrStr("xsi:schemaLocation", catXS.NS+" http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas/CatalogoCuentas_1_3.xsd")
 
 	encodeHeader(enc, c)
 	enc.EndAllFlush()

@@ -27,3 +27,4 @@ outtests/
 
 
 *.env
+launch.json
