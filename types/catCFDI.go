@@ -191,6 +191,7 @@ type Moneda string
 const (
 	MonedaMXN Moneda = "MXN"
 	MonedaUSD Moneda = "USD"
+	MonedaEUR Moneda = "EUR"
 	MonedaXXX Moneda = "XXX"
 )
 

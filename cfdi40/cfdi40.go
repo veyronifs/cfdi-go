@@ -342,6 +342,15 @@ type Impuestos struct {
 	TotalImpuestosTrasladados decimal.Decimal `xml:"TotalImpuestosTrasladados,attr,omitempty"`
 }
 
+func (i Impuestos) WriteTotalImpuestosTrasladados() bool {
+	for _, traslado := range i.Traslados {
+		if traslado.TipoFactor != types.TipoFactorExento {
+			return true
+		}
+	}
+	return false
+}
+
 // GetRetencion regresa la primera retención que encuentre de acuerdo a la clave del impuesto.
 func (i *Impuestos) GetRetencion(tipo types.Impuesto) *ImpuestosRetencion {
 	for _, ret := range i.Retenciones {

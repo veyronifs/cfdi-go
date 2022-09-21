@@ -17,6 +17,8 @@ func TestIngresoIva16(t *testing.T) {
 		LugarExpedicion:   "20000",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             types.NewFechaHNow(),
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
@@ -65,6 +67,8 @@ func TestIngresoIva0(t *testing.T) {
 		LugarExpedicion:   "20000",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             types.NewFechaHNow(),
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
@@ -113,6 +117,8 @@ func TestIngresoIva16_Exento(t *testing.T) {
 		LugarExpedicion:   "20000",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             types.NewFechaHNow(),
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
@@ -180,6 +186,8 @@ func TestIngresoIvaExento(t *testing.T) {
 		LugarExpedicion:   "20000",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             types.NewFechaHNow(),
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
@@ -226,6 +234,8 @@ func TestIngresoIva16_0_exento(t *testing.T) {
 		LugarExpedicion:   "20000",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             newFechaHNow2(),
 		Total:             decimal.NewFromFloat(1160),
 		SubTotal:          decimal.NewFromFloat(1000),
@@ -315,6 +325,8 @@ func TestIngresoIva8(t *testing.T) {
 		LugarExpedicion:   "32697",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             newFechaHNow2(),
 		Emisor:            emisor16_8_0,
 		Receptor: &cfdi40.Receptor{
@@ -363,6 +375,8 @@ func TestIngresoIva16_8_0(t *testing.T) {
 		LugarExpedicion:   "32697",
 		Serie:             "Serie",
 		Folio:             "Folio",
+		FormaPago:         types.FormaPago01,
+		MetodoPago:        types.MetodoPagoPUE,
 		Fecha:             newFechaHNow2(),
 		Total:             decimal.NewFromFloat(1160),
 		SubTotal:          decimal.NewFromFloat(1000),
