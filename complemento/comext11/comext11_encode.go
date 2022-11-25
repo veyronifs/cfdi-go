@@ -63,7 +63,7 @@ func (ce *ComercioExterior) MarshalComplemento(enc *encoder.Encoder) {
 	enc.WriteAttrStrZ("Incoterm", ce.Incoterm)
 	enc.WriteAttrStr("Subdivision", strconv.Itoa(ce.Subdivision))
 	enc.WriteAttrStrZ("Observaciones", ce.Observaciones)
-	enc.WriteAttrDecimalZ("TipoCambioUSD", ce.TipoCambioUSD, 2)
+	enc.WriteAttrDecimalZ("TipoCambioUSD", ce.TipoCambioUSD, 6)
 	if !ce.TotalUSD.IsZero() {
 		enc.WriteAttrStr("TotalUSD", ce.TotalUSD.StringFixed(2))
 	}
