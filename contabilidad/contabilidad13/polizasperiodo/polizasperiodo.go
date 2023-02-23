@@ -144,6 +144,6 @@ func (b Polizas) Archivo() *contabilidad13.Archivo {
 		RFC:  b.RFC,
 		Mes:  b.Mes,
 		Anio: b.Anio,
-		Tipo: string(b.TipoSolicitud),
+		Tipo: "PL",
 	}
 }

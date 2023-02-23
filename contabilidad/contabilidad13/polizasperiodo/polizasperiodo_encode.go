@@ -30,7 +30,7 @@ func Marshal(c *Polizas) ([]byte, error) {
 	defer enc.EndElem("Polizas")
 
 	enc.WriteAttrStr("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance")
-	enc.WriteAttrStr("xsi:schemaLocation", polXS.NS+" https://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd")
+	enc.WriteAttrStr("xsi:schemaLocation", polXS.NS+" http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/PolizasPeriodo/PolizasPeriodo_1_3.xsd")
 
 	encodePolizas(enc, c)
 	enc.EndAllFlush()
@@ -151,7 +151,7 @@ func encodeTransferencias(enc *encoder.Encoder, ctas []*Transferencia) {
 
 func encodeOtrMetodoPagos(enc *encoder.Encoder, ctas []*OtrMetodoPago) {
 	for _, otrmetpag := range ctas {
-		enc.StartElem(polXS.Elem("OtrMetodoPagos"))
+		enc.StartElem(polXS.Elem("OtrMetodoPago"))
 		enc.WriteAttrStrZ("MetPagoPol", otrmetpag.MetPagoPol)
 		enc.WriteAttrStrZ("Fecha", otrmetpag.Fecha.String())
 		enc.WriteAttrStrZ("Benef", otrmetpag.Benef)
@@ -159,6 +159,6 @@ func encodeOtrMetodoPagos(enc *encoder.Encoder, ctas []*OtrMetodoPago) {
 		enc.WriteAttrDecimal("Monto", otrmetpag.Monto, 2)
 		enc.WriteAttrStrZ("Moneda", string(otrmetpag.Moneda))
 		enc.WriteAttrDecimal("TipCamb", otrmetpag.TipCamb, 5)
-		enc.EndElem("OtrMetodoPagos")
+		enc.EndElem("OtrMetodoPago")
 	}
 }
