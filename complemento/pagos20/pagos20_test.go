@@ -178,3 +178,71 @@ func TestUnmarshal(t *testing.T) {
 		assert.NoError(t, err)
 	})
 }
+
+func TestCountDecimals(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected int
+	}{
+		{"9", 0},
+		{"3.14", 2},
+		{"123.456", 3},
+		{"0.0001", 4},
+		{"-5.789", 3},
+		{"-.789", 3},
+		{"12.34.56", -1}, // Invalid input, decimal point occurs more than once
+		{"abc", -1},      // Invalid input, no numeric characters
+		{"", -1},         // Invalid input, empty string
+		{"123..456", -1}, // Invalid input, multiple consecutive decimal points
+		{"1.23a", -1},    // Invalid input, alphanumeric character after the decimal point
+	}
+
+	for _, test := range tests {
+		result := countDecimals(test.input)
+		if result != test.expected {
+			t.Errorf("Input: %s, Expected: %d, Got: %d", test.input, test.expected, result)
+		}
+	}
+}
+
+func TestLimitesImporteDR(t *testing.T) {
+	newDecimal := func(s string) decimal.Decimal {
+		d, err := decimal.NewFromString(s)
+		if err != nil {
+			panic(err)
+		}
+		return d
+	}
+	tests := []struct {
+		baseDR         decimal.Decimal
+		tasaOCuotaDR   decimal.Decimal
+		monedaDR       types.Moneda
+		limiteInferior decimal.Decimal
+		limiteSuperior decimal.Decimal
+	}{
+		{
+			baseDR:         newDecimal("78855.7"),
+			tasaOCuotaDR:   newDecimal("0.08"),
+			monedaDR:       "MXN",
+			limiteInferior: newDecimal("6308.45"),
+			limiteSuperior: newDecimal("6308.47"),
+		},
+		{
+			baseDR:         newDecimal("78194.92"),
+			tasaOCuotaDR:   newDecimal("0.08"),
+			monedaDR:       "MXN",
+			limiteInferior: newDecimal("6255.59"),
+			limiteSuperior: newDecimal("6255.60"),
+		},
+	}
+
+	for _, test := range tests {
+		//fmt.Println("*********************")
+		limiteInferior, limiteSuperior := LimitesImporteDR(test.baseDR, test.tasaOCuotaDR, test.monedaDR)
+		assert.True(t, test.limiteInferior.Equal(limiteInferior), "expected limiteInferior: %s, got: %s", test.limiteInferior.String(), limiteInferior.String())
+		assert.True(t, test.limiteSuperior.Equal(limiteSuperior), "expected limiteSuperior: %s, got: %s", test.limiteSuperior.String(), limiteSuperior.String())
+		//fmt.Println("expected limiteInferior: ", test.limiteInferior.String(), "got: ", limiteInferior.String())
+		//fmt.Println("expected limiteSuperior: ", test.limiteSuperior.String(), "got: ", limiteSuperior.String())
+		//fmt.Println("*********************")
+	}
+}

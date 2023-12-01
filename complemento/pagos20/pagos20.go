@@ -2,10 +2,87 @@ package pagos20
 
 import (
 	"encoding/xml"
+	"unicode"
 
 	"github.com/shopspring/decimal"
+	"github.com/veyronifs/cfdi-go/curconv"
 	"github.com/veyronifs/cfdi-go/types"
 )
+
+// LimitesImporteDR
+// Calcular el límite inferior como:
+// (BaseDR - Potencia(10, -NumDecimalesBaseDR)/2)*(TasaOCuotaDR)
+// y este resultado truncado con la cantidad de decimales que tenga registrado este atributo.
+//
+// Calcular el límite superior como:
+// (BaseDR + Potencia(10, -NumDecimalesBaseDR)/2 - Potencia(10, -12)) *(TasaOCuotaDR)
+// y este resultado redondearlo hacia arriba con la cantidad de decimales que tenga registrado este atributo.
+func LimitesImporteDR(baseDR, tasaOCuotaDR decimal.Decimal, monedaDR types.Moneda) (limiteInferior, limiteSuperior decimal.Decimal) {
+	baseDRstr := curconv.RoundToMaxStr(baseDR, monedaDR)
+	decimals := countDecimals(baseDRstr)
+	if decimals == -1 {
+		return
+	}
+	pow10mDec := decimal.NewFromInt(10).Pow(decimal.NewFromInt(int64(-1 * decimals))).Div(decimal.NewFromInt(2))
+	pow10m12 := decimal.NewFromInt(10).Pow(decimal.NewFromInt(-12))
+	pow10m12 = pow10mDec.Sub(pow10m12)
+
+	limiteInferior = baseDR.Sub(pow10mDec).Mul(tasaOCuotaDR)
+	limiteSuperior = baseDR.Add(pow10mDec).Add(pow10m12).Mul(tasaOCuotaDR)
+	// truncate limiteInferior 2 decimals
+	limiteInferior = limiteInferior.Mul(decimal.NewFromInt(100)).Truncate(0).Div(decimal.NewFromInt(100))
+	// round ceil limiteSuperior 2 decimals
+	limiteSuperior = limiteSuperior.Mul(decimal.NewFromInt(100)).Ceil().Div(decimal.NewFromInt(100))
+	return
+}
+
+func CalcBaseDR(importeDR, tasaOCuotaDR decimal.Decimal, monedaDR types.Moneda) decimal.Decimal {
+	baseDR := curconv.RoundToMax(importeDR.Div(tasaOCuotaDR), monedaDR)
+	limiteInferior, limiteSuperior := LimitesImporteDR(baseDR, tasaOCuotaDR, monedaDR)
+	if limiteInferior.LessThanOrEqual(importeDR) && importeDR.LessThanOrEqual(limiteSuperior) {
+		return baseDR
+	}
+
+	// summ 0.01 to baseDR
+	p01 := decimal.NewFromInt(1).Div(decimal.NewFromInt(100))
+	baseDR2 := baseDR.Add(p01)
+	limiteInferior, limiteSuperior = LimitesImporteDR(baseDR2, tasaOCuotaDR, monedaDR)
+	if limiteInferior.LessThanOrEqual(importeDR) && importeDR.LessThanOrEqual(limiteSuperior) {
+		return baseDR2
+	}
+
+	// sub 0.01 to baseDR
+	baseDR3 := baseDR.Sub(p01)
+	limiteInferior, limiteSuperior = LimitesImporteDR(baseDR3, tasaOCuotaDR, monedaDR)
+	if limiteInferior.LessThanOrEqual(importeDR) && importeDR.LessThanOrEqual(limiteSuperior) {
+		return baseDR3
+	}
+
+	return baseDR
+}
+
+func countDecimals(num string) int {
+	if num == "" {
+		return -1
+	}
+	if num[0] == '-' {
+		num = num[1:]
+	}
+	count := 0
+	decimalPointEncountered := 0
+
+	for _, char := range num {
+		switch {
+		case char == '.':
+			decimalPointEncountered++
+		case decimalPointEncountered == 1 && unicode.IsDigit(char):
+			count++
+		case decimalPointEncountered > 1 || !unicode.IsDigit(char) && char != '.':
+			return -1
+		}
+	}
+	return count
+}
 
 func Unmarshal(b []byte) (*Pagos, error) {
 	pagos := &Pagos{}
