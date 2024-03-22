@@ -13,7 +13,7 @@ func CompareEqual(v1, v2 *ComercioExterior) error {
 }
 
 func Compare(diffs *compare.Diffs, v1, v2 *ComercioExterior) {
-	path := "TimbreFiscalDigital11"
+	path := "ComercioExterior20"
 	if compare.Nil(diffs, v1, v2, path) {
 		return
 	} else if v1 == nil || v2 == nil {
@@ -22,13 +22,11 @@ func Compare(diffs *compare.Diffs, v1, v2 *ComercioExterior) {
 
 	compare.Comparable(diffs, v1.Version, v2.Version, path+".Version")
 	compare.Comparable(diffs, v1.MotivoTraslado, v2.MotivoTraslado, path+".MotivoTraslado")
-	compare.Comparable(diffs, v1.TipoOperacion, v2.TipoOperacion, path+".TipoOperacion")
 	compare.Comparable(diffs, v1.ClaveDePedimento, v2.ClaveDePedimento, path+".ClaveDePedimento")
 	compare.Comparable(diffs, v1.CertificadoOrigen, v2.CertificadoOrigen, path+".CertificadoOrigen")
 	compare.Comparable(diffs, v1.NumCertificadoOrigen, v2.NumCertificadoOrigen, path+".NumCertificadoOrigen")
 	compare.Comparable(diffs, v1.NumeroExportadorConfiable, v2.NumeroExportadorConfiable, path+".NumeroExportadorConfiable")
 	compare.Comparable(diffs, v1.Incoterm, v2.Incoterm, path+".Incoterm")
-	compare.Comparable(diffs, v1.Subdivision, v2.Subdivision, path+".Subdivision")
 	compare.Comparable(diffs, v1.Observaciones, v2.Observaciones, path+".Observaciones")
 	compare.Decimal(diffs, v1.TipoCambioUSD, v2.TipoCambioUSD, path+".TipoCambioUSD")
 	compare.Decimal(diffs, v1.TotalUSD, v2.TotalUSD, path+".TotalUSD")

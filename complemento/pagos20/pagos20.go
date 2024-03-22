@@ -23,12 +23,14 @@ func LimitesImporteDR(baseDR, tasaOCuotaDR decimal.Decimal, monedaDR types.Moned
 	if decimals == -1 {
 		return
 	}
+	// pow10mDec =(10^-decimals)/2
 	pow10mDec := decimal.NewFromInt(10).Pow(decimal.NewFromInt(int64(-1 * decimals))).Div(decimal.NewFromInt(2))
+	// pow10m12 = 10^-12
 	pow10m12 := decimal.NewFromInt(10).Pow(decimal.NewFromInt(-12))
 	pow10m12 = pow10mDec.Sub(pow10m12)
 
 	limiteInferior = baseDR.Sub(pow10mDec).Mul(tasaOCuotaDR)
-	limiteSuperior = baseDR.Add(pow10mDec).Add(pow10m12).Mul(tasaOCuotaDR)
+	limiteSuperior = baseDR.Add(pow10mDec).Sub(pow10m12).Mul(tasaOCuotaDR)
 	// truncate limiteInferior 2 decimals
 	limiteInferior = limiteInferior.Mul(decimal.NewFromInt(100)).Truncate(0).Div(decimal.NewFromInt(100))
 	// round ceil limiteSuperior 2 decimals

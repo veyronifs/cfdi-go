@@ -7,7 +7,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
-	"github.com/veyronifs/cfdi-go/complemento/comext11"
+	"github.com/veyronifs/cfdi-go/complemento/comext20"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
@@ -482,7 +482,7 @@ type Complemento struct {
 	// Pagos20 Complemento para el Comprobante Fiscal Digital por Internet (CFDI) para registrar información sobre la recepción de pagos. El emisor de este complemento para recepción de pagos debe ser quien las leyes le obligue a expedir comprobantes por los actos o actividades que realicen, por los ingresos que se perciban o por las retenciones de contribuciones que efectúen.
 	Pagos20 *pagos20.Pagos `xml:"Pagos,omitempty"`
 	// CCE11 Complemento para incorporar la información en el caso de Exportación de Mercancías en definitiva.
-	CCE11 *comext11.ComercioExterior `xml:"ComercioExterior,omitempty"`
+	CCE20 *comext20.ComercioExterior `xml:"ComercioExterior,omitempty"`
 	// TFD11 Complemento requerido para el Timbrado Fiscal Digital que da validez al Comprobante fiscal digital por Internet.
 	TFD11 *tfd11.TimbreFiscalDigital `xml:"TimbreFiscalDigital,omitempty"`
 }

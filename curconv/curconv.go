@@ -56,16 +56,24 @@ func getDecimals(curr string) int {
 	return n
 }
 
+// RoundFixed redondea un valor decimal a un número específico de lugares decimales
+// basado en la moneda proporcionada y devuelve el resultado como una cadena.
+// Ejemplo: si curr es "USD" (2 decimales); 123.4567=>123.46; 123.4=>123.40
 func RoundFixed[S ~string](v decimal.Decimal, curr S) string {
 	dec := getDecimals(string(curr))
 	return RoundToDec(v, dec).StringFixed(int32(dec))
 }
 
+// RoundToMax redondea un valor decimal a un número máximo de lugares decimales
+// permitidos por la moneda proporcionada y devuelve el resultado como un decimal.
+// Ejemplo: si curr es "EUR" (2 decimales); 123.4567=>123.46 (Decimal)
 func RoundToMax[S ~string](v decimal.Decimal, curr S) decimal.Decimal {
 	dec := getDecimals(string(curr))
 	return RoundToDec(v, dec)
 }
 
+// RoundToMaxStr realiza el mismo proceso que RoundToMax pero retorna el resultado como una cadena.
+// Ejemplo: si curr es "USD" (2 decimales); 123.4567=>123.46; 123.4=>123.4
 func RoundToMaxStr[S ~string](v decimal.Decimal, curr S) string {
 	dec := getDecimals(string(curr))
 	return RoundToDecStr(RoundToDec(v, dec), dec)

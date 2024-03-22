@@ -23,13 +23,11 @@ type ComercioExterior struct {
 	Mercancias                Mercancias      `xml:"Mercancias,omitempty"`
 	Version                   string          `xml:"Version,attr"`
 	MotivoTraslado            string          `xml:"MotivoTraslado,attr,omitempty"`
-	TipoOperacion             string          `xml:"TipoOperacion,attr"`
 	ClaveDePedimento          string          `xml:"ClaveDePedimento,attr,omitempty"`
 	CertificadoOrigen         int             `xml:"CertificadoOrigen,attr,omitempty"`
 	NumCertificadoOrigen      string          `xml:"NumCertificadoOrigen,attr,omitempty"`
 	NumeroExportadorConfiable string          `xml:"NumeroExportadorConfiable,attr,omitempty"`
 	Incoterm                  string          `xml:"Incoterm,attr,omitempty"`
-	Subdivision               int             `xml:"Subdivision,attr,omitempty"`
 	Observaciones             string          `xml:"Observaciones,attr,omitempty"`
 	TipoCambioUSD             decimal.Decimal `xml:"TipoCambioUSD,attr,omitempty"`
 	TotalUSD                  decimal.Decimal `xml:"TotalUSD,attr,omitempty"`

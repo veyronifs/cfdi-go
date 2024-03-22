@@ -5,7 +5,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/cfdi40"
-	"github.com/veyronifs/cfdi-go/complemento/comext11"
+	"github.com/veyronifs/cfdi-go/complemento/comext20"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -78,17 +78,15 @@ func TestComext11TipoI(t *testing.T) {
 			},
 		},
 		Complemento: &cfdi40.Complemento{
-			CCE11: &comext11.ComercioExterior{
+			CCE20: &comext20.ComercioExterior{
 				Version:           "1.1",
 				TotalUSD:          decimal.NewFromFloat(3000.00),
 				TipoCambioUSD:     decimal.NewFromFloat(20.300200),
-				Subdivision:       0,
 				Incoterm:          "FOB",
 				CertificadoOrigen: 0,
 				ClaveDePedimento:  "A1",
-				TipoOperacion:     "2",
-				Emisor: &comext11.Emisor{
-					Domicilio: &comext11.Domicilio{
+				Emisor: &comext20.Emisor{
+					Domicilio: &comext20.Domicilio{
 						Calle:          "Pico de Verapaz",
 						NumeroExterior: "449-A",
 						Colonia:        "2085",
@@ -98,9 +96,9 @@ func TestComext11TipoI(t *testing.T) {
 						CodigoPostal:   "14210",
 					},
 				},
-				Receptor: &comext11.Receptor{
+				Receptor: &comext20.Receptor{
 					NumRegIdTrib: "364812096",
-					Domicilio: &comext11.Domicilio{
+					Domicilio: &comext20.Domicilio{
 						Calle:          "3455 POLLOK DR",
 						NumeroExterior: "3455",
 						Colonia:        ".",
@@ -111,7 +109,7 @@ func TestComext11TipoI(t *testing.T) {
 						Localidad:      "LAREDO, TX",
 					},
 				},
-				Mercancias: comext11.Mercancias{
+				Mercancias: comext20.Mercancias{
 					{
 						NoIdentificacion:    "1A2RNHG2A",
 						ValorDolares:        decimal.NewFromFloat(3000.00),

@@ -82,7 +82,7 @@ func encodePago(enc *encoder.Encoder, v *Pago) {
 	enc.WriteAttrStrZ("FormaDePagoP", string(v.FormaDePagoP))
 	enc.WriteAttrStrZ("MonedaP", string(v.MonedaP))
 	enc.WriteAttrDecimalCurr("TipoCambioP", v.TipoCambioP, string(v.MonedaP))
-	enc.WriteAttrDecimalCurr("Monto", v.Monto, string(v.MonedaP))
+	enc.WriteAttrDecimalCurrFixed("Monto", v.Monto, string(v.MonedaP))
 	enc.WriteAttrStrZ("NumOperacion", v.NumOperacion)
 	enc.WriteAttrStrZ("RfcEmisorCtaOrd", v.RfcEmisorCtaOrd)
 	enc.WriteAttrStrZ("NomBancoOrdExt", v.NomBancoOrdExt)
@@ -119,9 +119,9 @@ func encodeDoctoRelacionado(enc *encoder.Encoder, v *DoctoRelacionado, monedaPag
 	enc.WriteAttrStrZ("MonedaDR", monedaDR)
 	enc.WriteAttrDecimalZ("EquivalenciaDR", v.EquivalenciaDR, 6)
 	enc.WriteAttrIntZ("NumParcialidad", v.NumParcialidad)
-	enc.WriteAttrDecimalCurr("ImpSaldoAnt", v.ImpSaldoAnt, monedaDR)
-	enc.WriteAttrDecimalCurr("ImpPagado", v.ImpPagado, monedaDR)
-	enc.WriteAttrDecimalCurr("ImpSaldoInsoluto", v.ImpSaldoInsoluto, monedaDR)
+	enc.WriteAttrDecimalCurrFixed("ImpSaldoAnt", v.ImpSaldoAnt, monedaDR)
+	enc.WriteAttrDecimalCurrFixed("ImpPagado", v.ImpPagado, monedaDR)
+	enc.WriteAttrDecimalCurrFixed("ImpSaldoInsoluto", v.ImpSaldoInsoluto, monedaDR)
 	enc.WriteAttrStrZ("ObjetoImpDR", string(v.ObjetoImpDR))
 
 	encodeImpuestosDR(enc, v.ImpuestosDR, monedaDR)
@@ -157,11 +157,11 @@ func encodeRetencionDR(enc *encoder.Encoder, v *RetencionDR, monedaDR string) {
 	enc.StartElem(pagos20XS.Elem("RetencionDR"))
 	defer enc.EndElem("RetencionDR")
 
-	enc.WriteAttrDecimalCurr("BaseDR", v.BaseDR, monedaDR)
+	enc.WriteAttrDecimalCurrFixed("BaseDR", v.BaseDR, monedaDR)
 	enc.WriteAttrStrZ("ImpuestoDR", string(v.ImpuestoDR))
 	enc.WriteAttrStrZ("TipoFactorDR", string(v.TipoFactorDR))
 	enc.WriteAttrStr("TasaOCuotaDR", v.TasaOCuotaDR.StringFixed(6))
-	enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
+	enc.WriteAttrDecimalCurrFixed("ImporteDR", v.ImporteDR, monedaDR)
 }
 
 func encodeTrasladoDR(enc *encoder.Encoder, v *TrasladoDR, monedaDR string) {
@@ -171,12 +171,12 @@ func encodeTrasladoDR(enc *encoder.Encoder, v *TrasladoDR, monedaDR string) {
 	enc.StartElem(pagos20XS.Elem("TrasladoDR"))
 	defer enc.EndElem("TrasladoDR")
 
-	enc.WriteAttrDecimalCurr("BaseDR", v.BaseDR, monedaDR)
+	enc.WriteAttrDecimalCurrFixed("BaseDR", v.BaseDR, monedaDR)
 	enc.WriteAttrStrZ("ImpuestoDR", string(v.ImpuestoDR))
 	enc.WriteAttrStrZ("TipoFactorDR", string(v.TipoFactorDR))
 	if v.TipoFactorDR != types.TipoFactorExento {
 		enc.WriteAttrStr("TasaOCuotaDR", v.TasaOCuotaDR.StringFixed(6))
-		enc.WriteAttrDecimalCurr("ImporteDR", v.ImporteDR, monedaDR)
+		enc.WriteAttrDecimalCurrFixed("ImporteDR", v.ImporteDR, monedaDR)
 	}
 }
 
@@ -213,7 +213,7 @@ func encodeRetencionP(enc *encoder.Encoder, v *RetencionP, monedaP string) {
 	defer enc.EndElem("RetencionP")
 
 	enc.WriteAttrStrZ("ImpuestoP", string(v.ImpuestoP))
-	enc.WriteAttrDecimalCurr("ImporteP", v.ImporteP, monedaP)
+	enc.WriteAttrDecimalCurrFixed("ImporteP", v.ImporteP, monedaP)
 
 }
 
@@ -224,11 +224,11 @@ func encodeTrasladoP(enc *encoder.Encoder, v *TrasladoP, monedaP string) {
 	enc.StartElem(pagos20XS.Elem("TrasladoP"))
 	defer enc.EndElem("TrasladoP")
 
-	enc.WriteAttrDecimalCurr("BaseP", v.BaseP, monedaP)
+	enc.WriteAttrDecimalCurrFixed("BaseP", v.BaseP, monedaP)
 	enc.WriteAttrStrZ("ImpuestoP", string(v.ImpuestoP))
 	enc.WriteAttrStrZ("TipoFactorP", string(v.TipoFactorP))
 	if v.TipoFactorP != types.TipoFactorExento {
 		enc.WriteAttrStr("TasaOCuotaP", v.TasaOCuotaP.StringFixed(6))
-		enc.WriteAttrDecimalCurr("ImporteP", v.ImporteP, monedaP)
+		enc.WriteAttrDecimalCurrFixed("ImporteP", v.ImporteP, monedaP)
 	}
 }

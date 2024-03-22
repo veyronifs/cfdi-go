@@ -102,9 +102,14 @@ func (e *Encoder) WriteAttrStrMaxEllipsisZ(attr string, value string, n int) {
 	}
 }
 
-// WriteAttrDecimalCurr writes the named attribute with the value rounded to the MAX currency decimal.
+// WriteAttrDecimalCurr writes the named attribute with the value rounded to the MAX currency decimal. 14.2=>14.2
 func (e *Encoder) WriteAttrDecimalCurr(attr string, value decimal.Decimal, curr string) {
 	e.WriteAttrStr(attr, curconv.RoundToMaxStr(value, curr))
+}
+
+// WriteAttrDecimalCurrFixed writes the named attribute with the value rounded to the MAX currency decimal. 14.2=>14.20
+func (e *Encoder) WriteAttrDecimalCurrFixed(attr string, value decimal.Decimal, curr string) {
+	e.WriteAttrStr(attr, curconv.RoundFixed(value, curr))
 }
 
 // WriteAttrNullDecimalCurr writes the named attribute with the value rounded to the MAX currency decimal.

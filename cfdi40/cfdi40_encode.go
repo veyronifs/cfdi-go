@@ -348,8 +348,8 @@ func encodeComplemento(enc *encoder.Encoder, c *Comprobante) {
 		c.Complemento.Pagos20.MarshalComplemento(enc)
 	}
 
-	if c.Complemento.CCE11 != nil {
-		c.Complemento.CCE11.MarshalComplemento(enc)
+	if c.Complemento.CCE20 != nil {
+		c.Complemento.CCE20.MarshalComplemento(enc)
 	}
 
 	if c.Complemento.TFD11 != nil {
