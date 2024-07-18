@@ -6,13 +6,13 @@ import (
 	"github.com/veyronifs/cfdi-go/compare"
 )
 
-func CompareEqual(v1, v2 *Cartaporte30) error {
+func CompareEqual(v1, v2 *CartaPorte30) error {
 	diffs := compare.NewDiffs()
 	Compare(diffs, v1, v2)
 	return diffs.Err()
 }
 
-func Compare(diffs *compare.Diffs, v1, v2 *Cartaporte30) {
+func Compare(diffs *compare.Diffs, v1, v2 *CartaPorte30) {
 	path := "Cartaporte30"
 	if compare.Nil(diffs, v1, v2, path) {
 		return
@@ -117,23 +117,46 @@ func compareMercancia(diffs *compare.Diffs, v1, v2 *Mercancia, path string) {
 	compare.Comparable(diffs, v1.CveMaterialPeligroso, v2.CveMaterialPeligroso, path+".CveMaterialPeligroso")
 	compare.Comparable(diffs, v1.Embalaje, v2.Embalaje, path+".Embalaje")
 	compare.Comparable(diffs, v1.DescripEmbalaje, v2.DescripEmbalaje, path+".DescripEmbalaje")
+	compare.Comparable(diffs, v1.SectorCOFEPRIS, v2.SectorCOFEPRIS, path+".SectorCOFEPRIS")
+	compare.Comparable(diffs, v1.NombreIngredienteActivo, v2.NombreIngredienteActivo, path+".NombreIngredienteActivo")
+	compare.Comparable(diffs, v1.NomQuimico, v2.NomQuimico, path+".NomQuimico")
+	compare.Comparable(diffs, v1.DenominacionGenericaProd, v2.DenominacionGenericaProd, path+".DenominacionGenericaProd")
+	compare.Comparable(diffs, v1.DenominacionDistintivaProd, v2.DenominacionDistintivaProd, path+".DenominacionDistintivaProd")
+	compare.Comparable(diffs, v1.Fabricante, v2.Fabricante, path+".Fabricante")
+	compare.Comparable(diffs, v1.FechaCaducidad, v2.FechaCaducidad, path+".FechaCaducidad")
+	compare.Comparable(diffs, v1.LoteMedicamento, v2.LoteMedicamento, path+".LoteMedicamento")
+	compare.Comparable(diffs, v1.FormaFarmaceutica, v2.FormaFarmaceutica, path+".FormaFarmaceutica")
+	compare.Comparable(diffs, v1.CondicionesEspTransp, v2.CondicionesEspTransp, path+".CondicionesEspTransp")
+	compare.Comparable(diffs, v1.RegistroSanitarioFolioAutorizacion, v2.RegistroSanitarioFolioAutorizacion, path+".RegistroSanitarioFolioAutorizacion")
+	compare.Comparable(diffs, v1.PermisoImportacion, v2.PermisoImportacion, path+".PermisoImportacion")
+	compare.Comparable(diffs, v1.FolioImpoVUCEM, v2.FolioImpoVUCEM, path+".FolioImpoVUCEM")
+	compare.Comparable(diffs, v1.NumCAS, v2.NumCAS, path+".NumCAS")
+	compare.Comparable(diffs, v1.RazonSocialEmpImp, v2.RazonSocialEmpImp, path+".RazonSocialEmpImp")
+	compare.Comparable(diffs, v1.NumRegSanPlagCOFEPRIS, v2.NumRegSanPlagCOFEPRIS, path+".NumRegSanPlagCOFEPRIS")
+	compare.Comparable(diffs, v1.DatosFabricante, v2.DatosFabricante, path+".DatosFabricante")
+	compare.Comparable(diffs, v1.DatosFormulador, v2.DatosFormulador, path+".DatosFormulador")
+	compare.Comparable(diffs, v1.DatosMaquilador, v2.DatosMaquilador, path+".DatosMaquilador")
+	compare.Comparable(diffs, v1.UsoAutorizado, v2.UsoAutorizado, path+".UsoAutorizado")
 	compare.Decimal(diffs, v1.PesoEnKg, v2.PesoEnKg, path+".PesoEnKg")
 	compare.Decimal(diffs, v1.ValorMercancia, v2.ValorMercancia, path+".ValorMercancia")
 	compare.Comparable(diffs, v1.Moneda, v2.Moneda, path+".Moneda")
 	compare.Comparable(diffs, v1.FraccionArancelaria, v2.FraccionArancelaria, path+".FraccionArancelaria")
 	compare.Comparable(diffs, v1.UUIDComercioExt, v2.UUIDComercioExt, path+".UUIDComercioExt")
 
-	l1, l2 := len(v1.Pedimentos), len(v2.Pedimentos)
-	compare.Comparable(diffs, l1, l2, path+".Pedimentos.len()")
+	l1, l2 := len(v1.DocumentacionAduanera), len(v2.DocumentacionAduanera)
+	compare.Comparable(diffs, l1, l2, path+".DocumentacionAduanera.len()")
 	if l1 == l2 {
-		for i, p1 := range v1.Pedimentos {
-			p2 := v2.Pedimentos[i]
-			if compare.Nil(diffs, p1, p2, path+".Pedimentos[%d]", i) {
+		for i, p1 := range v1.DocumentacionAduanera {
+			p2 := v2.DocumentacionAduanera[i]
+			if compare.Nil(diffs, p1, p2, path+".DocumentacionAduanera[%d]", i) {
 				continue
 			} else if p1 == nil || p2 == nil {
 				continue
 			}
-			compare.Comparable(diffs, p1.Pedimento, p2.Pedimento, path+".Pedimentos[%d].Pedimento", i)
+			compare.Comparable(diffs, p1.TipoDocumento, p2.TipoDocumento, path+".DocumentacionAduanera[%d].Pedimento", i)
+			compare.Comparable(diffs, p1.NumPedimento, p2.NumPedimento, path+".DocumentacionAduanera[%d].NumPedimento", i)
+			compare.Comparable(diffs, p1.IdentDocAduanero, p2.IdentDocAduanero, path+".DocumentacionAduanera[%d].IdentDocAduanero", i)
+			compare.Comparable(diffs, p1.RFCImpo, p2.RFCImpo, path+".DocumentacionAduanera[%d].RFCImpo", i)
 		}
 	}
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/veyronifs/cfdi-go/compare"
-	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte30"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 )
@@ -108,7 +108,7 @@ func compareComplemento(diffs *compare.Diffs, v1, v2 *Complemento, path string) 
 		return
 	}
 
-	cartaporte20.Compare(diffs, v1.CartaPorte20, v2.CartaPorte20)
+	cartaporte30.Compare(diffs, v1.CartaPorte30, v2.CartaPorte30)
 	tfd11.Compare(diffs, v1.TFD11, v2.TFD11)
 	pagos20.Compare(diffs, v1.Pagos20, v2.Pagos20)
 }

@@ -18,7 +18,7 @@ import (
 // (BaseDR + Potencia(10, -NumDecimalesBaseDR)/2 - Potencia(10, -12)) *(TasaOCuotaDR)
 // y este resultado redondearlo hacia arriba con la cantidad de decimales que tenga registrado este atributo.
 func LimitesImporteDR(baseDR, tasaOCuotaDR decimal.Decimal, monedaDR types.Moneda) (limiteInferior, limiteSuperior decimal.Decimal) {
-	baseDRstr := curconv.RoundToMaxStr(baseDR, monedaDR)
+	baseDRstr := curconv.RoundFixed(baseDR, monedaDR)
 	decimals := countDecimals(baseDRstr)
 	if decimals == -1 {
 		return

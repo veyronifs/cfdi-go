@@ -58,12 +58,12 @@ func TestUnmarshal(t *testing.T) {
 }
 
 func TestMarshal(t *testing.T) {
-	var cartaPorte *Cartaporte30
+	var cartaPorte *CartaPorte30
 	{
 		fechaHoraSalidaLlegada, _ := types.NewFechaH("2021-12-15T03:00:00")
-		cartaPorte = &Cartaporte30{
+		cartaPorte = &CartaPorte30{
 			//Mercancias:0xc00010e100
-			Version:           "2.0",
+			Version:           "3.0",
 			TranspInternac:    "No",
 			EntradaSalidaMerc: "Entrada",
 			PaisOrigenDestino: "USA",
@@ -121,8 +121,8 @@ func TestMarshal(t *testing.T) {
 						Moneda:               "MXN",
 						FraccionArancelaria:  "10101501",
 						UUIDComercioExt:      "6713E766-DCA2-41AA-B1C0-020CFB60AC95",
-						Pedimentos: []*Pedimentos{
-							{Pedimento: "123456789"},
+						DocumentacionAduanera: []*DocumentacionAduanera{
+							{NumPedimento: "123456789"},
 						},
 						GuiasIdentificacion: []*GuiasIdentificacion{
 							{

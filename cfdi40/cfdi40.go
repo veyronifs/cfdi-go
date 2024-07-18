@@ -6,7 +6,7 @@ import (
 	"fmt"
 
 	"github.com/shopspring/decimal"
-	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte30"
 	"github.com/veyronifs/cfdi-go/complemento/comext20"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
@@ -477,8 +477,8 @@ func (a *Addenda) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
 
 // Complemento Nodo opcional donde se incluye el complemento Timbre Fiscal Digital de manera obligatoria y los nodos complementarios determinados por el SAT, de acuerdo con las disposiciones particulares para un sector o actividad específica.
 type Complemento struct {
-	// CartaPorte20 Complemento para incorporar al Comprobante Fiscal Digital por Internet (CFDI), la información relacionada a los bienes y/o mercancías, ubicaciones de origen, puntos intermedios y destinos, así como lo referente al medio por el que se transportan; ya sea por vía terrestre (autotransporte y férrea), marítima y/o aérea; además de incluir el traslado de hidrocarburos y petrolíferos.
-	CartaPorte20 *cartaporte20.CartaPorte20 `xml:"CartaPorte,omitempty"`
+	// CartaPorte30 Complemento para incorporar al Comprobante Fiscal Digital por Internet (CFDI), la información relacionada a los bienes y/o mercancías, ubicaciones de origen, puntos intermedios y destinos, así como lo referente al medio por el que se transportan; que circulen por vía terrestre, férrea, aérea o naveguen por vía marítima; además de incluir el traslado de hidrocarburos y petrolíferos.
+	CartaPorte30 *cartaporte30.CartaPorte30 `xml:"CartaPorte,omitempty"`
 	// Pagos20 Complemento para el Comprobante Fiscal Digital por Internet (CFDI) para registrar información sobre la recepción de pagos. El emisor de este complemento para recepción de pagos debe ser quien las leyes le obligue a expedir comprobantes por los actos o actividades que realicen, por los ingresos que se perciban o por las retenciones de contribuciones que efectúen.
 	Pagos20 *pagos20.Pagos `xml:"Pagos,omitempty"`
 	// CCE11 Complemento para incorporar la información en el caso de Exportación de Mercancías en definitiva.

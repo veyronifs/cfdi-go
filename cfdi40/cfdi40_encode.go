@@ -341,8 +341,8 @@ func encodeComplemento(enc *encoder.Encoder, c *Comprobante) {
 	}
 	enc.StartElem(cfdiXS.Elem("Complemento"))
 	defer enc.EndElem("Complemento")
-	if c.Complemento.CartaPorte20 != nil {
-		c.Complemento.CartaPorte20.MarshalComplemento(enc, string(c.Moneda))
+	if c.Complemento.CartaPorte30 != nil {
+		c.Complemento.CartaPorte30.MarshalComplemento(enc, string(c.Moneda))
 	}
 	if c.Complemento.Pagos20 != nil {
 		c.Complemento.Pagos20.MarshalComplemento(enc)

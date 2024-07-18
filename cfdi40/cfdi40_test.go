@@ -6,7 +6,7 @@ import (
 	"github.com/shopspring/decimal"
 	"github.com/stretchr/testify/assert"
 	"github.com/veyronifs/cfdi-go/cfdi40"
-	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte30"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
 	"github.com/veyronifs/cfdi-go/types"
@@ -345,7 +345,7 @@ func TestCartaPorte(t *testing.T) {
 				RfcProvCertif:    "AAA010101AAA",
 				Leyenda:          "CFDI de prueba",
 			},
-			CartaPorte20: &cartaporte20.CartaPorte20{
+			CartaPorte30: &cartaporte30.CartaPorte30{
 				//Mercancias:0xc00010e100
 				Version:           "2.0",
 				TranspInternac:    "No",
@@ -353,7 +353,7 @@ func TestCartaPorte(t *testing.T) {
 				PaisOrigenDestino: "USA",
 				ViaEntradaSalida:  "01",
 				TotalDistRec:      decimal.New(1963, 1),
-				Ubicaciones: []*cartaporte20.Ubicacion{
+				Ubicaciones: []*cartaporte30.Ubicacion{
 					{
 						TipoUbicacion:               "Origen",
 						IDUbicacion:                 "00001",
@@ -367,7 +367,7 @@ func TestCartaPorte(t *testing.T) {
 						FechaHoraSalidaLlegada:      cFecha,
 						TipoEstacion:                "PM",
 						DistanciaRecorrida:          decimal.New(1963, 1),
-						Domicilio: &cartaporte20.Domicilio{
+						Domicilio: &cartaporte30.Domicilio{
 							Calle:          "Calle",
 							NumeroExterior: "123",
 							NumeroInterior: "456",
@@ -381,13 +381,13 @@ func TestCartaPorte(t *testing.T) {
 						},
 					},
 				},
-				Mercancias: &cartaporte20.Mercancias{
+				Mercancias: &cartaporte30.Mercancias{
 					UnidadPeso:         "KGM",
 					NumTotalMercancias: 1,
 					PesoBrutoTotal:     decimal.NewFromFloat(199.99),
 					PesoNetoTotal:      decimal.NewFromFloat(199.99),
 					CargoPorTasacion:   decimal.NewFromFloat(199.99),
-					Mercancia: []*cartaporte20.Mercancia{
+					Mercancia: []*cartaporte30.Mercancia{
 						{
 							BienesTransp:         "10101501",
 							ClaveSTCC:            "10101501",
@@ -405,24 +405,21 @@ func TestCartaPorte(t *testing.T) {
 							Moneda:               "MXN",
 							FraccionArancelaria:  "10101501",
 							UUIDComercioExt:      "6713E766-DCA2-41AA-B1C0-020CFB60AC95",
-							Pedimentos: []*cartaporte20.Pedimentos{
-								{Pedimento: "123456789"},
-							},
-							GuiasIdentificacion: []*cartaporte20.GuiasIdentificacion{
+							GuiasIdentificacion: []*cartaporte30.GuiasIdentificacion{
 								{
 									NumeroGuiaIdentificacion:  "123456789",
 									DescripGuiaIdentificacion: "Guia de identificacion",
 									PesoGuiaIdentificacion:    decimal.NewFromFloat(199.99),
 								},
 							},
-							DetalleMercancia: &cartaporte20.DetalleMercancia{
+							DetalleMercancia: &cartaporte30.DetalleMercancia{
 								UnidadPesoMerc: "KGM",
 								PesoBruto:      decimal.NewFromFloat(199.99),
 								PesoNeto:       decimal.NewFromFloat(199.99),
 								PesoTara:       decimal.NewFromFloat(199.99),
 								NumPiezas:      1,
 							},
-							CantidadTransporta: []*cartaporte20.CantidadTransporta{
+							CantidadTransporta: []*cartaporte30.CantidadTransporta{
 								{
 									Cantidad:       decimal.New(1, 1),
 									IDOrigen:       "00001",
@@ -432,15 +429,15 @@ func TestCartaPorte(t *testing.T) {
 							},
 						},
 					},
-					Autotransporte: &cartaporte20.Autotransporte{
+					Autotransporte: &cartaporte30.Autotransporte{
 						PermSCT:       "TPAF02",
 						NumPermisoSCT: "09381581/080002",
-						IdentificacionVehicular: &cartaporte20.IdentificacionVehicular{
+						IdentificacionVehicular: &cartaporte30.IdentificacionVehicular{
 							ConfigVehicular: "T3S2",
 							PlacaVM:         "LE57937",
 							AnioModeloVM:    "2008",
 						},
-						Seguros: &cartaporte20.Seguros{
+						Seguros: &cartaporte30.Seguros{
 							AseguraRespCivil:   "Seguros Atlas",
 							PolizaRespCivil:    "MS1-1-7-38294",
 							AseguraMedAmbiente: "Seguros Atlas",
@@ -449,14 +446,14 @@ func TestCartaPorte(t *testing.T) {
 							PolizaCarga:        "MS1-2-2-1353",
 							PrimaSeguro:        decimal.New(10, 1),
 						},
-						Remolques: []*cartaporte20.Remolque{
+						Remolques: []*cartaporte30.Remolque{
 							{SubTipoRem: "CTR004", Placa: "6HU3452"},
 							{SubTipoRem: "CTR001", Placa: "6HU3112"},
 						},
 					},
 				},
-				FiguraTransporte: &cartaporte20.FiguraTransporte{
-					TiposFigura: []*cartaporte20.TiposFigura{
+				FiguraTransporte: &cartaporte30.FiguraTransporte{
+					TiposFigura: []*cartaporte30.TiposFigura{
 						{
 							TipoFigura:             "01",
 							RFCFigura:              "VAEE770919BE9",
@@ -464,10 +461,10 @@ func TestCartaPorte(t *testing.T) {
 							NombreFigura:           "MANUEL ENRIQUE VELAZQUEZ ESPINOSA",
 							NumRegIdTribFigura:     "0132456789",
 							ResidenciaFiscalFigura: types.Pais("MEX"),
-							PartesTransporte: []*cartaporte20.PartesTransporte{
+							PartesTransporte: []*cartaporte30.PartesTransporte{
 								{ParteTransporte: "ABCD"},
 							},
-							Domicilio: &cartaporte20.Domicilio{
+							Domicilio: &cartaporte30.Domicilio{
 								Calle:          "Calle",
 								NumeroExterior: "123",
 								NumeroInterior: "456",

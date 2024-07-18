@@ -5,7 +5,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/veyronifs/cfdi-go/complemento/cartaporte20"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte30"
 	"github.com/veyronifs/cfdi-go/complemento/comext20"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
@@ -47,7 +47,7 @@ func TestNamespaces(t *testing.T) {
 			name: "All",
 			c: &Comprobante{
 				Complemento: &Complemento{
-					CartaPorte20: &cartaporte20.CartaPorte20{},
+					CartaPorte30: &cartaporte30.CartaPorte30{},
 					Pagos20:      &pagos20.Pagos{},
 					CCE20:        &comext20.ComercioExterior{},
 					TFD11:        &tfd11.TimbreFiscalDigital{},
@@ -80,7 +80,7 @@ func TestNamespaces(t *testing.T) {
 			name: "cartaporte20",
 			c: &Comprobante{
 				Complemento: &Complemento{
-					CartaPorte20: &cartaporte20.CartaPorte20{},
+					CartaPorte30: &cartaporte30.CartaPorte30{},
 				},
 			},
 			expectedNS: map[string]string{
@@ -128,7 +128,7 @@ func TestNamespaces(t *testing.T) {
 			name: "cartaporte20, cce11",
 			c: &Comprobante{
 				Complemento: &Complemento{
-					CartaPorte20: &cartaporte20.CartaPorte20{},
+					CartaPorte30: &cartaporte30.CartaPorte30{},
 					CCE20:        &comext20.ComercioExterior{},
 				},
 			},

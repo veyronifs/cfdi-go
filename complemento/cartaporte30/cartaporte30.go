@@ -7,16 +7,16 @@ import (
 	"github.com/veyronifs/cfdi-go/types"
 )
 
-func Unmarshal(b []byte) (*Cartaporte30, error) {
-	carta := &Cartaporte30{}
+func Unmarshal(b []byte) (*CartaPorte30, error) {
+	carta := &CartaPorte30{}
 	if err := xml.Unmarshal(b, carta); err != nil {
 		return nil, err
 	}
 	return carta, nil
 }
 
-// Cartaporte30 Complemento para incorporar al Comprobante Fiscal Digital por Internet (CFDI), la información relacionada a los bienes y/o mercancías, ubicaciones de origen, puntos intermedios y destinos, así como lo referente al medio por el que se transportan; ya sea por vía terrestre (autotransporte y férrea), marítima y/o aérea; además de incluir el traslado de hidrocarburos y petrolíferos.
-type Cartaporte30 struct {
+// CartaPorte30 Complemento para incorporar al Comprobante Fiscal Digital por Internet (CFDI), la información relacionada a los bienes y/o mercancías, ubicaciones de origen, puntos intermedios y destinos, así como lo referente al medio por el que se transportan; que circulen por vía terrestre, férrea, aérea o naveguen por vía marítima; además de incluir el traslado de hidrocarburos y petrolíferos.
+type CartaPorte30 struct {
 	// Ubicaciones Nodo requerido para registrar las distintas ubicaciones que sirven para indicar el domicilio del origen y/o destino que tienen los bienes y/o mercancías que se trasladan a través de los distintos medios de transporte.
 	Ubicaciones Ubicaciones `xml:"Ubicaciones"`
 	// Mercancias Nodo requerido para registrar la información de los bienes y/o mercancías que se trasladan en los distintos medios de transporte.
@@ -25,8 +25,12 @@ type Cartaporte30 struct {
 	FiguraTransporte *FiguraTransporte `xml:"FiguraTransporte,omitempty"`
 	// Version Atributo requerido con valor prefijado en el cual se indica la versión del complemento Carta Porte.
 	Version string `xml:"Version,attr"`
+	// IdCCP Atributo requerido para expresar los 36 caracteres del folio del complemento Carta Porte (IdCCP) de la transacción de timbrado conforme al estándar RFC 4122, para la identificación del CFDI con complemento Carta Porte.
+	IdCCP string `xml:"IdCCP,attr"`
 	// TranspInternac Atributo requerido para expresar si los bienes y/o mercancías que son transportadas ingresan o salen del territorio nacional.
 	TranspInternac string `xml:"TranspInternac,attr"`
+	// RegimenAduanero Atributo condicional para expresar el tipo de régimen que se encuentra asociado con el traslado de los bienes y/o mercancías de procedencia extranjera.
+	RegimenAduanero RegimenAduanero `xml:"RegimenAduanero,attr,omitempty"`
 	// EntradaSalidaMerc Atributo condicional para precisar si los bienes y/o mercancías ingresan o salen del territorio nacional.
 	EntradaSalidaMerc string `xml:"EntradaSalidaMerc,attr,omitempty"`
 	// PaisOrigenDestino Atributo condicional para registrar la clave del país de origen o destino de los bienes y/o mercancías que se trasladan a través de los distintos medios de transporte.
@@ -35,6 +39,12 @@ type Cartaporte30 struct {
 	ViaEntradaSalida string `xml:"ViaEntradaSalida,attr,omitempty"`
 	// TotalDistRec Atributo condicional para indicar en kilómetros, la suma de las distancias recorridas, registradas en el atributo “DistanciaRecorrida”, para el traslado de los bienes y/o mercancías.
 	TotalDistRec decimal.Decimal `xml:"TotalDistRec,attr,omitempty"`
+	// RegistroISTMO Atributo opcional para registrar las regiones, sí el traslado de los bienes y/o mercancías se realiza al interior de los Polos de Desarrollo para el Bienestar del istmo de Tehuantepec.
+	RegistroISTMO string `xml:"RegistroISTMO,attr,omitempty"`
+	// UbicacionPoloOrigen Atributo condicional para registrar la región en donde inicia el traslado de los bienes y/o mercancias al interior de los Polos de Desarrollo para el Bienestar del istmo de Tehuantepec.
+	UbicacionPoloOrigen string `xml:"UbicacionPoloOrigen,attr,omitempty"`
+	// UbicacionPoloDestino Atributo condicional para registrar la región en donde termina el traslado de los bienes y/o mercancias al interior de los Polos de Desarrollo para el Bienestar del istmo de Tehuantepec.
+	UbicacionPoloDestino string `xml:"UbicacionPoloDestino,attr,omitempty"`
 }
 
 // Ubicaciones Nodo requerido para registrar las distintas ubicaciones que sirven para indicar el domicilio del origen y/o destino que tienen los bienes y/o mercancías que se trasladan a través de los distintos medios de transporte.
@@ -104,12 +114,14 @@ type Mercancias struct {
 	NumTotalMercancias int `xml:"NumTotalMercancias,attr"`
 	// CargoPorTasacion Atributo opcional para expresar el monto del importe pagado por la tasación de los bienes y/o mercancías que se trasladan vía aérea.
 	CargoPorTasacion decimal.Decimal `xml:"CargoPorTasacion,attr,omitempty"`
+	// LogisticaInversaRecoleccionDevolucion Atributo condicional para expresar si se hace uso de alguno de los servicios de logística inversa, recolección o devolución para el traslado de los bienes y/o mercancías.
+	LogisticaInversaRecoleccionDevolucion string `xml:"LogisticaInversaRecoleccionDevolucion,attr,omitempty"`
 }
 
 // Mercancia Nodo requerido para registrar detalladamente la información de los bienes y/o mercancías que se trasladan en los distintos medios de transporte.
 type Mercancia struct {
-	// Pedimentos Nodo condicional para registrar la información del(los) número(s) de pedimento(s) de importación que se encuentra(n) asociado(s) al traslado de los bienes y/o mercancías de procedencia extranjera para acreditar la legal estancia o tenencia durante su traslado en territorio nacional.
-	Pedimentos []*Pedimentos `xml:"Pedimentos,omitempty"`
+	// DocumentacionAduanera Nodo condicional para registrar la información del(los) documento(s) aduanero(s) que se encuentra(n) asociado(s) al traslado de los bienes y/o mercancías por los distintos medios de transporte de procedencia extranjera para acreditar la legal estancia o tenencia durante su traslado en territorio nacional.
+	DocumentacionAduanera []*DocumentacionAduanera `xml:"DocumentacionAduanera,omitempty"`
 	// GuiasIdentificacion Nodo condicional para registrar la información del(los) número(s) de guía(s) que se encuentre(n) asociado(s) al(los) paquete(s) que se traslada(n) dentro del territorio nacional.
 	GuiasIdentificacion []*GuiasIdentificacion `xml:"GuiasIdentificacion,omitempty"`
 	// CantidadTransporta Nodo opcional para registrar la cantidad de los bienes y/o mercancías que se trasladan a través de los distintos medios de transporte, que será captada o distribuida en distintos puntos, a fin de identificar el punto de origen y destino correspondiente.
@@ -138,6 +150,46 @@ type Mercancia struct {
 	Embalaje string `xml:"Embalaje,attr,omitempty"`
 	// DescripEmbalaje Atributo opcional para expresar la descripción del embalaje de los bienes y/o mercancías que se trasladan y que se consideran material o residuo peligroso.
 	DescripEmbalaje string `xml:"DescripEmbalaje,attr,omitempty"`
+	// SectorCOFEPRIS Atributo opcional para expresar la clasificación del producto que se traslada a través de los distintos medios de transporte y que debe contar con autorización por la autoridad correspondiente.
+	SectorCOFEPRIS SectorCOFEPRIS `xml:"SectorCOFEPRIS,attr,omitempty"`
+	// NombreIngredienteActivo Atributo condicional para expresar el nombre común del ingrediente activo de los precursores, químicos de uso dual, plaguicidas o fertilizantes que se trasladan a través de los distintos medios de transporte.
+	NombreIngredienteActivo string `xml:"NombreIngredienteActivo,attr,omitempty"`
+	// NomQuimico Atributo condicional para expresar el nombre de la sustancia activa de los precursores, químicos de uso dual o sustancias tóxicas que se traslada a través de los distintos medios de transporte.
+	NomQuimico string `xml:"NomQuimico,attr,omitempty"`
+	// DenominacionGenericaProd Atributo condicional para expresar el fármaco o la sustancia activa del medicamento, psicotrópico o estupefaciente que se traslada a través de los distintos medios de transporte.
+	DenominacionGenericaProd string `xml:"DenominacionGenericaProd,attr,omitempty"`
+	// DenominacionDistintivaProd Atributo condicional para expresar la marca con la que se comercializa el producto o nombre que le asigna el laboratorio o fabricante a sus especialidades farmacéuticas con el fin de distinguirlas de otras similares del medicamento, psicotrópico o estupefaciente que se traslada a través de los distintos medios de transporte.
+	DenominacionDistintivaProd string `xml:"DenominacionDistintivaProd,attr,omitempty"`
+	// Fabricante Atributo condicional para expresar el nombre o razón social del establecimiento que realiza la fabricación o manufactura del medicamento, precursor, químico de uso dual, psicotrópico o estupefaciente que se traslada a través de los distintos medios de transporte.
+	Fabricante string `xml:"Fabricante,attr,omitempty"`
+	// FechaCaducidad Atributo condicional para registrar la fecha de caducidad del medicamento, psicotrópico o estupefaciente; o para expresar la fecha de reanálisis del precursor o químico de uso dual que se traslada a través de los distintos medios de transporte. Se expresa en la forma AAAA-MM-DD.
+	FechaCaducidad string `xml:"FechaCaducidad,attr,omitempty"`
+	// LoteMedicamento Atributo condicional para expresar la denominación que identifica y confiere trazabilidad del medicamento, precursor, químico de uso dual, psicotrópico o estupefaciente elaborado en un ciclo de producción, bajo condiciones equivalentes de operación y durante un periodo.
+	LoteMedicamento string `xml:"LoteMedicamento,attr,omitempty"`
+	// FormaFarmaceutica Atributo condicional para expresar la forma farmacéutica o mezcla del medicamento, precursor, químico de uso dual, psicotrópico o estupefaciente que presenta ciertas características físicas para su adecuada dosificación, conservación y administración.
+	FormaFarmaceutica FormaFarmaceutica `xml:"FormaFarmaceutica,attr,omitempty"`
+	// CondicionesEspTransp Atributo condicional para expresar la condición en la cual es necesario mantener el medicamento, precursor, químico de uso dual, psicotrópicos o estupefacientes durante el traslado y almacenamiento.
+	CondicionesEspTransp CondicionesEspTransp `xml:"CondicionesEspTransp,attr,omitempty"`
+	// RegistroSanitarioFolioAutorizacion Atributo condicional para expresar el registro sanitario o folio de autorización con el que cuenta la empresa para el traslado del medicamento, psicotrópico o estupefaciente.
+	RegistroSanitarioFolioAutorizacion string `xml:"RegistroSanitarioFolioAutorizacion,attr,omitempty"`
+	// PermisoImportacion Atributo condicional para registrar el folio del permiso de importación con el que cuenta el medicamento, precursor, químico de uso dual, psicotrópico o estupefaciente.
+	PermisoImportacion string `xml:"PermisoImportacion,attr,omitempty"`
+	// FolioImpoVUCEM Atributo condicional para registrar el número de folio de importación VUCEM para la identificación del documento, para el traslado de medicamentos, precursores o químicos de uso dual, sustancias tóxicas, plaguicidas o fertizantes.
+	FolioImpoVUCEM string `xml:"FolioImpoVUCEM,attr,omitempty"`
+	// NumCAS Atributo condicional para expresar el número Chemical Abstracts Service (CAS) con el que se identifica el compuesto químico de la sustancia tóxica.
+	NumCAS string `xml:"NumCAS,attr,omitempty"`
+	// RazonSocialEmpImp Atributo condicional para expresar el nombre o razón social de la empresa importadora de las sustancias tóxicas.
+	RazonSocialEmpImp string `xml:"RazonSocialEmpImp,attr,omitempty"`
+	// NumRegSanPlagCOFEPRIS Atributo condicional para expresar el número de registro sanitario para plaguicidas o fertilizantes cuya importación, comercialización y uso están permitidos en México, mismo que emite la Comisión Intersecretarial para el Control del Proceso y Uso de Plaguicidas, Fertilizantes y Sustancias Tóxicas (CICLOPLAFEST).
+	NumRegSanPlagCOFEPRIS string `xml:"NumRegSanPlagCOFEPRIS,attr,omitempty"`
+	// DatosFabricante Atributo condicional para registrar el país y nombre o razón social de quien produce o fabrica el ingrediente activo del plaguicida o fertilizante.
+	DatosFabricante string `xml:"DatosFabricante,attr,omitempty"`
+	// DatosFormulador Atributo condicional para registrar el país y nombre o razón social de quien formula el ingrediente activo del plaguicida o fertilizante.
+	DatosFormulador string `xml:"DatosFormulador,attr,omitempty"`
+	// DatosMaquilador Atributo condicional para registrar el país y nombre o razón social de quien maquila el ingrediente activo del plaguicida o fertilizante.
+	DatosMaquilador string `xml:"DatosMaquilador,attr,omitempty"`
+	// UsoAutorizado Atributo condicional para registrar el uso autorizado del plaguicida o fertilizante de acuerdo a la regulación del país.
+	UsoAutorizado string `xml:"UsoAutorizado,attr,omitempty"`
 	// PesoEnKg Atributo requerido para indicar en kilogramos el peso estimado de los bienes y/o mercancías que se trasladan en los distintos medios de transporte.
 	PesoEnKg decimal.Decimal `xml:"PesoEnKg,attr"`
 	// ValorMercancia Atributo condicional para expresar el monto del valor de los bienes y/o mercancías que se trasladan en los distintos medios de transporte, de acuerdo al valor mercado, al valor pactado en la contraprestación o bien al valor estimado que determine el contribuyente.
@@ -148,12 +200,22 @@ type Mercancia struct {
 	FraccionArancelaria string `xml:"FraccionArancelaria,attr,omitempty"`
 	// UUIDComercioExt Atributo opcional para expresar el folio fiscal (UUID) del comprobante de comercio exterior que se relaciona.
 	UUIDComercioExt string `xml:"UUIDComercioExt,attr,omitempty"`
+	// TipoMateria Atributo condicional para expresar el estado de la materia o producto al realizar una operación de comercio exterior a través de los distintos medios de transporte.
+	TipoMateria string `xml:"TipoMateria,attr,omitempty"`
+	// DescripcionMateria Atributo condicional para expresar la descripción del estado de la materia o producto al realizar una operación de comercio exterior a través de los distintos medios de transporte.
+	DescripcionMateria string `xml:"DescripcionMateria,attr,omitempty"`
 }
 
-// Pedimentos Nodo condicional para registrar la información del(los) número(s) de pedimento(s) de importación que se encuentra(n) asociado(s) al traslado de los bienes y/o mercancías de procedencia extranjera para acreditar la legal estancia o tenencia durante su traslado en territorio nacional.
-type Pedimentos struct {
-	// Pedimento Atributo requerido para expresar el número de pedimento de importación que se encuentra asociado con el traslado de los bienes y/o mercancías de procedencia extranjera para acreditar la legal estancia y tenencia durante su traslado en territorio nacional, el cual se  expresa  en  el siguiente  formato:  últimos  2  dígitos  del  año  de  validación seguidos  por  dos  espacios,  2  dígitos  de  la  aduana  de despacho seguidos por dos espacios, 4 dígitos del número de  la  patente  seguidos  por  dos  espacios,  1  dígito  que corresponde al último dígito del año en curso, salvo que se trate de un pedimento consolidado iniciado en el año inmediato anterior o del pedimento original de una rectificación, seguido de 6 dígitos de la numeración progresiva por aduana.
-	Pedimento string `xml:"Pedimento,attr"`
+// DocumentacionAduanera Nodo condicional para registrar la información del(los) documento(s) aduanero(s) que se encuentra(n) asociado(s) al traslado de los bienes y/o mercancías por los distintos medios de transporte de procedencia extranjera para acreditar la legal estancia o tenencia durante su traslado en territorio nacional.
+type DocumentacionAduanera struct {
+	// TipoDocumento Atributo requerido para expresar el tipo de documento aduanero que se encuentra asociado al traslado de los bienes y/o mercancías de procedencia extranjera durante su traslado en territorio nacional.
+	TipoDocumento DocumentoAduanero `xml:"TipoDocumento,attr"`
+	// NumPedimento Atributo condicional para expresar el número de pedimento de importación que se encuentra asociado con el traslado de los bienes y/o mercancías de procedencia extranjera para acreditar la legal estancia y tenencia durante su traslado en territorio nacional.
+	NumPedimento string `xml:"NumPedimento,attr,omitempty"`
+	// IdentDocAduanero Atributo condicional para expresar el identificador o folio del documento aduanero que se encuentra asociado al traslado de los bienes y/o mercancías de procedencia extranjera para acreditar la legal estancia o tenencia durante su traslado en territorio nacional.
+	IdentDocAduanero string `xml:"IdentDocAduanero,attr,omitempty"`
+	// RFCImpo Atributo condicional para expresar el RFC del importador de los bienes y/o mercancías que fue registrado en la documentación aduanera correspondiente y este se encuentre en la lista de RFC inscritos no cancelados del SAT (l_RFC).
+	RFCImpo string `xml:"RFCImpo,attr,omitempty"`
 }
 
 // GuiasIdentificacion Nodo condicional para registrar la información del(los) número(s) de guía(s) que se encuentre(n) asociado(s) al(los) paquete(s) que se traslada(n) dentro del territorio nacional.
@@ -200,9 +262,9 @@ type Autotransporte struct {
 	Seguros *Seguros `xml:"Seguros"`
 	// Remolques Nodo condicional para registrar los datos del(los) remolque(s) o semirremolque(s) que se adaptan al autotransporte para realizar el traslado de los bienes y/o mercancías.
 	Remolques Remolques `xml:"Remolques,omitempty"`
-	// PermSCT Atributo requerido para registrar la clave del tipo de permiso proporcionado por la SCT o la autoridad análoga, el cual debe corresponder con el tipo de autotransporte utilizado para el traslado de los bienes y/o mercancías de acuerdo al catálogo correspondiente.
+	// PermSCT Atributo requerido para registrar la clave del tipo de permiso proporcionado por la Secretaría de Infraestructura, Comunicaciones y Transportes (SICT) o la autoridad análoga, el cual debe corresponder con el tipo de autotransporte utilizado para el traslado de los bienes y/o mercancías de acuerdo al catálogo correspondiente.
 	PermSCT string `xml:"PermSCT,attr"`
-	// NumPermisoSCT Atributo requerido para registrar el número del permiso otorgado por la SCT o la autoridad correspondiente, al autotransporte utilizado para el traslado de los bienes y/o mercancías.
+	// NumPermisoSCT Atributo requerido para registrar el número del permiso otorgado por la Secretaría de Infraestructura, Comunicaciones y Transportes (SICT) o la autoridad correspondiente, al autotransporte utilizado para el traslado de los bienes y/o mercancías.
 	NumPermisoSCT string `xml:"NumPermisoSCT,attr"`
 }
 
@@ -210,6 +272,8 @@ type Autotransporte struct {
 type IdentificacionVehicular struct {
 	// ConfigVehicular Atributo requerido para expresar la clave de nomenclatura del autotransporte que es utilizado para transportar los bienes y/o mercancías.
 	ConfigVehicular string `xml:"ConfigVehicular,attr"`
+	// PesoBrutoVehicular Atributo requerido para indicar en toneladas el peso bruto vehicular permitido del autotransporte de acuerdo a la NOM-SCT-012-2017 que es utilizado para realizar el traslado de los bienes y/o mercancías.
+	PesoBrutoVehicular decimal.Decimal `xml:"PesoBrutoVehicular,attr"`
 	// PlacaVM Atributo requerido para registrar solo los caracteres alfanuméricos, sin guiones ni espacios de la placa vehicular del autotransporte que es utilizado para transportar los bienes y/o mercancías.
 	PlacaVM string `xml:"PlacaVM,attr"`
 	// AnioModeloVM Atributo requerido para registrar el año del autotransporte que es utilizado para transportar los bienes y/o mercancías.
@@ -222,9 +286,9 @@ type Seguros struct {
 	AseguraRespCivil string `xml:"AseguraRespCivil,attr"`
 	// PolizaRespCivil Atributo requerido para registrar el número de póliza asignado por la aseguradora, que cubre los riesgos por responsabilidad civil del autotransporte utilizado para el traslado de los bienes y/o mercancías.
 	PolizaRespCivil string `xml:"PolizaRespCivil,attr"`
-	// AseguraMedAmbiente Atributo condicional para registrar el nombre de la aseguradora, que cubre los posibles daños al medio ambiente (aplicable para los transportistas de materiales, residuos o remanentes y desechos peligrosos).
+	// AseguraMedAmbiente Atributo condicional para registrar el nombre de la aseguradora, que cubre los posibles daños al medio ambiente cuando exista al menos una mercancía tipificada como material peligroso se debe registrar la información del atributo “AseguraMedAmbiente” (aplicable para los transportistas de materiales, residuos o remanentes y desechos peligrosos.
 	AseguraMedAmbiente string `xml:"AseguraMedAmbiente,attr,omitempty"`
-	// PolizaMedAmbiente Atributo condicional para registrar el número de póliza asignado por la aseguradora, que cubre los posibles daños al medio ambiente (aplicable para los transportistas de materiales, residuos o remanentes y desechos peligrosos).
+	// Atributo condicional para registrar el número de póliza asignado por la aseguradora, que cubre los posibles daños al medio ambiente cuando exista al menos una mercancía tipificada como material peligroso se debe registrar la información del atributo “AseguraMedAmbiente” (aplicable para los transportistas de materiales, residuos o remanentes y desechos peligrosos).
 	PolizaMedAmbiente string `xml:"PolizaMedAmbiente,attr,omitempty"`
 	// AseguraCarga Atributo opcional para registrar el nombre de la aseguradora que cubre los riesgos de la carga (bienes y/o mercancías) del autotransporte utilizado para el traslado.
 	AseguraCarga string `xml:"AseguraCarga,attr,omitempty"`
@@ -258,7 +322,7 @@ type Remolque struct {
 
 // TransporteMaritimo Nodo condicional para registrar la información que permita la identificación de la embarcación a través de la cual se trasladan los bienes y/o mercancías por vía marítima.
 type TransporteMaritimo struct {
-	// Contenedor Nodo requerido para registrar los datos del contenedor en el que se transportan los bienes y/o mercancías.
+	// Contenedor Nodo opcional para registrar los datos del contenedor en el que se transportan los bienes y/o mercancías.
 	Contenedor []ContenedorMaritimo `xml:"Contenedor"`
 	// PermSCT Atributo opcional para registrar la clave del permiso proporcionado por la SCT, la cual debe corresponder con la embarcación que se está utilizando para el traslado de los bienes y/o mercancías, de acuerdo al catálogo correspondiente.
 	PermSCT string `xml:"PermSCT,attr,omitempty"`
@@ -306,12 +370,31 @@ type TransporteMaritimo struct {
 
 // ContenedorMaritimo Nodo requerido para registrar los datos del contenedor en el que se transportan los bienes y/o mercancías.
 type ContenedorMaritimo struct {
-	// MatriculaContenedor Atributo requerido para registrar la matrícula o el número de identificación del contenedor marítimo en el que se transportan los bienes y/o mercancías, el cual está integrado por el código del propietario, el número de serie y el dígito de control correspondiente.
-	MatriculaContenedor string `xml:"MatriculaContenedor,attr"`
 	// TipoContenedor Atributo requerido para registrar la clave de identificación correspondiente con el tipo de contenedor marítimo en el que se transportan los bienes y/o mercancías.
 	TipoContenedor string `xml:"TipoContenedor,attr"`
-	// NumPrecinto Atributo opcional para registrar el número del sello o precinto de los contenedores marítimos que son utilizados para trasladar los bienes y/o mercancías.
+	// MatriculaContenedor Atributo condicional para registrar la matrícula o el número de identificación del contenedor marítimo en el que se transportan los bienes y/o mercancías, el cual está integrado por el código del propietario, el número de serie y el dígito de control correspondiente.
+	MatriculaContenedor string `xml:"MatriculaContenedor,attr,omitempty"`
+	// NumPrecinto Atributo condicional para registrar el número del sello o precinto de los contenedores marítimos que son utilizados para trasladar los bienes y/o mercancías.
 	NumPrecinto string `xml:"NumPrecinto,attr,omitempty"`
+	// IdCCPRelacionado Atributo condicional para registrar el identificador del complemento Carta Porte (IdCCP) de un CFDI previamente certificado para el traslado de bienes o mercancías mediante autotransporte, únicamente aplica para traslados mediante ferri.
+	IdCCPRelacionado string `xml:"IdCCPRelacionado,attr,omitempty"`
+	// PlacaVMCCP Atributo condicional para registrar los caracteres alfanuméricos, sin guiones ni espacios de la placa vehicular del autotransporte registrado en el CFDI con complemento Carta Porte del autotransporte, únicamente aplica para traslado mediante ferri.
+	PlacaVMCCP string `xml:"PlacaVMCCP,attr,omitempty"`
+	// FechaCertificacionCCP Atributo condicional para registrar la fecha y hora de certificación del CDFI con complemento Carta Porte del autotransporte, únicamente aplica para traslado mediante ferri.
+	FechaCertificacionCCP string `xml:"FechaCertificacionCCP,attr,omitempty"`
+	// RemolquesCCP Nodo condicional para registrar los datos del(los) remolque(s) o semirremolque(s) que se adaptan al autotransporte que realizó el traslado de los bienes y/o mercancías registrado en el CFDI con complemento Carta Porte de autotransporte, únicamente aplica para traslado mediante ferri.
+	RemolquesCCP *RemolquesCCP `xml:"RemolquesCCP,omitempty"`
+}
+
+// RemolquesCCP Nodo condicional para registrar los datos del(los) remolque(s) o semirremolque(s) que se adaptan al autotransporte que realizó el traslado de los bienes y/o mercancías registrado en el CFDI con complemento Carta Porte de autotransporte, únicamente aplica para traslado mediante ferri.
+type RemolquesCCP struct {
+	RemolqueCCP []RemolqueCCP `xml:"RemolqueCCP"`
+}
+
+// RemolqueCCP Nodo requerido para expresar la información del(los) remolque(s) o semirremolque(s) que se adapta(n) al autotransporte que realizó el traslado de los bienes y/o mercancías registrado en el CFDI con complemento Carta Porte, únicamente aplica para traslado mediante ferri.
+type RemolqueCCP struct {
+	SubTipoRemCCP string `xml:"SubTipoRemCCP,attr"`
+	PlacaCCP      string `xml:"PlacaCCP,attr"`
 }
 
 // TransporteAereo Nodo condicional para registrar la información que permita la identificación del transporte aéreo por medio del cual se trasladan los bienes y/o mercancías.
@@ -408,7 +491,7 @@ type TiposFigura struct {
 	RFCFigura string `xml:"RFCFigura,attr,omitempty"`
 	// NumLicencia Atributo condicional para expresar el número de la licencia o el permiso otorgado al operador del autotransporte de carga en el que realiza el traslado de los bienes y/o mercancías.
 	NumLicencia string `xml:"NumLicencia,attr,omitempty"`
-	// NombreFigura Atributo opcional para registrar el nombre de la figura de transporte que interviene en el traslado de los bienes y/o mercancías.
+	// NombreFigura Atributo requerido para registrar el nombre de la figura de transporte que interviene en el traslado de los bienes y/o mercancías.
 	NombreFigura string `xml:"NombreFigura,attr,omitempty"`
 	// NumRegIdTribFigura Atributo condicional para registrar el número de identificación o registro fiscal del país de residencia de la figura de transporte que interviene en el traslado de los bienes y/o mercancías, cuando se trate de residentes en el extranjero para los efectos fiscales correspondientes.
 	NumRegIdTribFigura string `xml:"NumRegIdTribFigura,attr,omitempty"`
