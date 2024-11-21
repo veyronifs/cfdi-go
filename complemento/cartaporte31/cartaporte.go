@@ -7,16 +7,16 @@ import (
 	"github.com/veyronifs/cfdi-go/types"
 )
 
-func Unmarshal(b []byte) (*CartaPorte30, error) {
-	carta := &CartaPorte30{}
+func Unmarshal(b []byte) (*CartaPorte31, error) {
+	carta := &CartaPorte31{}
 	if err := xml.Unmarshal(b, carta); err != nil {
 		return nil, err
 	}
 	return carta, nil
 }
 
-// CartaPorte30 Complemento para incorporar al Comprobante Fiscal Digital por Internet (CFDI), la información relacionada a los bienes y/o mercancías, ubicaciones de origen, puntos intermedios y destinos, así como lo referente al medio por el que se transportan; que circulen por vía terrestre, férrea, aérea o naveguen por vía marítima; además de incluir el traslado de hidrocarburos y petrolíferos.
-type CartaPorte30 struct {
+// CartaPorte31 Complemento para incorporar al Comprobante Fiscal Digital por Internet (CFDI), la información relacionada a los bienes y/o mercancías, ubicaciones de origen, puntos intermedios y destinos, así como lo referente al medio por el que se transportan; que circulen por vía terrestre, férrea, aérea o naveguen por vía marítima; además de incluir el traslado de hidrocarburos y petrolíferos.
+type CartaPorte31 struct {
 	// Ubicaciones Nodo requerido para registrar las distintas ubicaciones que sirven para indicar el domicilio del origen y/o destino que tienen los bienes y/o mercancías que se trasladan a través de los distintos medios de transporte.
 	Ubicaciones Ubicaciones `xml:"Ubicaciones"`
 	// Mercancias Nodo requerido para registrar la información de los bienes y/o mercancías que se trasladan en los distintos medios de transporte.

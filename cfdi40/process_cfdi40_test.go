@@ -350,7 +350,7 @@ func TestNewReceptorPublico(t *testing.T) {
 				ResidenciaFiscal:        "",
 				NumRegIdTrib:            "",
 				RegimenFiscalReceptor:   types.RegimenFiscal616,
-				UsoCFDI:                 types.UsoCFDIG03,
+				UsoCFDI:                 types.UsoCFDIS01,
 			},
 		},
 		{ // Error

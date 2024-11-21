@@ -5,7 +5,7 @@ import (
 	"io"
 	"testing"
 
-	"github.com/veyronifs/cfdi-go/complemento/cartaporte30"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte31"
 	"github.com/veyronifs/cfdi-go/complemento/comext20"
 	"github.com/veyronifs/cfdi-go/complemento/pagos20"
 	"github.com/veyronifs/cfdi-go/complemento/tfd11"
@@ -47,20 +47,20 @@ func TestNamespaces(t *testing.T) {
 			name: "All",
 			c: &Comprobante{
 				Complemento: &Complemento{
-					CartaPorte30: &cartaporte30.CartaPorte30{},
-					Pagos20:      &pagos20.Pagos{},
-					CCE20:        &comext20.ComercioExterior{},
-					TFD11:        &tfd11.TimbreFiscalDigital{},
+					CartaPorte: &cartaporte31.CartaPorte31{},
+					Pagos20:    &pagos20.Pagos{},
+					CCE20:      &comext20.ComercioExterior{},
+					TFD11:      &tfd11.TimbreFiscalDigital{},
 				},
 			},
 			expectedNS: map[string]string{
 				"xmlns:cfdi":         "http://www.sat.gob.mx/cfd/4",
 				"xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-				"xmlns:cartaporte20": "http://www.sat.gob.mx/CartaPorte20",
+				"xmlns:cartaporte31": "http://www.sat.gob.mx/CartaPorte31",
 				"xmlns:pago20":       "http://www.sat.gob.mx/Pagos20",
-				"xmlns:cce11":        "http://www.sat.gob.mx/ComercioExterior11",
+				"xmlns:cce20":        "http://www.sat.gob.mx/ComercioExterior20",
 			},
-			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte20 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd http://www.sat.gob.mx/ComercioExterior11 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd",
+			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte31 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte31.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd http://www.sat.gob.mx/ComercioExterior20 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior20/ComercioExterior20.xsd",
 		},
 		{
 			name: "NoComplemento",
@@ -70,27 +70,27 @@ func TestNamespaces(t *testing.T) {
 			expectedNS: map[string]string{
 				"xmlns:cfdi":         "http://www.sat.gob.mx/cfd/4",
 				"xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-				"xmlns:cartaporte20": "",
+				"xmlns:cartaporte31": "",
 				"xmlns:pago20":       "",
-				"xmlns:cce11":        "",
+				"xmlns:cce20":        "",
 			},
 			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd",
 		},
 		{
-			name: "cartaporte20",
+			name: "cartaporte31",
 			c: &Comprobante{
 				Complemento: &Complemento{
-					CartaPorte30: &cartaporte30.CartaPorte30{},
+					CartaPorte: &cartaporte31.CartaPorte31{},
 				},
 			},
 			expectedNS: map[string]string{
 				"xmlns:cfdi":         "http://www.sat.gob.mx/cfd/4",
 				"xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-				"xmlns:cartaporte20": "http://www.sat.gob.mx/CartaPorte20",
+				"xmlns:cartaporte31": "http://www.sat.gob.mx/CartaPorte31",
 				"xmlns:pago20":       "",
-				"xmlns:cce11":        "",
+				"xmlns:cce20":        "",
 			},
-			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte20 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd",
+			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte31 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte31.xsd",
 		},
 		{
 			name: "pago20",
@@ -102,14 +102,14 @@ func TestNamespaces(t *testing.T) {
 			expectedNS: map[string]string{
 				"xmlns:cfdi":         "http://www.sat.gob.mx/cfd/4",
 				"xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-				"xmlns:cartaporte20": "",
+				"xmlns:cartaporte31": "",
 				"xmlns:pago20":       "http://www.sat.gob.mx/Pagos20",
-				"xmlns:cce11":        "",
+				"xmlns:cce20":        "",
 			},
 			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/Pagos20 http://www.sat.gob.mx/sitio_internet/cfd/Pagos/Pagos20.xsd",
 		},
 		{
-			name: "cce11",
+			name: "cce20",
 			c: &Comprobante{
 				Complemento: &Complemento{
 					CCE20: &comext20.ComercioExterior{},
@@ -118,28 +118,28 @@ func TestNamespaces(t *testing.T) {
 			expectedNS: map[string]string{
 				"xmlns:cfdi":         "http://www.sat.gob.mx/cfd/4",
 				"xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-				"xmlns:cartaporte20": "",
+				"xmlns:cartaporte31": "",
 				"xmlns:pago20":       "",
-				"xmlns:cce11":        "http://www.sat.gob.mx/ComercioExterior11",
+				"xmlns:cce20":        "http://www.sat.gob.mx/ComercioExterior20",
 			},
-			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/ComercioExterior11 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd",
+			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/ComercioExterior20 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior20/ComercioExterior20.xsd",
 		},
 		{
-			name: "cartaporte20, cce11",
+			name: "cartaporte31, cce20",
 			c: &Comprobante{
 				Complemento: &Complemento{
-					CartaPorte30: &cartaporte30.CartaPorte30{},
-					CCE20:        &comext20.ComercioExterior{},
+					CartaPorte: &cartaporte31.CartaPorte31{},
+					CCE20:      &comext20.ComercioExterior{},
 				},
 			},
 			expectedNS: map[string]string{
 				"xmlns:cfdi":         "http://www.sat.gob.mx/cfd/4",
 				"xmlns:xsi":          "http://www.w3.org/2001/XMLSchema-instance",
-				"xmlns:cartaporte20": "http://www.sat.gob.mx/CartaPorte20",
+				"xmlns:cartaporte31": "http://www.sat.gob.mx/CartaPorte31",
 				"xmlns:pago20":       "",
-				"xmlns:cce11":        "http://www.sat.gob.mx/ComercioExterior11",
+				"xmlns:cce20":        "http://www.sat.gob.mx/ComercioExterior20",
 			},
-			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte20 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte20.xsd http://www.sat.gob.mx/ComercioExterior11 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior11/ComercioExterior11.xsd",
+			expectedLocations: "http://www.sat.gob.mx/cfd/4 http://www.sat.gob.mx/sitio_internet/cfd/4/cfdv40.xsd http://www.sat.gob.mx/CartaPorte31 http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte31.xsd http://www.sat.gob.mx/ComercioExterior20 http://www.sat.gob.mx/sitio_internet/cfd/ComercioExterior20/ComercioExterior20.xsd",
 		},
 	}
 

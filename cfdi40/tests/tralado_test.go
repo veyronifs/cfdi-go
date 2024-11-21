@@ -6,7 +6,7 @@ import (
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/cfdi40"
-	"github.com/veyronifs/cfdi-go/complemento/cartaporte30"
+	"github.com/veyronifs/cfdi-go/complemento/cartaporte31"
 	"github.com/veyronifs/cfdi-go/types"
 )
 
@@ -45,7 +45,7 @@ func TestTrasladoSimple(t *testing.T) {
 	testTimbrar(t, c)
 }
 
-func TestTrasladoCartaPorte30Autotransporte(t *testing.T) {
+func TestTrasladoCartaPorte31Autotransporte(t *testing.T) {
 	c := &cfdi40.Comprobante{
 		Version:           cfdi40.Version,
 		Moneda:            types.MonedaXXX,
@@ -76,17 +76,17 @@ func TestTrasladoCartaPorte30Autotransporte(t *testing.T) {
 			},
 		},
 		Complemento: &cfdi40.Complemento{
-			CartaPorte30: &cartaporte30.CartaPorte30{
+			CartaPorte: &cartaporte31.CartaPorte31{
 				Version:        "2.0",
 				TranspInternac: "No",
 				TotalDistRec:   decimal.NewFromFloat(10),
-				Ubicaciones: cartaporte30.Ubicaciones{
+				Ubicaciones: cartaporte31.Ubicaciones{
 					{
 						TipoUbicacion:               "Origen",
 						RFCRemitenteDestinatario:    emisor16_8_0.Rfc,
 						NombreRemitenteDestinatario: emisor16_8_0.Nombre,
 						FechaHoraSalidaLlegada:      types.NewFechaHNow(),
-						Domicilio: &cartaporte30.Domicilio{
+						Domicilio: &cartaporte31.Domicilio{
 							Calle:          "Filomeno Mata 922",
 							NumeroExterior: "922",
 							Referencia:     "Filomeno Mata 922, Ejidos de Santa María Aztahuacán, DIF",
@@ -101,7 +101,7 @@ func TestTrasladoCartaPorte30Autotransporte(t *testing.T) {
 						NombreRemitenteDestinatario: "BARCEL",
 						FechaHoraSalidaLlegada:      types.NewFechaHTime(time.Now().Add(time.Hour * 2)),
 						DistanciaRecorrida:          decimal.NewFromFloat(10),
-						Domicilio: &cartaporte30.Domicilio{
+						Domicilio: &cartaporte31.Domicilio{
 							Calle:          "KM 54 Carretera Mexico-Toluca",
 							NumeroExterior: "SN",
 							Referencia:     "KM 54 Carretera Mexico-Toluca, Rancho El Jazmin Lerma, Mexico, MEX",
@@ -111,11 +111,11 @@ func TestTrasladoCartaPorte30Autotransporte(t *testing.T) {
 						},
 					},
 				},
-				Mercancias: &cartaporte30.Mercancias{
+				Mercancias: &cartaporte31.Mercancias{
 					PesoBrutoTotal:     decimal.NewFromFloat(10),
 					UnidadPeso:         "KGM",
 					NumTotalMercancias: 1,
-					Mercancia: []*cartaporte30.Mercancia{
+					Mercancia: []*cartaporte31.Mercancia{
 						{
 							BienesTransp: "50425400",
 							Descripcion:  "Cacahuate",
@@ -124,20 +124,20 @@ func TestTrasladoCartaPorte30Autotransporte(t *testing.T) {
 							PesoEnKg:     decimal.NewFromFloat(10),
 						},
 					},
-					Autotransporte: &cartaporte30.Autotransporte{
+					Autotransporte: &cartaporte31.Autotransporte{
 						PermSCT:       "TPAF01",
 						NumPermisoSCT: "1234567890123456789012345678901234567890",
-						IdentificacionVehicular: &cartaporte30.IdentificacionVehicular{
+						IdentificacionVehicular: &cartaporte31.IdentificacionVehicular{
 							ConfigVehicular: "VL",
 							PlacaVM:         "plac892",
 							AnioModeloVM:    "2020",
 						},
-						Seguros: &cartaporte30.Seguros{
+						Seguros: &cartaporte31.Seguros{
 							AseguraCarga:     "SW Seguros",
 							AseguraRespCivil: "SW Seguros",
 							PolizaRespCivil:  "123456789",
 						},
-						Remolques: cartaporte30.Remolques{
+						Remolques: cartaporte31.Remolques{
 							{
 								SubTipoRem: "CTR004",
 								Placa:      "VL45K98",
@@ -145,13 +145,13 @@ func TestTrasladoCartaPorte30Autotransporte(t *testing.T) {
 						},
 					},
 				},
-				FiguraTransporte: &cartaporte30.FiguraTransporte{
-					TiposFigura: []*cartaporte30.TiposFigura{
+				FiguraTransporte: &cartaporte31.FiguraTransporte{
+					TiposFigura: []*cartaporte31.TiposFigura{
 						{
 							TipoFigura:  "01",
 							RFCFigura:   "VAAM130719H60",
 							NumLicencia: "1234567890",
-							Domicilio: &cartaporte30.Domicilio{
+							Domicilio: &cartaporte31.Domicilio{
 								Calle:          "calle",
 								NumeroExterior: "211",
 								Colonia:        "0347",

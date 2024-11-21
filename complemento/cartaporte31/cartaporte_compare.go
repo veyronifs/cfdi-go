@@ -6,14 +6,14 @@ import (
 	"github.com/veyronifs/cfdi-go/compare"
 )
 
-func CompareEqual(v1, v2 *CartaPorte30) error {
+func CompareEqual(v1, v2 *CartaPorte31) error {
 	diffs := compare.NewDiffs()
 	Compare(diffs, v1, v2)
 	return diffs.Err()
 }
 
-func Compare(diffs *compare.Diffs, v1, v2 *CartaPorte30) {
-	path := "Cartaporte30"
+func Compare(diffs *compare.Diffs, v1, v2 *CartaPorte31) {
+	path := "CartaPorte31"
 	if compare.Nil(diffs, v1, v2, path) {
 		return
 	} else if v1 == nil || v2 == nil {

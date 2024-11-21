@@ -6,24 +6,24 @@ import (
 	"github.com/veyronifs/cfdi-go/encoder"
 )
 
-var cartaporte30XS = encoder.NSElem{
-	Prefix: "cartaporte30",
-	NS:     "http://www.sat.gob.mx/CartaPorte30",
+var cartaporte31XS = encoder.NSElem{
+	Prefix: "cartaporte31",
+	NS:     "http://www.sat.gob.mx/CartaPorte31",
 }
 
-func (cp *CartaPorte30) SchemaLocation() string {
-	return cartaporte30XS.NS + " http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte30.xsd"
+func (cp *CartaPorte31) SchemaLocation() string {
+	return cartaporte31XS.NS + " http://www.sat.gob.mx/sitio_internet/cfd/CartaPorte/CartaPorte31.xsd"
 }
 
-func (cp *CartaPorte30) XmlNSPrefix() string {
-	return cartaporte30XS.Prefix
+func (cp *CartaPorte31) XmlNSPrefix() string {
+	return cartaporte31XS.Prefix
 }
 
-func (cp *CartaPorte30) XmlNS() string {
-	return cartaporte30XS.NS
+func (cp *CartaPorte31) XmlNS() string {
+	return cartaporte31XS.NS
 }
 
-func Marshal(cp *CartaPorte30, moneda string) ([]byte, error) {
+func Marshal(cp *CartaPorte31, moneda string) ([]byte, error) {
 	b := bytes.Buffer{}
 	enc := encoder.NewEncoder(&b)
 	cp.MarshalComplemento(enc, moneda)
@@ -31,11 +31,11 @@ func Marshal(cp *CartaPorte30, moneda string) ([]byte, error) {
 	return b.Bytes(), enc.GetError()
 }
 
-func (cp *CartaPorte30) MarshalComplemento(enc *encoder.Encoder, moneda string) {
+func (cp *CartaPorte31) MarshalComplemento(enc *encoder.Encoder, moneda string) {
 	if cp == nil {
 		return
 	}
-	enc.StartElem(cartaporte30XS.Elem("CartaPorte"))
+	enc.StartElem(cartaporte31XS.Elem("CartaPorte"))
 	defer enc.EndElem("CartaPorte")
 
 	enc.WriteAttrStrZ("Version", cp.Version)
@@ -57,14 +57,14 @@ func (cp *CartaPorte30) MarshalComplemento(enc *encoder.Encoder, moneda string) 
 }
 
 func encodeUbicaciones(enc *encoder.Encoder, ubicaciones []*Ubicacion) {
-	enc.StartElem(cartaporte30XS.Elem("Ubicaciones"))
+	enc.StartElem(cartaporte31XS.Elem("Ubicaciones"))
 	defer enc.EndElem("Ubicaciones")
 	for _, u := range ubicaciones {
 		encodeUbicacionesUbicacion(enc, u)
 	}
 }
 func encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubicacion) {
-	enc.StartElem(cartaporte30XS.Elem("Ubicacion"))
+	enc.StartElem(cartaporte31XS.Elem("Ubicacion"))
 	defer enc.EndElem("Ubicacion")
 	enc.WriteAttrStrZ("TipoUbicacion", u.TipoUbicacion)
 	enc.WriteAttrStrZ("IDUbicacion", u.IDUbicacion)
@@ -82,7 +82,7 @@ func encodeUbicacionesUbicacion(enc *encoder.Encoder, u *Ubicacion) {
 	if u.Domicilio == nil {
 		return
 	}
-	enc.StartElem(cartaporte30XS.Elem("Domicilio"))
+	enc.StartElem(cartaporte31XS.Elem("Domicilio"))
 	defer enc.EndElem("Domicilio")
 
 	enc.WriteAttrStrZ("Calle", u.Domicilio.Calle)
@@ -101,7 +101,7 @@ func encodeMercancias(enc *encoder.Encoder, mercancias *Mercancias) {
 	if mercancias == nil {
 		return
 	}
-	enc.StartElem(cartaporte30XS.Elem("Mercancias"))
+	enc.StartElem(cartaporte31XS.Elem("Mercancias"))
 	defer enc.EndElem("Mercancias")
 
 	enc.WriteAttrDecimalZ("PesoBrutoTotal", mercancias.PesoBrutoTotal, 3)
@@ -122,7 +122,7 @@ func encodeMercancias(enc *encoder.Encoder, mercancias *Mercancias) {
 }
 
 func encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
-	enc.StartElem(cartaporte30XS.Elem("Mercancia"))
+	enc.StartElem(cartaporte31XS.Elem("Mercancia"))
 	defer enc.EndElem("Mercancia")
 
 	enc.WriteAttrStrZ("BienesTransp", m.BienesTransp)
@@ -165,7 +165,7 @@ func encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
 	enc.WriteAttrStrZ("DescripcionMateria", m.DescripcionMateria)
 
 	for _, p := range m.DocumentacionAduanera {
-		enc.StartElem(cartaporte30XS.Elem("DocumentacionAduanera"))
+		enc.StartElem(cartaporte31XS.Elem("DocumentacionAduanera"))
 		enc.WriteAttrStrZ("TipoDocumento", string(p.TipoDocumento))
 		enc.WriteAttrStrZ("NumPedimento", p.NumPedimento)
 		enc.WriteAttrStrZ("IdentDocAduanero", p.IdentDocAduanero)
@@ -174,7 +174,7 @@ func encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
 	}
 
 	for _, g := range m.GuiasIdentificacion {
-		enc.StartElem(cartaporte30XS.Elem("GuiasIdentificacion"))
+		enc.StartElem(cartaporte31XS.Elem("GuiasIdentificacion"))
 		enc.WriteAttrStrZ("NumeroGuiaIdentificacion", g.NumeroGuiaIdentificacion)
 		enc.WriteAttrStrZ("DescripGuiaIdentificacion", g.DescripGuiaIdentificacion)
 		enc.WriteAttrDecimalZ("PesoGuiaIdentificacion", g.PesoGuiaIdentificacion, 3)
@@ -182,7 +182,7 @@ func encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
 	}
 
 	for _, c := range m.CantidadTransporta {
-		enc.StartElem(cartaporte30XS.Elem("CantidadTransporta"))
+		enc.StartElem(cartaporte31XS.Elem("CantidadTransporta"))
 		enc.WriteAttrDecimalZ("Cantidad", c.Cantidad, 6)
 		enc.WriteAttrStrZ("IDOrigen", c.IDOrigen)
 		enc.WriteAttrStrZ("IDDestino", c.IDDestino)
@@ -191,7 +191,7 @@ func encodeMercancia(enc *encoder.Encoder, m *Mercancia) {
 	}
 
 	if m.DetalleMercancia != nil {
-		enc.StartElem(cartaporte30XS.Elem("DetalleMercancia"))
+		enc.StartElem(cartaporte31XS.Elem("DetalleMercancia"))
 		enc.WriteAttrStrZ("UnidadPesoMerc", m.DetalleMercancia.UnidadPesoMerc)
 		enc.WriteAttrDecimalZ("PesoBruto", m.DetalleMercancia.PesoBruto, 3)
 		enc.WriteAttrDecimalZ("PesoNeto", m.DetalleMercancia.PesoNeto, 3)
@@ -205,13 +205,13 @@ func encodeAutotransporte(enc *encoder.Encoder, at *Autotransporte) {
 	if at == nil {
 		return
 	}
-	enc.StartElem(cartaporte30XS.Elem("Autotransporte"))
+	enc.StartElem(cartaporte31XS.Elem("Autotransporte"))
 	defer enc.EndElem("Autotransporte")
 
 	enc.WriteAttrStrZ("PermSCT", at.PermSCT)
 	enc.WriteAttrStrZ("NumPermisoSCT", at.NumPermisoSCT)
 	if idV := at.IdentificacionVehicular; idV != nil {
-		enc.StartElem(cartaporte30XS.Elem("IdentificacionVehicular"))
+		enc.StartElem(cartaporte31XS.Elem("IdentificacionVehicular"))
 		enc.WriteAttrStrZ("ConfigVehicular", idV.ConfigVehicular)
 		enc.WriteAttrDecimal("PesoBrutoVehicular", idV.PesoBrutoVehicular, 2)
 		enc.WriteAttrStrZ("PlacaVM", idV.PlacaVM)
@@ -220,7 +220,7 @@ func encodeAutotransporte(enc *encoder.Encoder, at *Autotransporte) {
 	}
 
 	if seg := at.Seguros; seg != nil {
-		enc.StartElem(cartaporte30XS.Elem("Seguros"))
+		enc.StartElem(cartaporte31XS.Elem("Seguros"))
 		enc.WriteAttrStrZ("AseguraRespCivil", seg.AseguraRespCivil)
 		enc.WriteAttrStrZ("PolizaRespCivil", seg.PolizaRespCivil)
 		enc.WriteAttrStrZ("AseguraMedAmbiente", seg.AseguraMedAmbiente)
@@ -232,9 +232,9 @@ func encodeAutotransporte(enc *encoder.Encoder, at *Autotransporte) {
 	}
 
 	if len(at.Remolques) > 0 {
-		enc.StartElem(cartaporte30XS.Elem("Remolques"))
+		enc.StartElem(cartaporte31XS.Elem("Remolques"))
 		for _, rem := range at.Remolques {
-			enc.StartElem(cartaporte30XS.Elem("Remolque"))
+			enc.StartElem(cartaporte31XS.Elem("Remolque"))
 			enc.WriteAttrStrZ("SubTipoRem", rem.SubTipoRem)
 			enc.WriteAttrStrZ("Placa", rem.Placa)
 			enc.EndElem("Remolque")
@@ -266,7 +266,7 @@ func encodeFiguraTransporte(enc *encoder.Encoder, ft *FiguraTransporte) {
 	if ft == nil {
 		return
 	}
-	enc.StartElem(cartaporte30XS.Elem("FiguraTransporte"))
+	enc.StartElem(cartaporte31XS.Elem("FiguraTransporte"))
 	defer enc.EndElem("FiguraTransporte")
 	for _, f := range ft.TiposFigura {
 		encodeFiguraTransporteTiposFigura(enc, f)
@@ -277,7 +277,7 @@ func encodeFiguraTransporteTiposFigura(enc *encoder.Encoder, ft *TiposFigura) {
 	if ft == nil {
 		return
 	}
-	enc.StartElem(cartaporte30XS.Elem("TiposFigura"))
+	enc.StartElem(cartaporte31XS.Elem("TiposFigura"))
 	defer enc.EndElem("TiposFigura")
 
 	enc.WriteAttrStrZ("TipoFigura", ft.TipoFigura)
@@ -287,13 +287,13 @@ func encodeFiguraTransporteTiposFigura(enc *encoder.Encoder, ft *TiposFigura) {
 	enc.WriteAttrStrZ("NumRegIdTribFigura", ft.NumRegIdTribFigura)
 	enc.WriteAttrStrZ("ResidenciaFiscalFigura", string(ft.ResidenciaFiscalFigura))
 	for _, part := range ft.PartesTransporte {
-		enc.StartElem(cartaporte30XS.Elem("PartesTransporte"))
+		enc.StartElem(cartaporte31XS.Elem("PartesTransporte"))
 		enc.WriteAttrStrZ("ParteTransporte", part.ParteTransporte)
 		enc.EndElem("PartesTransporte")
 	}
 
 	if dom := ft.Domicilio; dom != nil {
-		enc.StartElem(cartaporte30XS.Elem("Domicilio"))
+		enc.StartElem(cartaporte31XS.Elem("Domicilio"))
 		enc.WriteAttrStrZ("Calle", dom.Calle)
 		enc.WriteAttrStrZ("NumeroExterior", dom.NumeroExterior)
 		enc.WriteAttrStrZ("NumeroInterior", dom.NumeroInterior)
