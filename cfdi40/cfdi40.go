@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/shopspring/decimal"
 	"github.com/veyronifs/cfdi-go/complemento/cartaporte31"
@@ -95,6 +96,20 @@ func (c Comprobante) QRText() (string, error) {
 		"&rr=" + c.Receptor.Rfc +
 		"&tt=" + c.Total.String() +
 		"&fe=" + c.Complemento.TFD11.SelloCFD[idxSubstr:], nil
+}
+
+func (c Comprobante) QRCpText() (string, error) {
+	if c.Complemento.CartaPorte == nil {
+		return "", ErrNoTimbrado
+	}
+
+	if c.Complemento.CartaPorte.IdCCP == "" {
+		return "", fmt.Errorf("%w La Carta Porte no cuenta con un IdCPP", ErrNoTimbrado)
+	}
+	return "https://verificacfdi.facturaelectronica.sat.gob.mx/verificaccp/default.aspx?" +
+		"FechaOrig=" + c.Complemento.CartaPorte.Ubicaciones[0].FechaHoraSalidaLlegada.String() +
+		"&FechaTimb=" + c.Complemento.TFD11.FechaTimbrado.String() +
+		"&IdCCP=" + strings.ToUpper(c.Complemento.CartaPorte.IdCCP), nil
 }
 
 // InformacionGlobal Nodo condicional para precisar la información relacionada con el comprobante global.
